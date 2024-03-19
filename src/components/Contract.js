@@ -9,7 +9,7 @@ export function useContractInitialization() {
   const [web3, setWeb3] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [initialized, setInitialized] = useState(false);
-  const [contractInstance, setContractInstance] = useState(null);
+  const [contract, setcontract] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -17,14 +17,14 @@ export function useContractInitialization() {
         if (!initialized) {
           const web3Instance = new Web3(new Web3.providers.HttpProvider("http://ec2-18-144-28-49.us-west-1.compute.amazonaws.com:8545"));
           const accounts = await web3Instance.eth.getAccounts();
-          const contractInstance = new web3Instance.eth.Contract(SupplyChainAbi.abi, SupplyChainAddress.address);
+          const contract = new web3Instance.eth.Contract(SupplyChainAbi.abi, SupplyChainAddress.address);
           console.log("This is called")
           setWeb3(web3Instance);
           setAccounts(accounts);
-          setContractInstance(contractInstance);
+          setcontract(contract);
           setInitialized(true);
  	        console.log("Account [0]: ", accounts[0]);
-          // const drugs = await contractInstance.methods.retrieveInventoryPHFront().call({ from: accounts[0] });
+          // const drugs = await contract.methods.retrieveInventoryPHFront().call({ from: accounts[0] });
           // if (drugs) {
           //   // Log each drug's details
           //   drugs.forEach((drug, index) => {
@@ -51,6 +51,6 @@ export function useContractInitialization() {
     init(); // Call the initialization function once when the component mounts
   }, [initialized]);
   
-  return { web3, accounts, contractInstance };
+  return { web3, accounts, contract };
 }
 
