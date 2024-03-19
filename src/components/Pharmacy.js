@@ -8,19 +8,8 @@ const Pharmacy = () => {
   // Inventory of drugs with different coverage plans
   // const [inventory, setInventory] = useState(config.inventory);
 
-  const [inventory, setInventoryData] = useState(null);
+  const [inventory, setInventoryData] = useState([]);
   
-
-  // const inventory = async () => {
-  //   try {
-  //       // Send a transaction to the smart contract
-  //       await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
-  //       console.log(await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] }));
-  //   } catch (error) {
-  //       console.error('Error in retrieving inventory:', error);
-  //   }
-  // };
-
   // State for form inputs
   const [orderForm, setOrderForm] = useState({
     amount: 0,
@@ -64,15 +53,6 @@ const Pharmacy = () => {
     }
   };
 
-  // const retrieveInventory = async () => {
-  //   try {
-  //     // Retrieve inventory data from the smart contract
-  //     const inventory = await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
-  //     setInventoryData(inventory);
-  //   } catch (error) {
-  //     console.error('Error in retrieving inventory:', error);
-  //   }
-  // };
 
   useEffect(() => {
     const retrieveInventory = async () => {
@@ -89,13 +69,6 @@ const Pharmacy = () => {
   retrieveInventory();
 }, [web3, accounts, contract]);
 
-  // Rest of your component logic
-  // },
-  // Effect to recalculate price when amount, drug, or discount code changes
-  // useEffect(() => {
-  //   retrieveInventory();
-  //   calculatePrice();
-  // }, [orderForm.amount, orderForm.discountCode, selectedDrug]);
 
   return (
     <div>
@@ -103,27 +76,20 @@ const Pharmacy = () => {
 
       <h3>Plans</h3>
       <ul>
+        {/* Render drug information here */}
         {inventory && inventory.map((drug, index) => (
-                <li key={index}>
-                    <h3>Drug {index}</h3>
-                    <p>Name: {drug.name}</p>
-                    <p>Quantity: {drug.quantity}</p>
-                    <p>Price: {drug.price}</p>
-                    {/* Add more properties as needed */}
-                </li>
-            ))}
-        {/* {inventory.map(drug => (
-          <li key={drug.id}>
-            {drug.name} - Price: ${drug.price} - Quantity: {drug.quantity} */}
-            {/* <ul>
-              {drug.coveragePlans.map((plan, index) => (
-                <li key={index}>
-                  Coverage Plan: {plan.plan} - Discount: {plan.discountRate} - Discount Code: {plan.discountCode}
-                </li>
-              ))}
-            </ul> */}
-          {/* </li> */}
-        {/* ))} */}
+        <li key={index}>
+          <h4>{drug.name}</h4>
+          <p>ID: {drug.id}</p>
+          <p>Price: {drug.price}</p>
+          <p>Quantity: {drug.quantity}</p>
+          <p>Current Owner: {drug.currentOwner}</p>
+          <p>Manufacturer: {drug.manufacturer}</p>
+          <p>Wholesale: {drug.wholesale}</p>
+          <p>Pharmacy: {drug.pharmacy}</p>
+          <p>Is Sold Out: {drug.isSoldOut ? 'Yes' : 'No'}</p>
+        </li>
+        ))}
       </ul>
 
       <h3>Order Form</h3>
