@@ -306,7 +306,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
     function findRequestInWDMA(uint reqID) public view returns (uint) {
         uint len = wholesaleRequestsToMA[msg.sender].length;
-        uint ind = len-1;
+        uint ind = len;
         for(uint i = 0; i < len; i++) {
             if (wholesaleRequestsToMA[msg.sender][i].requestID == reqID) ind = i;
         }
@@ -316,7 +316,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
     function findRequestInMA(uint reqID) public view returns (uint) {
         uint len = manufacturerRequests[msg.sender].length;
-        uint ind = len-1;
+        uint ind = len;
         for(uint i = 0; i < len; i++) {
             if (manufacturerRequests[msg.sender][i].requestID == reqID) ind = i;
         }
