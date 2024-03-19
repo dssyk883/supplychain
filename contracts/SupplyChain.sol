@@ -402,12 +402,12 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
     function getRequestIDWD() public returns (uint) {
         DrugRequest[] memory thisRequest = wholesaleRequestsFromPH[msg.sender];
-        return thisRequest[thisRequest.length-1].requestID;
+        return thisRequest[0].requestID;
     }
 
     function getRequestIDPH() public returns (uint) {
         DrugRequest[] memory thisRequest = pharmacyRequests[msg.sender];
-        return thisRequest[thisRequest.length-1].requestID;
+        return thisRequest[0].requestID;
     }
     
 
