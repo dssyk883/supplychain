@@ -80,7 +80,6 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     event SendRequestByWD(uint drugID, uint quant, uint totalPrice, address toMAaddr);
     event ShipDrugByMA(uint drugID, uint quant, uint WDaccNum);
     event ReqConfirmedByPH(uint reqID, address phar, address wd);
-    event ReqConfirmedByWD(uint reqID, address wd, address ma);
 
     constructor() {
         owner = msg.sender;
@@ -242,7 +241,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         uint drugID = wholesaleRequestsToMA[msg.sender][findreqMA].drugID;
         address toMAaddr = super.getMAaddr(MAaccNum);
         addDrugInWD(drugID, quant, toMAaddr);
-        emit ReqConfirmedByWD(reqID, msg.sender, toMAaddr);
+        emit ReqConfirmedByPH(reqID, msg.sender, toMAaddr);
     }
 
     function findDrugInPH(uint dID) public view onlyPH() returns (uint) {
@@ -326,6 +325,22 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         // if index == len, it's not found
     }
 
+    function retrieveInventoryPHFront() public view onlyPH() returns (Drug[] memory) {
+        return pharmacyInventory[msg.sender];
+    }
+
+    function retrieveInventoryWDFront() public view onlyWD() returns (Drug[] memory) {
+        return wholesaleInventory[msg.sender];
+    }
+
+    function retrieveInventoryMAFront() public view onlyWD() returns (Drug[] memory) {
+        return wholesaleInventory[msg.sender];
+    }
+
+    function getAllWD() public view returns (uint[] memory) {
+        return super.showAllMD();
+    }
+
     //WD -> MA
     //TODO HERE
     // function requestRebateWD(uint reqID) public onlyWD() {
@@ -341,10 +356,6 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
             console.log(thisInventory[i].id, ": quant - " , thisInventory[i].quantity);
             i++;
         }
-    }
-
-    function retrieveInventoryPHFront() public view onlyPH() returns (Drug[] memory) {
-        return pharmacyInventory[msg.sender];
     }
 
     function retrieveInventoryWD() public view onlyWD() {

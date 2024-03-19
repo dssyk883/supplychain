@@ -44,11 +44,14 @@ contract Wholesale {
         return wholesales.returnAddress(accNumber);
     }
 
-    function showAllWD() public view {
+    function showAllWD() public view returns (uint[] memory) {
+        uint[] memory indices;
         uint ind = 0;
         for(uint i = 0; i < wdcounter; i++){
             ind = i * 5 + 1;
+            indices.push(ind);
             console.log("Wholesale acc# ", i, ": ", wholesales.returnAddress(ind));
         }
+        return indices;
     }
 }
