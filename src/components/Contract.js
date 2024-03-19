@@ -17,7 +17,7 @@ export function useContractInitialization() {
         if (!initialized) {
           const web3Instance = new Web3(new Web3.providers.HttpProvider("http://ec2-18-144-28-49.us-west-1.compute.amazonaws.com:8545"));
           const accounts = await web3Instance.eth.getAccounts();
-          contractInstance = new web3Instance.eth.Contract(SupplyChainAbi.abi, SupplyChainAddress);
+          const contractInstance = new web3Instance.eth.Contract(SupplyChainAbi.abi, SupplyChainAddress);
           setWeb3(web3Instance);
           setAccounts(accounts);
           setContractInstance(contractInstance);
