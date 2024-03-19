@@ -9,6 +9,7 @@ export function useContractInitialization() {
   const [web3, setWeb3] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [initialized, setInitialized] = useState(false);
+  const [contractInstance, setContractInstance] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -19,6 +20,7 @@ export function useContractInitialization() {
           contractInstance = new web3Instance.eth.Contract(SupplyChainAbi, SupplyChainAddress);
           setWeb3(web3Instance);
           setAccounts(accounts);
+          setContractInstance(contractInstance);
           setInitialized(true);
         }
       } catch (error) {
