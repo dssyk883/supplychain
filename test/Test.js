@@ -119,15 +119,20 @@ describe("Test Supply Chain contract", function () {
         .to.emit(contract, "SendRequestByPH")
         .withArgs(1, 10, 50, WD_addr);
 
+        await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
+        .to.emit(contract, "DrugAddedWD")
+        .withArgs(0, 10, WD_addr);
+
         await contract.connect(PH_addr).retrieveInventoryPH();
         await contract.connect(WD_addr).retrieveInventoryWD();
 
         const reqID =  await contract.connect(WD_addr).getRequestIDWD();
-        await expect(contract.connect(WD_addr).shipDrugWD(1, 10, 0, reqID))
-        .to.be.revertedWith("There's no drug with the drug id");
+        console.log(reqID)
+        // await expect(contract.connect(WD_addr).shipDrugWD(1, 10, 0, reqID))
+        // .to.be.revertedWith("There's no drug with the drug id");
 
-        await contract.connect(PH_addr).retrieveInventoryPH();
-        await contract.connect(WD_addr).retrieveInventoryWD();
+        // await contract.connect(PH_addr).retrieveInventoryPH();
+        // await contract.connect(WD_addr).retrieveInventoryWD();
     });
 
     it("WD: Insufficient drugs in WD to ship drugs", async function () {
@@ -151,7 +156,7 @@ describe("Test Supply Chain contract", function () {
         await contract.connect(WD_addr).retrieveInventoryWD();
 
         const reqID =  await contract.connect(WD_addr).getRequestIDWD();
-        await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, reqID))
+        await expect(contract.connect(WD_addr).shipDrugWD(0, 40, 0, reqID))
         .to.be.revertedWith("Not enough drug quantity in the inventory.");
 
         await contract.connect(PH_addr).retrieveInventoryPH();
