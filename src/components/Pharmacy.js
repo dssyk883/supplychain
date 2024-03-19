@@ -58,8 +58,24 @@ const Pharmacy = () => {
     const retrieveInventory = async () => {
       try {
           if (web3 && accounts && contract) {
-              const inventoryData = await contract.methods.retrieveInventoryPHFront().call({ from: accounts[config.id] });
-              setInventoryData(inventoryData);
+              const drugs = await contract.methods.retrieveInventoryPHFront().call({ from: accounts[config.id] });
+              if (drugs) {
+            // Log each drug's details
+              drugs.forEach((drug, index) => {
+              console.log(`Drug ${index + 1}:`);
+              console.log(`ID: ${drug.id}`);
+              console.log(`Name: ${drug.name}`);
+              console.log(`Price: ${drug.price}`);
+              console.log(`Quantity: ${drug.quantity}`);
+              console.log(`Current Owner: ${drug.currentOwner}`);
+              console.log(`Manufacturer: ${drug.manufacturer}`);
+              console.log(`Wholesale: ${drug.wholesale}`);
+              console.log(`Pharmacy: ${drug.pharmacy}`);
+              console.log(`Is Sold Out: ${drug.isSoldOut}`);
+              console.log('----------');
+            });
+          }
+              setInventoryData(drugs);
           }
       } catch (error) {
           console.error('Error in retrieving inventory:', error);
