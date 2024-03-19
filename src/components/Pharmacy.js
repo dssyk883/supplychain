@@ -144,7 +144,7 @@ const Pharmacy = () => {
             onChange={handleDrugSelect}
           >
             <option value="">Select Drug</option>
-            {inventory.map(drug => (
+            {inventory && inventory.map(drug => (
               <option key={drug.id} value={drug.name}>
                 {drug.name}
               </option>
