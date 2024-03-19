@@ -76,17 +76,17 @@ const Pharmacy = () => {
 
   useEffect(() => {
     const retrieveInventory = async () => {
-        try {
-            const inventoryData = await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
-            setInventoryData(inventoryData);
-        } catch (error) {
-            console.error('Error in retrieving inventory:', error);
-        }
-    };
+      try {
+          if (web3 && accounts && contract) {
+              const inventoryData = await contract.methods.retrieveInventoryPHFront().call({ from: accounts[config.id] });
+              setInventoryData(inventoryData);
+          }
+      } catch (error) {
+          console.error('Error in retrieving inventory:', error);
+      }
+  };
 
-    if (web3 && accounts && contract) {
-        retrieveInventory();
-    }
+  retrieveInventory();
 }, [web3, accounts, contract]);
 
   // Rest of your component logic
