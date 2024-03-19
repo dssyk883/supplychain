@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Web3 from 'web3';
-import SupplyChainAbi from './contractsData/SupplyChain.json';
-import SupplyChainAddress from './contractsData/SupplyChain-address.json';
+import SupplyChainAbi from '../contractsData/SupplyChain.json';
+import SupplyChainAddress from '../contractsData/SupplyChain-address.json';
 
 // Define contract variable outside the hook
 let contractInstance = null;
