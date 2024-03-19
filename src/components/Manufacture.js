@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import config from '../config/config.json'
-import { initializationData } from './Contract';
+import { useContractInitialization } from './Contract';
 
 //TODO, add current contract drugs/discounts on them
 
 const Manufacture = () => {
-  const { accounts, contractInstance } = initializationData;
+  const { web3, accounts, contractInstance } = useContractInitialization();
+
   // Fake incoming requests
   const [incomingRequests, setIncomingRequests] = useState([
     { id: 1, drug: 'Drug A', amount: 100 },

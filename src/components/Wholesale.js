@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import config from '../config/config.json';
-import { initializationData } from './Contract';
+import { useContractInitialization } from './Contract';
 
 const Wholesale = () => {
-  const { accounts, contractInstance } = initializationData;
+  const { web3, accounts, contractInstance } = useContractInitialization();
+  
   // Fake incoming requests of drugs
   const [incomingRequests, setIncomingRequests] = useState([
     { id: 1, drug: 'Drug A', amount: 50, discountCode: 'DISCOUNT1', finalPrice: 100 }, // Added finalPrice

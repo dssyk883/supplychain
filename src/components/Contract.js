@@ -3,8 +3,6 @@ import Web3 from 'web3';
 import SupplyChainAbi from '../contractsData/SupplyChain.json';
 import SupplyChainAddress from '../contractsData/SupplyChain-address.json';
 
-// Define contract variable outside the hook
-let contractInstance = null;
 
 // Custom hook for initializing Web3 and contract
 export function useContractInitialization() {
@@ -16,7 +14,7 @@ export function useContractInitialization() {
     const init = async () => {
       try {
         if (!initialized) {
-          const web3Instance = new Web3(new Web3.providers.HttpProvider("http://ec2-54-215-141-163.us-west-1.compute.amazonaws.com:8545"));
+          const web3Instance = new Web3(new Web3.providers.HttpProvider("http://ec2-18-144-28-49.us-west-1.compute.amazonaws.com:8545"));
           const accounts = await web3Instance.eth.getAccounts();
           contractInstance = new web3Instance.eth.Contract(SupplyChainAbi, SupplyChainAddress);
           setWeb3(web3Instance);
@@ -34,5 +32,3 @@ export function useContractInitialization() {
   return { web3, accounts, contractInstance };
 }
 
-// Export accounts and contractInstance together
-export const initializationData = useContractInitialization();

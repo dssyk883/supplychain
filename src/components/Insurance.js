@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import config from '../config/config.json'
-import { initializationData } from './Contract';
+import { useContractInitialization } from './Contract';
 
 const Insurance = () => {
-  const { accounts, contractInstance } = initializationData;
+  const { web3, accounts, contractInstance } = useContractInitialization();
+
   // State for contract form inputs
   const [contractForm, setContractForm] = useState({
     drug: '',

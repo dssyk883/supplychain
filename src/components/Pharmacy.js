@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import config from '../config/pharmExample.json';
-import { initializationData } from './Contract';
+import { useContractInitialization } from './Contract';
 
 const Pharmacy = () => {
-  const { accounts, contractInstance } = initializationData;
+  const { web3, accounts, contractInstance } = useContractInitialization();
+
   // Inventory of drugs with different coverage plans
   const [inventory, setInventory] = useState(config.inventory);
 
