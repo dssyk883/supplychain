@@ -122,6 +122,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         addDrug("Drug B", 20);
         addDrug("Drug C", 60);
         addDrug("Drug D", 90);
+        addDrug("Drug E", 10);
     }
 
     function addInitialDrugsMA() public {
@@ -418,6 +419,16 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
     function getRequestIDPH() external view returns (uint) {
         DrugRequest[] memory thisRequest = pharmacyRequests[msg.sender];
+        return thisRequest[0].requestID;
+    }
+
+    function getRequestIDMA() external view returns (uint) {
+        DrugRequest[] memory thisRequest = manufacturerRequests[msg.sender];
+        return thisRequest[0].requestID;
+    }
+
+    function getRequestIDWDMA() external view returns (uint) {
+        DrugRequest[] memory thisRequest = wholesaleRequestsToMA[msg.sender];
         return thisRequest[0].requestID;
     }
     
