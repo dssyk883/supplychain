@@ -87,6 +87,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         drugRequestCount = 0;
         dcCount = 0;
         addInitialDrugs();
+        addPHaccounts();
         // function addDrugInPH(uint dID, uint quant, address WD, address MA) public onlyPH() {
         // test 
         addDrugInPH(0, 10, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
