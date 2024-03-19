@@ -188,7 +188,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         uint findDrugWD = findDrugInWD(drugID);
         uint findreqPH = findRequestInPH(reqID);
 
-        require(findDrugWD <= wholesaleInventory[msg.sender].length, "There's no drug with the drug id");
+        require(findDrugWD != wholesaleInventory[msg.sender].length, "There's no drug with the drug id");
         require(wholesaleInventory[msg.sender][findDrugWD].quantity >= quant, "Not enough drug quantity in the inventory.");
         
         wholesaleInventory[msg.sender][findDrugWD].quantity -= quant;

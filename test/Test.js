@@ -90,7 +90,7 @@ describe("Test Supply Chain contract", function () {
 
         const reqIDPH =  await contract.connect(PH_addr).getRequestIDPH();
         // PH confirms Drug Shipment
-        await expect(contract.connect(PH_addr).confirmDrugShipment(reqIDPH, 10, 1))
+        await expect(contract.connect(PH_addr).confirmDrugShipmentPH(reqIDPH, 10, 1))
         .to.emit(contract, "ReqConfirmedByPH")
         .withArgs(reqIDPH, PH_addr, WD_addr);
 
