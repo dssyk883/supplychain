@@ -45,11 +45,11 @@ contract Wholesale {
     }
 
     function showAllWD() public view returns (uint[] memory) {
-        uint[] memory indices;
+        uint[] memory indices = new uint[](wdcounter);
         uint ind = 0;
         for(uint i = 0; i < wdcounter; i++){
             ind = i * 5 + 1;
-            indices.push(ind);
+            indices[i] = ind;
             console.log("Wholesale acc# ", i, ": ", wholesales.returnAddress(ind));
         }
         return indices;
