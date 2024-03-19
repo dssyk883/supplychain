@@ -11,10 +11,11 @@ const Pharmacy = () => {
     try {
         // Send a transaction to the smart contract
         await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
+        console.log(await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] }));
     } catch (error) {
         console.error('Error in retrieving inventory:', error);
     }
-};
+  };
 
   // State for form inputs
   const [orderForm, setOrderForm] = useState({
