@@ -3,7 +3,7 @@ import config from '../config/pharmExample.json';
 import { useContractInitialization } from './Contract';
 
 const Pharmacy = () => {
-  const { web3, accounts, contractInstance } = useContractInitialization();
+  const { web3, accounts, contract } = useContractInitialization();
 
   // Inventory of drugs with different coverage plans
   // const [inventory, setInventory] = useState(config.inventory);
