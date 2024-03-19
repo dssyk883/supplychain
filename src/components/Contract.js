@@ -23,6 +23,8 @@ export function useContractInitialization() {
           setAccounts(accounts);
           setContractInstance(contractInstance);
           setInitialized(true);
+          const arr = await contractInstance.methods.retrieveInventoryPHFront().call({ from: accounts[0] });
+          console.log(arr[0].id, ": ", arr[0].name);
         }
       } catch (error) {
         console.error('Error initializing DApp:', error);
@@ -31,7 +33,7 @@ export function useContractInitialization() {
 
     init(); // Call the initialization function once when the component mounts
   }, [initialized]);
-
+  
   return { web3, accounts, contractInstance };
 }
 
