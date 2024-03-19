@@ -88,11 +88,11 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         dcCount = 0;
         addPHaccounts();
         addInitialDrugs();
+        addInitialDrugsMA();
         // test 
         addDrugInPH(0, 10, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
         addDrugInPH(1, 5, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
         addDrugInPH(2, 20, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
-        addInitialDrugsMA();
         // addInitialDiscounts();
     }
 
@@ -142,11 +142,13 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function addDrugInPH(uint dID, uint quant, address WD, address MA) public onlyPH() {
-        uint find = findDrugInPH(dID);
-        if(find == pharmacyInventory[msg.sender].length) {
-            pharmacyInventory[msg.sender].push(Drug(dID, drugs[dID].name, drugs[dID].price, quant, msg.sender, MA, WD, msg.sender, false));
-        }
-        else pharmacyInventory[msg.sender][find].quantity += quant;
+        pharmacyInventory[msg.sender].push(Drug(dID, drugs[dID].name, drugs[dID].price, quant, msg.sender, MA, WD, msg.sender, false));
+
+        // uint find = findDrugInPH(dID);
+        // if(find == pharmacyInventory[msg.sender].length) {
+        //     pharmacyInventory[msg.sender].push(Drug(dID, drugs[dID].name, drugs[dID].price, quant, msg.sender, MA, WD, msg.sender, false));
+        // }
+        // else pharmacyInventory[msg.sender][find].quantity += quant;
         emit DrugAddedPH(dID, quant, msg.sender);
     }
 
