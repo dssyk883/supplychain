@@ -169,7 +169,7 @@ describe("Test Supply Chain contract", function () {
     it("Supply Chain: WD requests Drug, MA ships Drug, WD confirms shipment", async function () {
         // WD requests Drug
         await contract.connect(MA_addr).retrieveInventoryMA();
-        await contract.connect(MA_addr).retrieveInventoryWD();
+        await contract.connect(WD_addr).retrieveInventoryWD();
 
         await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 20, 3, {value: ethers.parseEther("600")}))
         .to.emit(contract, "SendRequestByWD")
@@ -187,7 +187,7 @@ describe("Test Supply Chain contract", function () {
         .withArgs(reqID, WD_addr, MA_addr);
 
         await contract.connect(MA_addr).retrieveInventoryMA();
-        await contract.connect(MA_addr).retrieveInventoryWD();
+        await contract.connect(WD_addr).retrieveInventoryWD();
     })
 
     it("WD: Insufficient funds from WD to request shipment from MA", async function () {
@@ -199,7 +199,7 @@ describe("Test Supply Chain contract", function () {
     it("MA: Request for Invalid Drug is not shipped", async function () {
         // WD requests Drug
         await contract.connect(MA_addr).retrieveInventoryMA();
-        await contract.connect(MA_addr).retrieveInventoryWD();
+        await contract.connect(WD_addr).retrieveInventoryWD();
 
         await expect(contract.connect(WD_addr).sendDrugRequestWD(4, 20, 3, {value: ethers.parseEther("600")}))
         .to.emit(contract, "SendRequestByWD")
@@ -212,13 +212,13 @@ describe("Test Supply Chain contract", function () {
         .to.be.revertedWith("There's no drug with the drug id");
 
         await contract.connect(MA_addr).retrieveInventoryMA();
-        await contract.connect(MA_addr).retrieveInventoryWD();
+        await contract.connect(WD_addr).retrieveInventoryWD();
     })
 
     it("MA: Not enough drug in Inventory", async function () {
         // WD requests Drug
         await contract.connect(MA_addr).retrieveInventoryMA();
-        await contract.connect(MA_addr).retrieveInventoryWD();
+        await contract.connect(WD_addr).retrieveInventoryWD();
         await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 50, 3, {value: ethers.parseEther("600")}))
         .to.emit(contract, "SendRequestByWD")
         .withArgs(0, 20, 600, MA_addr);
@@ -229,6 +229,6 @@ describe("Test Supply Chain contract", function () {
         await expect(contract.connect(MA_addr).shipDrugMA(0, 20, 1, reqID))
         .to.be.revertedWith("Not enough drug quantity in the inventory.");
         await contract.connect(MA_addr).retrieveInventoryMA();
-        await contract.connect(MA_addr).retrieveInventoryWD();
+        await contract.connect(WD_addr).retrieveInventoryWD();
     })
 });
