@@ -17,16 +17,16 @@ export function useContractInitialization() {
         if (!initialized) {
           const web3Instance = new Web3(new Web3.providers.HttpProvider("http://ec2-18-144-28-49.us-west-1.compute.amazonaws.com:8545"));
           const accounts = await web3Instance.eth.getAccounts();
-          const contractInstance = new web3Instance.eth.Contract(SupplyChainAbi.abi, SupplyChainAddress);
+          const contractInstance = new web3Instance.eth.Contract(SupplyChainAbi.abi, SupplyChainAddress.address);
           console.log("This is called")
           setWeb3(web3Instance);
           setAccounts(accounts);
           setContractInstance(contractInstance);
           setInitialized(true);
- 	  console.log("Account [0]: ", accounts[0]);
+ 	        console.log("Account [0]: ", accounts[0]);
           var arr = await contractInstance.methods.retrieveInventoryPHFront().send({ from: accounts[0] });
-	  var first = arr[0];
-          console.log(first.id, ": ", first.name);
+	        var first = arr[0];
+          console.log(first);
         }
       } catch (error) {
         console.error('Error initializing DApp:', error);
