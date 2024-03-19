@@ -240,7 +240,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         uint findreqMA = findRequestInWDMA(reqID);
         wholesaleRequestsToMA[msg.sender][findreqMA].confirmed = true;
         uint drugID = wholesaleRequestsToMA[msg.sender][findreqMA].drugID;
-        address toMAaddr = super.getWDaddr(MAaccNum);
+        address toMAaddr = super.getMAaddr(MAaccNum);
         addDrugInWD(drugID, quant, toMAaddr);
         emit ReqConfirmedByWD(reqID, msg.sender, toMAaddr);
     }

@@ -208,7 +208,7 @@ describe("Test Supply Chain contract", function () {
         console.log("Requesting 20 units of Drug 4")
 
         const reqID =  await contract.connect(MA_addr).getRequestIDMA();
-        await expect(contract.connect(MA_addr).shipDrugMA(0, 20, 1, reqID))
+        await expect(contract.connect(MA_addr).shipDrugMA(4, 20, 1, reqID))
         .to.be.revertedWith("There's no drug with the drug id");
 
         await contract.connect(MA_addr).retrieveInventoryMA();
@@ -219,7 +219,7 @@ describe("Test Supply Chain contract", function () {
         // WD requests Drug
         await contract.connect(MA_addr).retrieveInventoryMA();
         await contract.connect(WD_addr).retrieveInventoryWD();
-        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 50, 3, {value: ethers.parseEther("1500")}))
+        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 250, 3, {value: ethers.parseEther("7500")}))
         .to.emit(contract, "SendRequestByWD")
         .withArgs(0, 50, 1500, MA_addr);
 
