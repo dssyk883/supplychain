@@ -183,7 +183,7 @@ describe("Test Supply Chain contract", function () {
         .withArgs(0, 20, 1);
 
         await expect(contract.connect(WD_addr).confirmDrugShipmentWD(reqID, 20, 3))
-        .to.emit(contract, "ReqConfirmedByPH")
+        .to.emit(contract, "ReqConfirmedByWD")
         .withArgs(reqID, WD_addr, MA_addr);
 
         await contract.connect(MA_addr).retrieveInventoryMA();
@@ -201,9 +201,9 @@ describe("Test Supply Chain contract", function () {
         await contract.connect(MA_addr).retrieveInventoryMA();
         await contract.connect(WD_addr).retrieveInventoryWD();
 
-        await expect(contract.connect(WD_addr).sendDrugRequestWD(4, 20, 3, {value: ethers.parseEther("600")}))
+        await expect(contract.connect(WD_addr).sendDrugRequestWD(4, 20, 3, {value: ethers.parseEther("200")}))
         .to.emit(contract, "SendRequestByWD")
-        .withArgs(4, 20, 600, MA_addr);
+        .withArgs(4, 20, 200, MA_addr);
 
         console.log("Requesting 20 units of Drug 4")
 
@@ -219,14 +219,14 @@ describe("Test Supply Chain contract", function () {
         // WD requests Drug
         await contract.connect(MA_addr).retrieveInventoryMA();
         await contract.connect(WD_addr).retrieveInventoryWD();
-        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 20, 3, {value: ethers.parseEther("600")}))
+        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 50, 3, {value: ethers.parseEther("1500")}))
         .to.emit(contract, "SendRequestByWD")
-        .withArgs(0, 20, 600, MA_addr);
+        .withArgs(0, 50, 1500, MA_addr);
 
         console.log("Requesting 50 units of Drug 0")
 
         const reqID =  await contract.connect(MA_addr).getRequestIDMA();
-        await expect(contract.connect(MA_addr).shipDrugMA(0, 20, 1, reqID))
+        await expect(contract.connect(MA_addr).shipDrugMA(0, 50, 1, reqID))
         .to.be.revertedWith("Not enough drug quantity in the inventory.");
         await contract.connect(MA_addr).retrieveInventoryMA();
         await contract.connect(WD_addr).retrieveInventoryWD();
