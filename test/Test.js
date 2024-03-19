@@ -112,7 +112,7 @@ describe("Test Supply Chain contract", function () {
         // Add Discount code
         await expect(contract.connect(IN_addr).addDiscountInIN(1, 15, 1, 2))
         .to.emit(contract, "DiscountCodeAddedIN")
-        .withArgs(1, 0, IN_addr);
+        .withArgs(1, 1, IN_addr);
 
         // Request Drug Shipment
         await expect(contract.connect(PH_addr).sendDrugRequestPH(1, 10, 1, 1, {value: ethers.parseEther("50")}))
@@ -133,7 +133,7 @@ describe("Test Supply Chain contract", function () {
     it("WD: Insufficient drugs in WD to ship drugs", async function () {
         // Add Discount code
         await contract.addDrug('DrugA', 10);
-        await expect(contract.connect(IN_addr).addDiscountInIN(0, 25, 0, 2))
+        await expect(contract.connect(IN_addr).addDiscountInIN(1, 25, 0, 2))
         .to.emit(contract, "DiscountCodeAddedIN")
         .withArgs(1, 0, IN_addr);
 
