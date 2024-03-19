@@ -400,12 +400,12 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         }
     }
 
-    function getRequestIDWD() public returns (uint) {
+    function getRequestIDWD() external view returns (uint) {
         DrugRequest[] memory thisRequest = wholesaleRequestsFromPH[msg.sender];
         return thisRequest[0].requestID;
     }
 
-    function getRequestIDPH() public returns (uint) {
+    function getRequestIDPH() external view returns (uint) {
         DrugRequest[] memory thisRequest = pharmacyRequests[msg.sender];
         return thisRequest[0].requestID;
     }
