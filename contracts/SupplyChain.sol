@@ -273,7 +273,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         // if index == len, it's not found
     }
 
-    function findRequestInPH(uint reqID) external view returns (uint) {
+    function findRequestInPHout(uint reqID) external view returns (uint) {
         uint len = pharmacyRequests[msg.sender].length;
         uint ind = len-1;
         for(uint i = 0; i < len; i++) {

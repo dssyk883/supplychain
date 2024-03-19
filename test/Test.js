@@ -129,7 +129,7 @@ describe("Test Supply Chain contract", function () {
 
         const reqID =  await contract.connect(WD_addr).getRequestIDWD();
         console.log(reqID)
-        const id = await contract.connect(WD_addr).findRequestInPH(reqID);
+        const id = await contract.connect(WD_addr).findRequestInPHout(reqID);
         console.log(id);
         // await expect(contract.connect(WD_addr).shipDrugWD(1, 10, 0, reqID))
         // .to.be.revertedWith("There's no drug with the drug id");
