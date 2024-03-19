@@ -203,7 +203,7 @@ describe("Test Supply Chain contract", function () {
 
         await expect(contract.connect(WD_addr).sendDrugRequestWD(4, 20, 3, {value: ethers.parseEther("600")}))
         .to.emit(contract, "SendRequestByWD")
-        .withArgs(0, 20, 600, MA_addr);
+        .withArgs(4, 20, 600, MA_addr);
 
         console.log("Requesting 20 units of Drug 4")
 
@@ -219,7 +219,7 @@ describe("Test Supply Chain contract", function () {
         // WD requests Drug
         await contract.connect(MA_addr).retrieveInventoryMA();
         await contract.connect(WD_addr).retrieveInventoryWD();
-        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 50, 3, {value: ethers.parseEther("600")}))
+        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 20, 3, {value: ethers.parseEther("600")}))
         .to.emit(contract, "SendRequestByWD")
         .withArgs(0, 20, 600, MA_addr);
 

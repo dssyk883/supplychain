@@ -268,7 +268,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         uint len = manufacturerInventory[msg.sender].length;
         uint ind = len;
         for(uint i = 0; i < len; i++) {
-            if (wholesaleInventory[msg.sender][i].id == dID) ind = i;
+            if (manufacturerInventory[msg.sender][i].id == dID) ind = i;
         }
         return ind;
         // if index == len, it's not found
