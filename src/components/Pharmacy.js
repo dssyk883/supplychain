@@ -68,7 +68,7 @@ const Pharmacy = () => {
   const retrieveInventory = async () => {
     try {
       // Retrieve inventory data from the smart contract
-      const inventory = await contractInstance.methods.retrieveInventoryPHFront().call({ from: accounts[config.id] });
+      const inventory = await contract.methods.retrieveInventoryPHFront().call({ from: accounts[config.id] });
       setInventoryData(inventory);
     } catch (error) {
       console.error('Error in retrieving inventory:', error);
