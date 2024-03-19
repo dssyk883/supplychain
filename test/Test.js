@@ -76,12 +76,12 @@ describe("Test Supply Chain contract", function () {
         .withArgs(0, 10, 50, WD_addr);
 
         // Ship Drug from WD
-        await expect(contract.connect(WD_addr).addDrugInWD(0, 10, 0))  
+        await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))  
         .to.emit(contract, "DrugAddedWD")
         .withArgs(0, 10, WD_addr);
 
-        // await contract.connect(PH_addr).retrieveInventoryPH();
-        // await contract.connect(WD_addr).retrieveInventoryWD();
+        await contract.connect(PH_addr).retrieveInventoryPH();
+        await contract.connect(WD_addr).retrieveInventoryWD();
 
         // const reqID =  await contract.connect(WD_addr).getRequestIDWD();
         // await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, reqID))
