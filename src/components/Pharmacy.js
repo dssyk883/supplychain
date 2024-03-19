@@ -93,7 +93,7 @@ const Pharmacy = () => {
 
     if (web3 && accounts && contract) {
       retrieveInventory();
-      console.log(inventory[0].name);
+      console.log("Drug name:", inventory[0].name);
       // calculatePrice();
     }
   }, [web3, accounts, contract]); // Add dependencies to useEffect
