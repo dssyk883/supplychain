@@ -89,8 +89,7 @@ describe("Test Supply Chain contract", function () {
         .withArgs(0, 10, 0);
 
         // PH confirms Drug Shipment
-        
-        await expect(contract.connect(PH_addr).confirmDrugShipment(await contract.connect(WD_addr).getRequestIDPH(), 10, 1))
+        await expect(contract.connect(PH_addr).confirmDrugShipment(reqID, 10, 1))
         .to.emit(contract, "ReqConfirmedByPH")
         .withArgs(12, PH_addr, WD_addr);
 
@@ -111,7 +110,7 @@ describe("Test Supply Chain contract", function () {
 
     it("WD: Requested Drug is not valid", async function () {
         // Add Discount code
-        await expect(contract.connect(IN_addr).addDiscountInIN(1, 25, 0, 2))
+        await expect(contract.connect(IN_addr).addDiscountInIN(1, 15, 1, 2))
         .to.emit(contract, "DiscountCodeAddedIN")
         .withArgs(1, 0, IN_addr);
 
@@ -134,13 +133,13 @@ describe("Test Supply Chain contract", function () {
     it("WD: Insufficient drugs in WD to ship drugs", async function () {
         // Add Discount code
         await contract.addDrug('DrugA', 10);
-        await expect(contract.connect(IN_addr).addDiscountInIN(1, 5, 0, 2))
+        await expect(contract.connect(IN_addr).addDiscountInIN(0, 25, 0, 2))
         .to.emit(contract, "DiscountCodeAddedIN")
         .withArgs(1, 0, IN_addr);
 
         // Request Drug Shipment
         await expect(contract.connect(PH_addr).addDrugInPH(0,0));
-        await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 10, 1, 1, {value: ethers.parseEther("50")}))
+        await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 40, 1, 1, {value: ethers.parseEther("50")}))
         .to.emit(contract, "SendRequestByPH")
         .withArgs(0, 10, 50, WD_addr);
 
