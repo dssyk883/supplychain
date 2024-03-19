@@ -113,7 +113,7 @@ const Pharmacy = () => {
       <ul>
         {inventory.map((drug, index) => (
             <li key={index}>
-              <h3>Drug {index + 1}</h3>
+              <h3>Drug {index}</h3>
               <p>Name: {drug.name}</p>
               <p>Quantity: {drug.quantity}</p>
               <p>Price: {drug.price}</p>
