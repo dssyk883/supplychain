@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import config from '../config/pharmExample.json';
+import { initializationData } from './Contract';
 
 const Pharmacy = () => {
+  const { accounts, contractInstance } = initializationData;
   // Inventory of drugs with different coverage plans
   const [inventory, setInventory] = useState(config.inventory);
 
@@ -25,6 +27,7 @@ const Pharmacy = () => {
     e.preventDefault();
     // Handle order submission logic here
     console.log("Order Submitted:", orderForm);
+    this.state.contract.methods.sendDrugRequestPH(e.target.setText.value).send({ from: this.state.account });
   };
 
   // Function to handle drug selection

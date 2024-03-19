@@ -36,27 +36,6 @@ const EntityGuard = ({ entityType, children }) => {
 };
 
 const App = () => {
-  const [web3, setWeb3] = useState(null);
-  const [accounts, setAccounts] = useState([]);
-  const [contract, setContract] = useState(null);
-  
-  useEffect(() => {
-    // Initialize Web3 and contract
-    const init = async () => {
-        try {
-            const web3Instance = new Web3(new Web3.providers.HttpProvider("http://ec2-52-53-248-122.us-west-1.compute.amazonaws.com:8545"));
-            const accounts = await web3Instance.eth.getAccounts();
-            const contractInstance = new web3Instance.eth.Contract(SupplyChainAbi, SupplyChainAddress);
-            setWeb3(web3Instance);
-            setAccounts(accounts);
-            setContract(contractInstance);
-        } catch (error) {
-            console.error('Error initializing DApp:', error);
-          }
-        };
-      init();
-    }, []);
-
   // Filter navigation links based on allowed entity type
   const filteredNavLinks = navLinks.filter(navLink =>
     navLink.label.toLowerCase() === config.entity_type

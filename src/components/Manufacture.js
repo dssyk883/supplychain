@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import config from '../config/config.json'
+import { initializationData } from './Contract';
 
 //TODO, add current contract drugs/discounts on them
 
 const Manufacture = () => {
+  const { accounts, contractInstance } = initializationData;
   // Fake incoming requests
   const [incomingRequests, setIncomingRequests] = useState([
     { id: 1, drug: 'Drug A', amount: 100 },
