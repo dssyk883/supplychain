@@ -3,7 +3,10 @@ import config from '../config/pharmExample.json';
 import { useContractInitialization } from './Contract';
 
 const Pharmacy = () => {
-  const { web3, accounts, contract } = useContractInitialization();
+  
+  const [web3, setWeb3] = useState(null);
+  const [accounts, setAccounts] = useState(null);
+  const [contract, setContract] = useState(null);
 
   // Inventory of drugs with different coverage plans
   // const [inventory, setInventory] = useState(config.inventory);
@@ -68,6 +71,10 @@ const Pharmacy = () => {
   const retrieveInventory = async () => {
     try {
       // Retrieve inventory data from the smart contract
+      const { web3, accounts, contract } = useContractInitialization();
+      setWeb3(web3);
+      setAccounts(accounts);
+      setContract(contract);
       const inventory = await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
       setInventoryData(inventory);
     } catch (error) {
