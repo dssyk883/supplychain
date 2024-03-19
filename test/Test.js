@@ -166,69 +166,69 @@ describe("Test Supply Chain contract", function () {
         await contract.connect(WD_addr).retrieveInventoryWD();
     });
 
-    // it("Supply Chain: WD requests Drug, MA ships Drug, WD confirms shipment", async function () {
-    //     // WD requests Drug
-    //     await contract.connect(MA_addr).retrieveInventoryMA();
-    //     await contract.connect(MA_addr).retrieveInventoryWD();
+    it("Supply Chain: WD requests Drug, MA ships Drug, WD confirms shipment", async function () {
+        // WD requests Drug
+        await contract.connect(MA_addr).retrieveInventoryMA();
+        await contract.connect(MA_addr).retrieveInventoryWD();
 
-    //     await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 20, 3, {value: ethers.parseEther("600")}))
-    //     .to.emit(contract, "SendRequestByWD")
-    //     .withArgs(0, 20, 600, MA_addr);
+        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 20, 3, {value: ethers.parseEther("600")}))
+        .to.emit(contract, "SendRequestByWD")
+        .withArgs(0, 20, 600, MA_addr);
 
-    //     console.log("Requesting 20 units of Drug 0")
+        console.log("Requesting 20 units of Drug 0")
 
-    //     const reqID =  await contract.connect(MA_addr).getRequestIDMA();
-    //     await expect(contract.connect(MA_addr).shipDrugMA(0, 20, 1, reqID))
-    //     .to.emit(contract, "ShipDrugByMA")
-    //     .withArgs(0, 20, 1);
+        const reqID =  await contract.connect(MA_addr).getRequestIDMA();
+        await expect(contract.connect(MA_addr).shipDrugMA(0, 20, 1, reqID))
+        .to.emit(contract, "ShipDrugByMA")
+        .withArgs(0, 20, 1);
 
-    //     await expect(contract.connect(WD_addr).confirmDrugShipmentWD(reqID, 20, 3))
-    //     .to.emit(contract, "ReqConfirmedByPH")
-    //     .withArgs(reqID, WD_addr, MA_addr);
+        await expect(contract.connect(WD_addr).confirmDrugShipmentWD(reqID, 20, 3))
+        .to.emit(contract, "ReqConfirmedByPH")
+        .withArgs(reqID, WD_addr, MA_addr);
 
-    //     await contract.connect(MA_addr).retrieveInventoryMA();
-    //     await contract.connect(MA_addr).retrieveInventoryWD();
-    // })
+        await contract.connect(MA_addr).retrieveInventoryMA();
+        await contract.connect(MA_addr).retrieveInventoryWD();
+    })
 
-    // it("WD: Insufficient funds from WD to request shipment from MA", async function () {
-    //     // WD requests Drug
-    //     await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 20, 3, {value: ethers.parseEther("100")}))
-    //     .to.be.revertedWith("Insufficient fund.");
-    // })
+    it("WD: Insufficient funds from WD to request shipment from MA", async function () {
+        // WD requests Drug
+        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 20, 3, {value: ethers.parseEther("100")}))
+        .to.be.revertedWith("Insufficient fund.");
+    })
 
-    // it("MA: Request for Invalid Drug is not shipped", async function () {
-    //     // WD requests Drug
-    //     await contract.connect(MA_addr).retrieveInventoryMA();
-    //     await contract.connect(MA_addr).retrieveInventoryWD();
+    it("MA: Request for Invalid Drug is not shipped", async function () {
+        // WD requests Drug
+        await contract.connect(MA_addr).retrieveInventoryMA();
+        await contract.connect(MA_addr).retrieveInventoryWD();
 
-    //     await expect(contract.connect(WD_addr).sendDrugRequestWD(4, 20, 3, {value: ethers.parseEther("600")}))
-    //     .to.emit(contract, "SendRequestByWD")
-    //     .withArgs(0, 20, 600, MA_addr);
+        await expect(contract.connect(WD_addr).sendDrugRequestWD(4, 20, 3, {value: ethers.parseEther("600")}))
+        .to.emit(contract, "SendRequestByWD")
+        .withArgs(0, 20, 600, MA_addr);
 
-    //     console.log("Requesting 20 units of Drug 4")
+        console.log("Requesting 20 units of Drug 4")
 
-    //     const reqID =  await contract.connect(MA_addr).getRequestIDMA();
-    //     await expect(contract.connect(MA_addr).shipDrugMA(0, 20, 1, reqID))
-    //     .to.be.revertedWith("There's no drug with the drug id");
+        const reqID =  await contract.connect(MA_addr).getRequestIDMA();
+        await expect(contract.connect(MA_addr).shipDrugMA(0, 20, 1, reqID))
+        .to.be.revertedWith("There's no drug with the drug id");
 
-    //     await contract.connect(MA_addr).retrieveInventoryMA();
-    //     await contract.connect(MA_addr).retrieveInventoryWD();
-    // })
+        await contract.connect(MA_addr).retrieveInventoryMA();
+        await contract.connect(MA_addr).retrieveInventoryWD();
+    })
 
-    // it("MA: Not enough drug in Inventory", async function () {
-    //     // WD requests Drug
-    //     await contract.connect(MA_addr).retrieveInventoryMA();
-    //     await contract.connect(MA_addr).retrieveInventoryWD();
-    //     await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 50, 3, {value: ethers.parseEther("600")}))
-    //     .to.emit(contract, "SendRequestByWD")
-    //     .withArgs(0, 20, 600, MA_addr);
+    it("MA: Not enough drug in Inventory", async function () {
+        // WD requests Drug
+        await contract.connect(MA_addr).retrieveInventoryMA();
+        await contract.connect(MA_addr).retrieveInventoryWD();
+        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 50, 3, {value: ethers.parseEther("600")}))
+        .to.emit(contract, "SendRequestByWD")
+        .withArgs(0, 20, 600, MA_addr);
 
-    //     console.log("Requesting 50 units of Drug 0")
+        console.log("Requesting 50 units of Drug 0")
 
-    //     const reqID =  await contract.connect(MA_addr).getRequestIDMA();
-    //     await expect(contract.connect(MA_addr).shipDrugMA(0, 20, 1, reqID))
-    //     .to.be.revertedWith("Not enough drug quantity in the inventory.");
-    //     await contract.connect(MA_addr).retrieveInventoryMA();
-    //     await contract.connect(MA_addr).retrieveInventoryWD();
-    // })
+        const reqID =  await contract.connect(MA_addr).getRequestIDMA();
+        await expect(contract.connect(MA_addr).shipDrugMA(0, 20, 1, reqID))
+        .to.be.revertedWith("Not enough drug quantity in the inventory.");
+        await contract.connect(MA_addr).retrieveInventoryMA();
+        await contract.connect(MA_addr).retrieveInventoryWD();
+    })
 });
