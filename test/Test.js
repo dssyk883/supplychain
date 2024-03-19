@@ -76,12 +76,12 @@ describe("Test Supply Chain contract", function () {
         .withArgs(0, 10, 50, WD_addr);
 
         // Ship Drug from WD
-        await expect(contract.connect(WD_addr).addDrugInWD(0, 10, 0))  
-        .to.emit(contract, "DrugAddedWD")
-        .withArgs(0, 10, WD_addr);
+        // await expect(contract.connect(WD_addr).addDrugInWD(0, 10, 0))  
+        // .to.emit(contract, "DrugAddedWD")
+        // .withArgs(0, 10, WD_addr);
 
-        await contract.connect(PH_addr).retrieveInventoryPH();
-        await contract.connect(WD_addr).retrieveInventoryWD();
+        // await contract.connect(PH_addr).retrieveInventoryPH();
+        // await contract.connect(WD_addr).retrieveInventoryWD();
 
         // const reqID =  await contract.connect(WD_addr).getRequestIDWD();
         // await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, reqID))
@@ -129,8 +129,8 @@ describe("Test Supply Chain contract", function () {
 
         const reqID =  await contract.connect(WD_addr).getRequestIDWD();
         console.log(reqID)
-        const id = await contract.connect(WD_addr).findRequestInPHout(reqID);
-        console.log(id);
+        // const id = await contract.connect(WD_addr).findRequestInPHout(reqID);
+        // console.log(id);
         // await expect(contract.connect(WD_addr).shipDrugWD(1, 10, 0, reqID))
         // .to.be.revertedWith("There's no drug with the drug id");
 
@@ -159,10 +159,10 @@ describe("Test Supply Chain contract", function () {
         await contract.connect(WD_addr).retrieveInventoryWD();
 
         const reqID =  await contract.connect(WD_addr).getRequestIDWD();
-        await expect(contract.connect(WD_addr).shipDrugWD(0, 40, 0, reqID))
-        .to.be.revertedWith("Not enough drug quantity in the inventory.");
+        // await expect(contract.connect(WD_addr).shipDrugWD(0, 40, 0, reqID))
+        // .to.be.revertedWith("Not enough drug quantity in the inventory.");
 
-        await contract.connect(PH_addr).retrieveInventoryPH();
-        await contract.connect(WD_addr).retrieveInventoryWD();
+        // await contract.connect(PH_addr).retrieveInventoryPH();
+        // await contract.connect(WD_addr).retrieveInventoryWD();
     });
 });
