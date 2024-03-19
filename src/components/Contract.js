@@ -23,8 +23,10 @@ export function useContractInitialization() {
           setAccounts(accounts);
           setContractInstance(contractInstance);
           setInitialized(true);
-          const arr = await contractInstance.methods.retrieveInventoryPHFront().call({ from: accounts[0] });
-          console.log(arr[0].id, ": ", arr[0].name);
+ 	  console.log("Account [0]: ", accounts[0]);
+          var arr = await contractInstance.methods.retrieveInventoryPHFront().send({ from: accounts[0] });
+	  var first = arr[0];
+          console.log(first.id, ": ", first.name);
         }
       } catch (error) {
         console.error('Error initializing DApp:', error);
