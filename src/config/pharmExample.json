@@ -1,0 +1,30 @@
+{
+    "entity_type": "pharmacy",
+    "id": 3,
+    "wholesaleIds": ["wd1", "wd2", "wd3"],
+
+    "inventory": [
+        {
+          "id": 1,
+          "name": "Drug A",
+          "price": 10,
+          "quantity": 100,
+          "coveragePlans": [
+            { "plan": "Plan A", "discountRate": 0, "discountCode": "CODE_A" },
+            { "plan": "Plan B", "discountRate": 5, "discountCode": "CODE_B" },
+            { "plan": "Plan C", "discountRate": 10, "discountCode": "CODE_C" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Drug B",
+          "price": 20,
+          "quantity": 50,
+          "coveragePlans": [
+            { "plan": "Plan X", "discountRate": 3, "discountCode": "CODE_X" },
+            { "plan": "Plan Y", "discountRate": 7, "discountCode": "CODE_Y" },
+            { "plan": "Plan Z", "discountRate": 12, "discountCode": "CODE_Z" }
+          ]
+        }
+      ]
+}
