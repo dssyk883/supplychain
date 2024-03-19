@@ -6,7 +6,15 @@ const Pharmacy = () => {
   const { web3, accounts, contractInstance } = useContractInitialization();
 
   // Inventory of drugs with different coverage plans
-  const [inventory, setInventory] = useState(config.inventory);
+  // const [inventory, setInventory] = useState(config.inventory);
+  const inventory = async () => {
+    try {
+        // Send a transaction to the smart contract
+        await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
+    } catch (error) {
+        console.error('Error in retrieving inventory:', error);
+    }
+};
 
   // State for form inputs
   const [orderForm, setOrderForm] = useState({
@@ -28,6 +36,7 @@ const Pharmacy = () => {
     e.preventDefault();
     // Handle order submission logic here
     console.log("Order Submitted:", orderForm);
+    //TODO: change this
     this.state.contract.methods.sendDrugRequestPH(e.target.setText.value).send({ from: this.state.account });
   };
 
