@@ -71,7 +71,8 @@ const Pharmacy = () => {
 
       <h3>Plans</h3>
       <ul>
-        {inventory.map(drug => (
+        inventory
+        {/* {inventory.map(drug => (
           <li key={drug.id}>
             {drug.name} - Price: ${drug.price} - Quantity: {drug.quantity}
             <ul>
@@ -82,7 +83,7 @@ const Pharmacy = () => {
               ))}
             </ul>
           </li>
-        ))}
+        ))} */}
       </ul>
 
       <h3>Order Form</h3>
