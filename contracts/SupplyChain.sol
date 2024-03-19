@@ -329,6 +329,8 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function retrieveInventoryPHFront() public view onlyPH() returns (Drug[] memory) {
+        console.log(pharmacyInventory[msg.sender][0].id, ": This drug exists");
+        console.log(pharmacyInventory[msg.sender][1].id, ": This drug exists");
         return pharmacyInventory[msg.sender];
     }
 
