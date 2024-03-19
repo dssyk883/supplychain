@@ -47,7 +47,7 @@ describe("Test Supply Chain contract", function () {
 
     it("Non-WD: Add Drug should fail", async function () {
         // Add Drug in WD (not permitted)
-        await expect(contract.connect(MA_addr).addDrugInWD(0, 10))
+        await expect(contract.connect(MA_addr).addDrugInWD(0, 10, MA_addr))
         .to.be.revertedWith("Not a Wholesale Distributor!");
     });
 
@@ -83,11 +83,13 @@ describe("Test Supply Chain contract", function () {
         await contract.connect(PH_addr).retrieveInventoryPH();
         await contract.connect(WD_addr).retrieveInventoryWD();
 
-        await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, await contract.connect(WD_addr).getRequestIDWD()))
+        const reqID =  await contract.connect(WD_addr).getRequestIDWD();
+        await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, reqID))
         .to.emit(contract, "ShipDrugByWD")
         .withArgs(0, 10, 0);
 
         // PH confirms Drug Shipment
+        
         await expect(contract.connect(PH_addr).confirmDrugShipment(await contract.connect(WD_addr).getRequestIDPH(), 10, 1))
         .to.emit(contract, "ReqConfirmedByPH")
         .withArgs(12, PH_addr, WD_addr);
@@ -121,7 +123,8 @@ describe("Test Supply Chain contract", function () {
         await contract.connect(PH_addr).retrieveInventoryPH();
         await contract.connect(WD_addr).retrieveInventoryWD();
 
-        await expect(contract.connect(WD_addr).shipDrugWD(1, 10, 0))
+        const reqID =  await contract.connect(WD_addr).getRequestIDWD();
+        await expect(contract.connect(WD_addr).shipDrugWD(1, 10, 0, reqID))
         .to.be.revertedWith("There's no drug with the drug id");
 
         await contract.connect(PH_addr).retrieveInventoryPH();
@@ -144,11 +147,12 @@ describe("Test Supply Chain contract", function () {
         await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
         .to.emit(contract, "DrugAddedWD")
         .withArgs(0, 10, WD_addr);
-        
+
         await contract.connect(PH_addr).retrieveInventoryPH();
         await contract.connect(WD_addr).retrieveInventoryWD();
 
-        await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0))
+        const reqID =  await contract.connect(WD_addr).getRequestIDWD();
+        await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, reqID))
         .to.be.revertedWith("Not enough drug quantity in the inventory.");
 
         await contract.connect(PH_addr).retrieveInventoryPH();
