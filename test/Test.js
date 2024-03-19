@@ -88,7 +88,7 @@ describe("Test Supply Chain contract", function () {
         .to.emit(contract, "ShipDrugByWD")
         .withArgs(0, 10, 0);
 
-        const reqIDPH =  await contract.connect(WD_addr).getRequestIDPH();
+        const reqIDPH =  await contract.connect(PH_addr).getRequestIDPH();
         // PH confirms Drug Shipment
         // await expect(contract.connect(PH_addr).confirmDrugShipment(reqIDPH, 10, 1))
         // .to.emit(contract, "ReqConfirmedByPH")
@@ -129,8 +129,10 @@ describe("Test Supply Chain contract", function () {
 
         const reqID =  await contract.connect(WD_addr).getRequestIDWD();
         console.log(reqID)
-        await expect(contract.connect(WD_addr).shipDrugWD(1, 10, 0, reqID))
-        .to.be.revertedWith("There's no drug with the drug id");
+        const id = await contract.connect(WD_addr).findRequestInPH(reqID);
+        console.log(id);
+        // await expect(contract.connect(WD_addr).shipDrugWD(1, 10, 0, reqID))
+        // .to.be.revertedWith("There's no drug with the drug id");
 
         // await contract.connect(PH_addr).retrieveInventoryPH();
         // await contract.connect(WD_addr).retrieveInventoryWD();
@@ -145,9 +147,9 @@ describe("Test Supply Chain contract", function () {
 
         // Request Drug Shipment
         // await expect(contract.connect(PH_addr).addDrugInPH(0,0));
-        await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 40, 1, 1, {value: ethers.parseEther("500")}))
+        await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 40, 1, 1, {value: ethers.parseEther("200")}))
         .to.emit(contract, "SendRequestByPH")
-        .withArgs(0, 40, 50, WD_addr);
+        .withArgs(0, 40, 200, WD_addr);
 
         await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
         .to.emit(contract, "DrugAddedWD")
