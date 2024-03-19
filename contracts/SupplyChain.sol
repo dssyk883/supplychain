@@ -93,7 +93,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         addDrugInPH(1, 5, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
         addDrugInPH(2, 20, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
         addInitialDrugsMA();
-        addInitialDiscounts();
+        // addInitialDiscounts();
     }
 
     function addPHaccounts() public {
@@ -329,6 +329,8 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function retrieveInventoryPHFront() public view onlyPH() returns (Drug[] memory) {
+        console.log(pharmacyInventory[msg.sender][0].id, ": This drug exists");
+        console.log(pharmacyInventory[msg.sender][1].id, ": This drug exists");
         return pharmacyInventory[msg.sender];
     }
 
