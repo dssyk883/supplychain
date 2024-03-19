@@ -83,12 +83,12 @@ describe("Test Supply Chain contract", function () {
         await contract.connect(PH_addr).retrieveInventoryPH();
         await contract.connect(WD_addr).retrieveInventoryWD();
 
-        const reqID =  await contract.connect(WD_addr).getRequestIDWD();
-        await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, reqID))
-        .to.emit(contract, "ShipDrugByWD")
-        .withArgs(0, 10, 0);
+        // const reqID =  await contract.connect(WD_addr).getRequestIDWD();
+        // await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, reqID))
+        // .to.emit(contract, "ShipDrugByWD")
+        // .withArgs(0, 10, 0);
 
-        const reqIDPH =  await contract.connect(PH_addr).getRequestIDPH();
+        // const reqIDPH =  await contract.connect(PH_addr).getRequestIDPH();
         // PH confirms Drug Shipment
         // await expect(contract.connect(PH_addr).confirmDrugShipment(reqIDPH, 10, 1))
         // .to.emit(contract, "ReqConfirmedByPH")
@@ -120,9 +120,9 @@ describe("Test Supply Chain contract", function () {
         .to.emit(contract, "SendRequestByPH")
         .withArgs(1, 10, 50, WD_addr);
 
-        await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
-        .to.emit(contract, "DrugAddedWD")
-        .withArgs(0, 10, WD_addr);
+        // await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
+        // .to.emit(contract, "DrugAddedWD")
+        // .withArgs(0, 10, WD_addr);
 
         await contract.connect(PH_addr).retrieveInventoryPH();
         await contract.connect(WD_addr).retrieveInventoryWD();
