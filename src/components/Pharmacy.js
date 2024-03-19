@@ -3,10 +3,7 @@ import config from '../config/pharmExample.json';
 import { useContractInitialization } from './Contract';
 
 const Pharmacy = () => {
-  
-  const [web3, setWeb3] = useState(null);
-  const [accounts, setAccounts] = useState(null);
-  const [contract, setContract] = useState(null);
+  const { web3, accounts, contract } = useContractInitialization();
 
   // Inventory of drugs with different coverage plans
   // const [inventory, setInventory] = useState(config.inventory);
@@ -68,25 +65,39 @@ const Pharmacy = () => {
     }
   };
 
-  const retrieveInventory = async () => {
-    try {
-      // Retrieve inventory data from the smart contract
-      const { web3, accounts, contract } = useContractInitialization();
-      setWeb3(web3);
-      setAccounts(accounts);
-      setContract(contract);
-      const inventory = await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
-      setInventoryData(inventory);
-    } catch (error) {
-      console.error('Error in retrieving inventory:', error);
-    }
-  };
+  // const retrieveInventory = async () => {
+  //   try {
+  //     // Retrieve inventory data from the smart contract
+  //     const inventory = await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
+  //     setInventoryData(inventory);
+  //   } catch (error) {
+  //     console.error('Error in retrieving inventory:', error);
+  //   }
+  // };
 
-  // Effect to recalculate price when amount, drug, or discount code changes
   useEffect(() => {
-    retrieveInventory();
-    calculatePrice();
-  }, [orderForm.amount, orderForm.discountCode, selectedDrug]);
+    const retrieveInventory = async () => {
+      try {
+        const inventory = await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
+        setInventoryData(inventory);
+      } catch (error) {
+        console.error('Error in retrieving inventory:', error);
+      }
+    };
+
+    if (web3 && accounts && contract) {
+      retrieveInventory();
+      // calculatePrice();
+    }
+  }, [web3, accounts, contract]); // Add dependencies to useEffect
+
+  // Rest of your component logic
+  // },
+  // Effect to recalculate price when amount, drug, or discount code changes
+  // useEffect(() => {
+  //   retrieveInventory();
+  //   calculatePrice();
+  // }, [orderForm.amount, orderForm.discountCode, selectedDrug]);
 
   return (
     <div>
