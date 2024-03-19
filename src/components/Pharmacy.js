@@ -8,8 +8,7 @@ const Pharmacy = () => {
   // Inventory of drugs with different coverage plans
   // const [inventory, setInventory] = useState(config.inventory);
 
-  const [inventory, setInventoryData] = useState([]);
-
+  const [inventory, setInventoryData] = useState(null);
   
 
   // const inventory = async () => {
@@ -76,27 +75,19 @@ const Pharmacy = () => {
   // };
 
   useEffect(() => {
-    console.log(accounts[config.id]);
     const retrieveInventory = async () => {
-      try {
-        const inventory = await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
-        setInventoryData(inventory);
-        contract.events.DrugAddedPH()
-        .on('data', function(event){
-            console.log('Log message:', event.returnValues);
-        })
-        
-      } catch (error) {
-        console.error('Error in retrieving inventory:', error);
-      }
+        try {
+            const inventoryData = await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
+            setInventoryData(inventoryData);
+        } catch (error) {
+            console.error('Error in retrieving inventory:', error);
+        }
     };
 
     if (web3 && accounts && contract) {
-      retrieveInventory();
-      console.log("Drug name:", inventory[0].name);
-      // calculatePrice();
+        retrieveInventory();
     }
-  }, [web3, accounts, contract]); // Add dependencies to useEffect
+}, [web3, accounts, contract]);
 
   // Rest of your component logic
   // },
@@ -112,15 +103,15 @@ const Pharmacy = () => {
 
       <h3>Plans</h3>
       <ul>
-        {inventory.map((drug, index) => (
-            <li key={index}>
-              <h3>Drug {index}</h3>
-              <p>Name: {drug.name}</p>
-              <p>Quantity: {drug.quantity}</p>
-              <p>Price: {drug.price}</p>
-              {/* Add more properties as needed */}
-            </li>
-          ))}
+        {inventory && inventory.map((drug, index) => (
+                <li key={index}>
+                    <h3>Drug {index}</h3>
+                    <p>Name: {drug.name}</p>
+                    <p>Quantity: {drug.quantity}</p>
+                    <p>Price: {drug.price}</p>
+                    {/* Add more properties as needed */}
+                </li>
+            ))}
         {/* {inventory.map(drug => (
           <li key={drug.id}>
             {drug.name} - Price: ${drug.price} - Quantity: {drug.quantity} */}
