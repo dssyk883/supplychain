@@ -80,6 +80,10 @@ const Pharmacy = () => {
       try {
         const inventory = await contract.methods.retrieveInventoryPHFront().send({ from: accounts[config.id] });
         setInventoryData(inventory);
+        contract.events.DrugAddedPH()
+        .on('data', function(event){
+            console.log('Log message:', event.returnValues.message);
+        })
       } catch (error) {
         console.error('Error in retrieving inventory:', error);
       }
