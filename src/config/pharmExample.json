@@ -1,6 +1,6 @@
 {
     "entity_type": "pharmacy",
-    "id": 3,
+    "id": 0,
     "wholesaleIds": ["wd1", "wd2", "wd3"],
 
     "inventory": [
