@@ -20,7 +20,17 @@ const Wholesale = () => {
     manufacturerId: 0
   });
 
+  const [shipForm, setShipForm] = useState({
+    amount: 0,
+    drugName: '',
+    drug: 0,
+    price: 0,
+    pharmacyId: 0,
+    requestId: 0,
+  });
+
   const [selectedDrug, setSelectedDrug] = useState(null);
+  const [selectedRequest, setSelectedRequest] = useState(null);
 
   // Function to handle adding bulk order
   const handleAddBulkOrder = async (e) => {
@@ -38,6 +48,21 @@ const Wholesale = () => {
     
   };
 
+  const handleShipDrug = async (e) => {
+    e.preventDefault();
+    // Handle order submission logic here
+    console.log("Order Submitted:", shipForm);
+    //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
+    //function shipDrugWD(uint drugID, uint quant, uint PHaccNum, uint reqID) public onlyWD() 
+    let dID = web3.eth.abi.encodeParameter('uint256', shipForm.drug);
+    let amount = web3.eth.abi.encodeParameter('uint256', shipForm.amount);
+    let phid = web3.eth.abi.encodeParameter('uint256', shipForm.pharmacyId);
+    let reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
+    let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
+    let msgvalue = price * (amount + 1);
+    await contract.methods.sendDrugRequestWD(dID, amount, phid, reqID).send({ from: accounts[config.id], value: msgvalue});
+  };
+
     // Function to handle drug selection
   const handleDrugSelect = (e) => {
     const selectedDrugName = e.target.value;
@@ -46,6 +71,50 @@ const Wholesale = () => {
     setSelectedDrug(selectedDrugData);
     setOrderForm({ ...orderForm, drug: selectedDrugData.id, drugName: selectedDrugData.name, price: selectedDrugData.price }); // Reset discount code and price when drug changes
   };
+
+  const handleRequestSelect = (e) => {
+    const selectedRequestID = e.target.value;
+    const selectedRequest = requestsPH.find(request => request.requestID === selectedRequestID);
+    console.log(selectedRequest);
+    setSelectedRequest(selectedRequest);
+    setShipForm({ ...shipForm, requestId: selectedRequest.requestID});
+  };
+
+  const showRequestsMA = async () => {
+      try {
+        if (web3 && accounts && contract) {
+            const Reqs = await contract.methods.getAllRequestsWDMA().call({ from: accounts[config.id] });
+            Reqs.forEach((request, index) => {
+              console.log(`Request ID: ${request.requestID}`);
+              console.log(`Request ID: ${request.drugID}`);
+              console.log('----------');
+            });
+            if (Reqs) {
+              setrequestsMA(Reqs);
+            }
+        }
+      } catch (error) {
+        console.error('Error in retrieving inventory:', error);
+      }
+  };
+
+  const showRequestsPH = async () => {
+    try {
+      if (web3 && accounts && contract) {
+          const Reqs = await contract.methods.getAllRequestsWDPH().call({ from: accounts[config.id] });
+          Reqs.forEach((request, index) => {
+            console.log(`Request ID: ${request.requestID}`);
+            console.log(`Request ID: ${request.drugID}`);
+            console.log('----------');
+          });
+          if (Reqs) {
+            setrequestsPH(Reqs);
+          }
+      }
+    } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+    }
+};
 
   useEffect(() => {
     const retrieveInventory = async () => {
@@ -172,6 +241,7 @@ const Wholesale = () => {
         ))}
       </ul>
 
+      <button onClick={showRequestsPH}> Show Request from Pharmacy </button>
       <h3>Drug Requests (from pharmacy) </h3>
       <ul>
         {/* Render drug information here */}
@@ -187,6 +257,7 @@ const Wholesale = () => {
         ))}
       </ul>
 
+      <button onClick={showRequestsMA}> Show Request to Manufacturer </button>
       <h3>Drug Requests (to manufacturer) </h3>
       <ul>
         {/* Render drug information here */}
@@ -201,7 +272,70 @@ const Wholesale = () => {
         </li>
         ))}
       </ul>
-      
+
+      <h3>Ship Drug Form</h3>
+      <form onSubmit={handleShipDrug}>
+        <label>
+          Amount:
+          <input
+            type="number"
+            value={shipForm.amount}
+            onChange={e => setShipForm({ ...shipForm, amount: parseInt(e.target.value) })}
+          />
+        </label>
+        <br />
+        <label>
+          Drug:
+          <select
+            value={shipForm.drugName}
+            onChange={handleDrugSelect}
+          >
+            <option value="">Select Drug</option>
+            {inventory && inventory.map(drug => (
+              <option key={drug.id} value={drug.name}>
+                {drug.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Drug Request:
+          <select
+            value={shipForm.requestId}
+            onChange={handleRequestSelect}
+          >
+            <option value="">Select Request</option>
+            {requestsPH && requestsPH.map(request => (
+              <option key={request.requestID} value={request.requestID}>
+                {drug.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <br />
+        <label>
+          Price:
+          <input
+            type="string"
+            value={String(shipForm.price)}
+            readOnly // Price is now read-only
+          />
+        </label>
+        <br />
+        <label>
+          Pharmacy ID:
+          <input
+            type="number"
+            value={shipForm.pharmacyId}
+            onChange={e => setShipForm({ ...shipForm, pharmacyId: parseInt(e.target.value, 10) })}
+          />
+        </label>
+        <br />
+        <button type="submit">Order</button>
+      </form>
+
+
       <h3>Bulk Order Form</h3>
       <form onSubmit={handleAddBulkOrder}>
         <label>
