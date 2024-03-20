@@ -80,6 +80,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     event SendRequestByWD(uint drugID, uint quant, uint totalPrice, address toMAaddr);
     event ShipDrugByMA(uint drugID, uint quant, uint WDaccNum);
     event ReqConfirmedByPH(uint reqID, address phar, address wd);
+    event ReqConfirmedByWD(uint reqID, address wd, address ma);
 
     constructor() {
         owner = msg.sender;
@@ -241,7 +242,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         uint drugID = wholesaleRequestsToMA[msg.sender][findreqMA].drugID;
         address toMAaddr = super.getMAaddr(MAaccNum);
         addDrugInWD(drugID, quant, toMAaddr);
-        emit ReqConfirmedByPH(reqID, msg.sender, toMAaddr);
+        emit ReqConfirmedByWD(reqID, msg.sender, toMAaddr);
     }
 
     function findDrugInPH(uint dID) public view onlyPH() returns (uint) {

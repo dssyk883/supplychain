@@ -221,7 +221,7 @@ describe("Test Supply Chain contract", function () {
         await contract.connect(WD_addr).retrieveInventoryWD();
         await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 250, 3, {value: ethers.parseEther("7500")}))
         .to.emit(contract, "SendRequestByWD")
-        .withArgs(0, 50, 1500, MA_addr);
+        .withArgs(0, 250, 7500, MA_addr);
 
         console.log("Requesting 50 units of Drug 0")
 
