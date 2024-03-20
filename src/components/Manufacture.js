@@ -30,6 +30,23 @@ const Manufacture = () => {
     
   };
 
+  const showRequestsMA = async () => {
+    try {
+      if (web3 && accounts && contract) {
+          const Reqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
+          Reqs.forEach((request, index) => {
+            console.log(`Request ID: ${request.requestID}`);
+            console.log(`Request ID: ${request.drugID}`);
+            console.log('----------');
+          });
+          if (Reqs) {
+            setIncomingRequests(Reqs);
+          }
+      }
+    } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+    }
+};
   const refreshInventory = async () => {
     try {
         if (web3 && accounts && contract) {
@@ -89,6 +106,7 @@ const Manufacture = () => {
 
       <div>
         <h3>Incoming Requests</h3>
+        <button onClick={showRequestsMA}> Show Incoming Requests </button>
         <ul>
           {incomingRequests.map(request => (
             <li key={request.id}>
