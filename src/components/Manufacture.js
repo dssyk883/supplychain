@@ -85,7 +85,7 @@ const Manufacture = () => {
     const getAllRequests = async () => {
       try {
         if (web3 && accounts && contract) {
-            const Reqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
+            // const Reqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
             
             const AllReqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
             if (AllReqs) {
