@@ -15,7 +15,7 @@ const Pharmacy = () => {
   // State for form inputs
   const [orderForm, setOrderForm] = useState({
     amount: 0,
-    drug: '',
+    drug: 0,
     price: 0,
     discountCode: '',
     wholesaleId: ''
@@ -44,7 +44,7 @@ const Pharmacy = () => {
     const selectedDrugName = e.target.value;
     const selectedDrugData = inventory.find(drug => drug.name === selectedDrugName);
     setSelectedDrug(selectedDrugData);
-    setOrderForm({ ...orderForm, drug: selectedDrugName, price: String(selectedDrugData.price) }); // Reset discount code and price when drug changes
+    setOrderForm({ ...orderForm, drug: selectedDrugData.id, price: String(selectedDrugData.price) }); // Reset discount code and price when drug changes
   };
 
   // Function to calculate price based on amount, drug price, and discount rate
