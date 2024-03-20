@@ -59,7 +59,7 @@ const Wholesale = () => {
     const uamount = web3.eth.abi.encodeParameter('uint256', shipForm.amount);
     const phid = web3.eth.abi.encodeParameter('uint256', shipForm.pharmacyId);
     const reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
-    await contract.methods.shipDrugWD(dID, uamount, phid, reqID).call({ from: accounts[config.id]});
+    await contract.methods.shipDrugWD(dID, uamount, phid, reqID).send({ from: accounts[config.id]});
     const newInv = await contract.methods.retrieveInventoryWDFront().call({from: accounts[config.id]});
     setInventoryData(newInv);
   };
