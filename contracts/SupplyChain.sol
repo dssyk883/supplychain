@@ -141,15 +141,14 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
     function addInitialDrugsWD() public {
         address wd = super.getWDaddr(1);
-        address ma = super.getMAaddr(3);
-        manufacturerInventory[ma].push(Drug(0, "Drug A", 30, 102, wd, ma, address(0), address(0), false));
+        wholesaleInventory[wd].push(Drug(0, "Drug A", 30, 102, wd, ma, address(0), address(0), false));
         emit DrugAddedWD(0, 102, wd);
-        manufacturerInventory[ma].push(Drug(1, "Drug B", 20, 60, wd, ma, address(0), address(0), false));
+        wholesaleInventory[wd].push(Drug(1, "Drug B", 20, 60, wd, ma, address(0), address(0), false));
         emit DrugAddedWD(1, 60, wd);
-        manufacturerInventory[ma].push(Drug(2, "Drug C", 60, 20, wd, ma, address(0), address(0), false));
+        wholesaleInventory[wd].push(Drug(2, "Drug C", 60, 20, wd, ma, address(0), address(0), false));
         emit DrugAddedWD(2, 20, wd);
-        manufacturerInventory[ma].push(Drug(3, "Drug D", 90, 15, wd, ma, address(0), address(0), false));
-        emit DrugAddedWD(3, 15779, wd);
+        wholesaleInventory[wd].push(Drug(3, "Drug D", 90, 15, wd, ma, address(0), address(0), false));
+        emit DrugAddedWD(3, 15, wd);
     }
 
     function addInitialDiscounts() public {
