@@ -7,7 +7,6 @@ import { useContractInitialization } from './Contract';
 const Manufacture = () => {
   const { web3, accounts, contract } = useContractInitialization();
 
-  // Fake incoming requests
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [inventory, setInventoryData] = useState([]);
   
@@ -111,8 +110,8 @@ const Manufacture = () => {
         <ul>
           {incomingRequests.map(request => (
             <li key={request.id}>
-              {request.amount} units of {request.drug} - 
-              <button onClick={() => handleConfirmRequest(request.id)}>Confirm Request</button>
+              {request.quant} units of {request.drugID} - 
+              <button onClick={() => handleConfirmRequest(request.requestID)}>Confirm Request</button>
             </li>
           ))}
         </ul>
