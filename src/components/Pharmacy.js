@@ -204,8 +204,8 @@ const Pharmacy = () => {
         <label>
           Price:
           <input
-            type="uint256"
-            value={orderForm.price}
+            type="string"
+            value={String(orderForm.price)}
             readOnly // Price is now read-only
           />
         </label>
