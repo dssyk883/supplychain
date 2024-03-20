@@ -194,7 +194,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         address payable toWDaddr = payable(wdaddr);
         require(totalPrice <= msg.value, "Insufficient fund.");
         
-        uint reqID = drugID + quant + dcCode + WDaccNum + block.timestamp%1000;
+        uint reqID = drugID + quant + dcCode + block.timestamp%1000;
         pharmacyRequests[msg.sender].push(DrugRequest(reqID, drugID, quant, totalPrice, dcCode, msg.sender, toWDaddr, address(0),false));
         wholesaleRequestsFromPH[toWDaddr].push(DrugRequest(reqID, drugID, quant, totalPrice, dcCode, msg.sender, toWDaddr, address(0), false));
         toWDaddr.transfer(totalPrice);
