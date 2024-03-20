@@ -338,7 +338,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function getAllWD() public view returns (uint[] memory) {
-        return super.showAllMD();
+        return super.showAllWD();
     }
 
     //WD -> MA
