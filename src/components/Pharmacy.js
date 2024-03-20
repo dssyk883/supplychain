@@ -33,7 +33,7 @@ const Pharmacy = () => {
     // Handle order submission logic here
     console.log("Order Submitted:", orderForm);
     //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
-    this.state.contract.methods.sendDrugRequestPH(orderForm.drug.id, orderForm.amount, orderForm.wholesaleId, orderForm.discountCode).send({ from: this.state.account });
+    contract.methods.sendDrugRequestPH(orderForm.drug.id, orderForm.amount, orderForm.wholesaleId, orderForm.discountCode).send({ from: this.state.account });
   };
 
   // Function to handle drug selection
