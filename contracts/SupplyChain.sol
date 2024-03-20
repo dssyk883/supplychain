@@ -343,6 +343,10 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         return super.showAllWD();
     }
 
+    function getAllDiscounts() public view returns (Discount[] memory) {
+        return discountCodes;
+    }
+
     //WD -> MA
     //TODO HERE
     // function requestRebateWD(uint reqID) public onlyWD() {
