@@ -502,6 +502,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     
     function getAllDiscountsIN() public view returns (Discount[] memory) {
         Discount[] memory thisINDiscount;
+        uint i = 0;
         while(i < discountCodes.length) {
             if (discountCodes[i].insurer == msg.sender) {
                 thisINDiscount.push(discountCodes[i]);
