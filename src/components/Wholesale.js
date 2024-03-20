@@ -60,7 +60,8 @@ const Wholesale = () => {
     const phid = web3.eth.abi.encodeParameter('uint256', shipForm.pharmacyId);
     const reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
     await contract.methods.shipDrugWD(dID, uamount, phid, reqID).call({ from: accounts[config.id]});
-    refreshInventory();
+    const newInv = await contract.methods.retrieveInventoryWDFront().call({from: accounts[config.id]});
+    setInventoryData(newInv);
   };
 
     // Function to handle drug selection
