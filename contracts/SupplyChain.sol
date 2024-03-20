@@ -360,6 +360,9 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function retrieveInventoryWDFront() public view onlyWD() returns (Drug[] memory) {
+        uint q = wholesaleInventory[msg.sender][0].quantity;
+        console.log("retrieve inventory wd front");
+        console.log(q);
         return wholesaleInventory[msg.sender];
     }
 
