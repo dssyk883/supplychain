@@ -11,6 +11,7 @@ const Pharmacy = () => {
   const [inventory, setInventoryData] = useState([]);
   const [wholesaleIds, setwholesaleIds] = useState([]);
   const [discounts, setdiscounts] = useState([]);
+  const [requests, setrequests] = useState([]);
   
   // State for form inputs
   const [orderForm, setOrderForm] = useState({
@@ -122,9 +123,23 @@ const Pharmacy = () => {
   }
 };
 
+  const getAllRequests = async () => {
+    try {
+      if (web3 && accounts && contract) {
+          const Reqs = await contract.methods.getAllRequests().call({ from: accounts[config.id] });
+          if (Reqs) {
+            setrequests(Reqs);
+          }
+      }
+    } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+  }
+  };
+
   retrieveInventory();
   getAllWD();
   getAllDiscounts();
+  getAllRequests();
 }, [web3, accounts, contract]);
 
 
@@ -159,6 +174,21 @@ const Pharmacy = () => {
           <p>Drug ID: {String(discount.drugID)}</p>
           <p>Discount price: {String(discount.discountPrice)}</p>
           <p>Insurer: {discount.insurer}</p>
+        </li>
+        ))}
+      </ul>
+
+      <h3>Drug Requests (to wholesale) </h3>
+      <ul>
+        {/* Render drug information here */}
+        {requests && requests.map((request, index) => (
+        <li key={index}>
+          <h4>Request ID: {String(request.requestID)}</h4>
+          <p>Drug ID: {String(request.drugID)}</p>
+          <p>Quantity: {String(request.quant)}</p>
+          <p>Discount code: {String(request.dcCode)}</p>
+          <p>Wholesale: {request.receiver}</p>
+          <p>Is Confirmed: {request.confirmed ? 'Yes' : 'No'}</p>
         </li>
         ))}
       </ul>
