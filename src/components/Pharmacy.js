@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import config from '../config/pharmExample.json';
 import { useContractInitialization } from './Contract';
+import { ethers } from 'ethers';
 
 const Pharmacy = () => {
   const { web3, accounts, contract } = useContractInitialization();
 
   // Inventory of drugs with different coverage plans
   // const [inventory, setInventory] = useState(config.inventory);
-
   const [inventory, setInventoryData] = useState([]);
   const [wholesaleIds, setwholesaleIds] = useState([]);
   const [discounts, setdiscounts] = useState([]);
@@ -40,7 +40,7 @@ const Pharmacy = () => {
     let wdid = web3.eth.abi.encodeParameter('uint256', orderForm.wholesaleId);
     let dc = web3.eth.abi.encodeParameter('uint256', orderForm.discountCode);
     let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
-    await contract.methods.sendDrugRequestPH(dID, amount, wdid, dc, {value: ethers.parseEther("1080")}).send({ from: accounts[config.id] });
+    await contract.methods.sendDrugRequestPH(dID, amount, wdid, dc, {value: ethers.utils.parseEther("1080")}).send({ from: accounts[config.id] });
   };
 
   // Function to handle drug selection
