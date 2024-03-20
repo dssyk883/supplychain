@@ -133,28 +133,41 @@ const Wholesale = () => {
     }
 };
 
+const retrieveInventory = async () => {
+  try {
+      if (web3 && accounts && contract) {
+          const drugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
+          if (drugs) {
+            setInventoryData(drugs);
+      }          
+      }
+  } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+  }
+};
+
   useEffect(() => {
     const retrieveInventory = async () => {
       try {
           if (web3 && accounts && contract) {
               const drugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
               if (drugs) {
-            // Log each drug's details
-              drugs.forEach((drug, index) => {
-              console.log(`Drug ${index + 1}:`);
-              console.log(`ID: ${drug.id}`);
-              console.log(`Name: ${drug.name}`);
-              console.log(`Price: ${drug.price}`);
-              console.log(`Quantity: ${drug.quantity}`);
-              console.log(`Current Owner: ${drug.currentOwner}`);
-              console.log(`Manufacturer: ${drug.manufacturer}`);
-              console.log(`Wholesale: ${drug.wholesale}`);
-              console.log(`Pharmacy: ${drug.pharmacy}`);
-              console.log(`Is Sold Out: ${drug.isSoldOut}`);
-              console.log('----------');
-            });
-          }
-          setInventoryData(drugs);
+                setInventoryData(drugs);
+            // // Log each drug's details
+            //   drugs.forEach((drug, index) => {
+            //   console.log(`Drug ${index + 1}:`);
+            //   console.log(`ID: ${drug.id}`);
+            //   console.log(`Name: ${drug.name}`);
+            //   console.log(`Price: ${drug.price}`);
+            //   console.log(`Quantity: ${drug.quantity}`);
+            //   console.log(`Current Owner: ${drug.currentOwner}`);
+            //   console.log(`Manufacturer: ${drug.manufacturer}`);
+            //   console.log(`Wholesale: ${drug.wholesale}`);
+            //   console.log(`Pharmacy: ${drug.pharmacy}`);
+            //   console.log(`Is Sold Out: ${drug.isSoldOut}`);
+            //   console.log('----------');
+            // });
+          }          
           }
       } catch (error) {
           console.error('Error in retrieving inventory:', error);
@@ -226,7 +239,7 @@ const Wholesale = () => {
   return (
     <div>
       <h2>Wholesale | User Id: {config.id}</h2>
-
+      <button onClick={retrieveInventory}> Refresh Inventory </button>      
       <h3>Drugs</h3>
       <ul>
         {/* Render drug information here */}
