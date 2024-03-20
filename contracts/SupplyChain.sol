@@ -92,9 +92,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         addPHaccounts();
         // function addDrugInPH(uint dID, uint quant, address WD, address MA) public onlyPH() {
         // test 
-        addDrugInPH(0, 10, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
-        addDrugInPH(1, 5, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
-        addDrugInPH(1, 5, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
+        addInitialDrugsPH();
         addInitialDrugsWD();
         addInitialDrugsMA();
         addInitialDiscounts();
@@ -125,7 +123,13 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         addDrug("Drug B", 20);
         addDrug("Drug C", 60);
         addDrug("Drug D", 90);
-        addDrug("Drug E", 10);
+    }
+
+    function addInitialDrugsPH() public {
+        addDrugInPH(0, 10, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
+        addDrugInPH(1, 5, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
+        addDrugInPH(2, 30, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
+        addDrugInPH(3, 40, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
     }
 
     function addInitialDrugsMA() public {
