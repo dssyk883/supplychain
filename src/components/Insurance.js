@@ -69,7 +69,7 @@ const Insurance = () => {
             if (DCs) {
               console.log("Got discount arrays");
               // const filteredDiscounts = DCs.find(discount => discount.insurer === accounts[config.id]);       
-              setdiscounts(filteredDiscounts);
+              setdiscounts(DCs);
             }
         }
     } catch (error) {
