@@ -37,7 +37,8 @@ const Pharmacy = () => {
     //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
     let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
     let wdid = web3.eth.abi.encodeParameter('uint256', orderForm.wholesaleId);
-    await contract.methods.sendDrugRequestPH(orderForm.drug.id, amount, wdid, orderForm.discountCode).send({ from: accounts[config.id] });
+    let dc = web3.eth.abi.encodeParameter('uint256', orderForm.discountCode);
+    await contract.methods.sendDrugRequestPH(orderForm.drug.id, amount, wdid, dc).send({ from: accounts[config.id] });
   };
 
   // Function to handle drug selection
@@ -189,13 +190,13 @@ const Pharmacy = () => {
           Discount Code:
           <select
             value={orderForm.discountCode}
-            onChange={e => setOrderForm({ ...orderForm, discountCode: e.target.value })}
+            onChange={e => setOrderForm({ ...orderForm, discountCode: parseInt(e.target.value, 10) })}
           >
             <option value="">Select Discount Code</option>
             {discounts &&
               discounts.map((discount, index) =>  (
                 <option key={index}>
-                  {discount.discountCode}
+                  {String(discount.discountCode)}
                 </option>
               ))}
           </select>
