@@ -3,7 +3,7 @@ import config from '../config/config.json'
 import { useContractInitialization } from './Contract';
 
 const Insurance = () => {
-  const { web3, accounts, contractInstance } = useContractInitialization();
+  const { web3, accounts, contract } = useContractInitialization();
   const [discounts, setdiscounts] = useState([]);
   // State for contract form inputs
   const [contractForm, setContractForm] = useState({
@@ -13,11 +13,7 @@ const Insurance = () => {
   });
 
   // Fake list of received discount codes with expiration dates
-  const [receivedDiscountCodes, setReceivedDiscountCodes] = useState([
-    { drug: 'Drug A', discount: 10, expiration: '2024-06-30' },
-    { drug: 'Drug B', discount: 15, expiration: '2024-07-15' },
-    { drug: 'Drug C', discount: 20, expiration: '2024-08-10' }
-  ]);
+  const [receivedDiscountCodes, setReceivedDiscountCodes] = useState([]);
 
   // Function to handle sending a contract to manufacture
   const handleSendContract = (e) => {
@@ -47,7 +43,7 @@ const Insurance = () => {
             }
         }
     } catch (error) {
-        console.error('Error in retrieving inventory:', error);
+        console.error('Error in retrieving discount codes:', error);
     }
   };
 
