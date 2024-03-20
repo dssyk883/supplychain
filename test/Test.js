@@ -67,7 +67,7 @@ describe("Test Supply Chain contract", function () {
         // PH Requests Drug Shipment
         await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 10, 1, 101, {value: ethers.parseEther("270")}))
         .to.emit(contract, "SendRequestByPH")
-        .withArgs(0, 10, 50, WD_addr);
+        .withArgs(0, 10, 270, WD_addr);
 
         // Ship Drug from WD
         await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))  
@@ -105,7 +105,7 @@ describe("Test Supply Chain contract", function () {
         // Request Drug Shipment
         await expect(contract.connect(PH_addr).sendDrugRequestPH(1, 10, 1, 202, {value: ethers.parseEther("190")}))
         .to.emit(contract, "SendRequestByPH")
-        .withArgs(1, 10, 50, WD_addr);
+        .withArgs(1, 10, 190, WD_addr);
 
         await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
         .to.emit(contract, "DrugAddedWD")
@@ -134,7 +134,7 @@ describe("Test Supply Chain contract", function () {
 
         // Request Drug Shipment
         // await expect(contract.connect(PH_addr).addDrugInPH(0,0));
-        await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 40, 1, 101, {value: ethers.parseEther("540")}))
+        await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 40, 1, 101, {value: ethers.parseEther("1080")}))
         .to.emit(contract, "SendRequestByPH")
         .withArgs(0, 40, 200, WD_addr);
 
