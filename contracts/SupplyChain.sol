@@ -208,12 +208,16 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
         require(findDrugWD != wholesaleInventory[msg.sender].length, "There's no drug with the drug id");
         require(wholesaleInventory[msg.sender][findDrugWD].quantity >= quant, "Not enough drug quantity in the inventory.");
-        
         wholesaleInventory[msg.sender][findDrugWD].quantity -= quant;
         if(wholesaleInventory[msg.sender][findDrugWD].quantity == 0) wholesaleInventory[msg.sender][drugID].isSoldOut = true;
         uint findreqWD = findRequestInWDPH(reqID);
         wholesaleRequestsFromPH[msg.sender][findreqWD].confirmed = true;
         pharmacyRequests[toPHaddr][findreqPH].manufacturer = wholesaleInventory[msg.sender][findDrugWD].manufacturer;
+
+        uint rQuant = wholesaleInventory[msg.sender][findDrugWD].quantity;
+        wholesaleInventory[msg.sender][findDrugWD].quantity = rQuant;
+        console.log(findDrugWD);
+        console.log(rQuant);
         emit ShipDrugByWD(drugID, quant, PHaccNum);
     }
 
@@ -358,6 +362,9 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function retrieveInventoryWDFront() public view onlyWD() returns (Drug[] memory) {
+        uint q = wholesaleInventory[msg.sender][0].quantity;
+        console.log("retrieve inventory wd front");
+        console.log(q);
         return wholesaleInventory[msg.sender];
     }
 

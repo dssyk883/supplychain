@@ -59,8 +59,6 @@ const Wholesale = () => {
     let amount = web3.eth.abi.encodeParameter('uint256', shipForm.amount);
     let phid = web3.eth.abi.encodeParameter('uint256', shipForm.pharmacyId);
     let reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
-    let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
-    let msgvalue = price * (amount + 1);
     await contract.methods.shipDrugWD(dID, amount, phid, reqID).call({ from: accounts[config.id]});
   };
 
@@ -133,14 +131,14 @@ const Wholesale = () => {
     }
 };
 
-  useEffect(() => {
-    const retrieveInventory = async () => {
-      try {
-          if (web3 && accounts && contract) {
-              const drugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
-              if (drugs) {
+const refreshInventory = async () => {
+  try {
+      if (web3 && accounts && contract) {
+          const newdrugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
+          if (newdrugs) {
+            setInventoryData(newdrugs);
             // Log each drug's details
-              drugs.forEach((drug, index) => {
+              newdrugs.forEach((drug, index) => {
               console.log(`Drug ${index + 1}:`);
               console.log(`ID: ${drug.id}`);
               console.log(`Name: ${drug.name}`);
@@ -153,8 +151,21 @@ const Wholesale = () => {
               console.log(`Is Sold Out: ${drug.isSoldOut}`);
               console.log('----------');
             });
-          }
-          setInventoryData(drugs);
+      }          
+      }
+  } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+  }
+};
+
+  useEffect(() => {
+    const retrieveInventory = async () => {
+      try {
+          if (web3 && accounts && contract) {
+              const drugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
+              if (drugs) {
+                setInventoryData(drugs);
+          }          
           }
       } catch (error) {
           console.error('Error in retrieving inventory:', error);
@@ -226,7 +237,7 @@ const Wholesale = () => {
   return (
     <div>
       <h2>Wholesale | User Id: {config.id}</h2>
-
+      <button onClick={refreshInventory}> Refresh Inventory </button>      
       <h3>Drugs</h3>
       <ul>
         {/* Render drug information here */}
