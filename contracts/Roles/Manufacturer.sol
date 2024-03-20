@@ -45,10 +45,13 @@ contract Manufacturer {
     }
 
     function showAllMA() public view {
+        uint[] memory indices = new uint[](macounter);
         uint ind = 0;
         for(uint i = 0; i < macounter; i++){
             ind = i * 5 + 3;
+            indices[i] = ind;
             console.log("Manufacturer acc# ", i, ": ", manufacturers.returnAddress(ind));
         }
+        return indices;
     }
 }

@@ -45,10 +45,13 @@ contract Insurer {
     }
 
     function showAllIN() public view {
+        uint[] memory indices = new uint[](incounter);
         uint ind = 0;
         for(uint i = 0; i < incounter; i++){
             ind = i * 5 + 2;
+            indices[i] = ind;
             console.log("Insurer acc# ", i, ": ", insurers.returnAddress(ind));
         }
+        return indices;
     }
 }

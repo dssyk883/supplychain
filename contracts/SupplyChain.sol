@@ -67,6 +67,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         uint discountPrice;
         uint dateFinalized;
     }   
+
     
     event DrugAdded(uint id, string name, uint quantity, uint price);
     
@@ -136,6 +137,19 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         emit DrugAddedMA(2, 804, ma);
         manufacturerInventory[ma].push(Drug(3, "Drug D", 90, 779, ma, ma, address(0), address(0), false));
         emit DrugAddedMA(3, 779, ma);
+    }
+
+    function addInitialDrugsWD() public {
+        address wd = super.getWDaddr(1);
+        address ma = super.getMAaddr(3);
+        manufacturerInventory[ma].push(Drug(0, "Drug A", 30, 102, wd, ma, address(0), address(0), false));
+        emit DrugAddedWD(0, 102, wd);
+        manufacturerInventory[ma].push(Drug(1, "Drug B", 20, 60, wd, ma, address(0), address(0), false));
+        emit DrugAddedWD(1, 60, wd);
+        manufacturerInventory[ma].push(Drug(2, "Drug C", 60, 20, wd, ma, address(0), address(0), false));
+        emit DrugAddedWD(2, 20, wd);
+        manufacturerInventory[ma].push(Drug(3, "Drug D", 90, 15, wd, ma, address(0), address(0), false));
+        emit DrugAddedWD(3, 15779, wd);
     }
 
     function addInitialDiscounts() public {
@@ -247,6 +261,17 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         emit ReqConfirmedByWD(reqID, msg.sender, toMAaddr);
     }
 
+    // function rebateRequestWD(uint reqID, uint MAaccNum) public onlyWD() payable {
+    //     uint findreqWDMA = findRequestInWDMA(reqID);
+    //     DrugRequest memory dr = wholesaleRequestsToMA[msg.sender][findreqMA];
+    //     uint quant = dr.quant;
+    //     uint dcCode = dr.dcCode;
+    //     Discount memory dc = discountCodes[findDCcode(dcCode)];
+    //     uint rebated = dc.discountPrice * quant;
+    //     require(rebated <= msg.value, "Insufficient fund!");
+    //     address payable toMA
+    // }
+
     function findDrugInPH(uint dID) public view onlyPH() returns (uint) {
         uint len = pharmacyInventory[msg.sender].length;
         uint ind = len;
@@ -344,12 +369,32 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         return super.showAllWD();
     }
 
+    function getAllPH() public view returns (uint[] memory) {
+        return super.showAllPH();
+    }
+
+    function getAllMA() public view returns (uint[] memory) {
+        return super.showAllMA();
+    }
+
+    function getAllIN() public view returns (uint[] memory) {
+        return super.showAllIN();
+    }
+
     function getAllDiscounts() public view returns (Discount[] memory) {
         return discountCodes;
     }
 
     function getAllRequestsPH() public view returns (DrugRequest[] memory) {
         return pharmacyRequests[msg.sender];
+    }
+
+    function getAllRequestsWDPH() public view returns (DrugRequest[] memory) {
+        return wholesaleRequestsFromPH[msg.sender];
+    }
+
+    function getAllRequestsWDMA() public view returns (DrugRequest[] memory) {
+        return wholesaleRequestsToMA[msg.sender];
     }
 
     function retrieveInventoryPH() public view onlyPH() {

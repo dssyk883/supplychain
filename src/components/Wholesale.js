@@ -1,26 +1,17 @@
 import React, { useState } from 'react';
 import config from '../config/config.json';
 import { useContractInitialization } from './Contract';
+import { ethers } from 'ethers';
 
 const Wholesale = () => {
-  const { web3, accounts, contractInstance } = useContractInitialization();
+  const { web3, accounts, contract } = useContractInitialization();
   
-  // Fake incoming requests of drugs
-  const [incomingRequests, setIncomingRequests] = useState([
-    { id: 1, drug: 'Drug A', amount: 50, discountCode: 'DISCOUNT1', finalPrice: 100 }, // Added finalPrice
-    { id: 2, drug: 'Drug B', amount: 30, discountCode: 'DISCOUNT2', finalPrice: 150 }, // Added finalPrice
-    { id: 3, drug: 'Drug C', amount: 20, discountCode: 'DISCOUNT3', finalPrice: 200 }  // Added finalPrice
-  ]);
+  const [inventory, setInventoryData] = useState([]);
+  const [manufacturerIds, setmanufacturerIds] = useState([]);
+  const [discounts, setdiscounts] = useState([]);
+  const [requestsPH, setrequestsPH] = useState([]);
+  const [requestsMA, setrequestsMA] = useState([]);
 
-  // Fake inventory of drugs
-  const [inventory, setInventory] = useState([
-    { id: 1, name: 'Drug A', quantity: 200 },
-    { id: 2, name: 'Drug B', quantity: 150 },
-    { id: 3, name: 'Drug C', quantity: 100 }
-  ]);
-
-  // List of available drugs
-  const availableDrugs = inventory.map(drug => drug.name);
 
   // Function to handle shipment confirmation
   const handleConfirmShipment = (id, amount) => {
@@ -43,32 +34,163 @@ const Wholesale = () => {
     console.log("Bulk Order Added:", { drug, amount, price });
   };
 
+  useEffect(() => {
+    const retrieveInventory = async () => {
+      try {
+          if (web3 && accounts && contract) {
+              const drugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
+              if (drugs) {
+            // Log each drug's details
+              drugs.forEach((drug, index) => {
+              console.log(`Drug ${index + 1}:`);
+              console.log(`ID: ${drug.id}`);
+              console.log(`Name: ${drug.name}`);
+              console.log(`Price: ${drug.price}`);
+              console.log(`Quantity: ${drug.quantity}`);
+              console.log(`Current Owner: ${drug.currentOwner}`);
+              console.log(`Manufacturer: ${drug.manufacturer}`);
+              console.log(`Wholesale: ${drug.wholesale}`);
+              console.log(`Pharmacy: ${drug.pharmacy}`);
+              console.log(`Is Sold Out: ${drug.isSoldOut}`);
+              console.log('----------');
+            });
+          }
+              setInventoryData(drugs);
+          }
+      } catch (error) {
+          console.error('Error in retrieving inventory:', error);
+      }
+  };
+
+  const getAllMA = async () => {
+    try {
+        if (web3 && accounts && contract) {
+            const MAs = await contract.methods.getAllMA().call();
+            if (MAs) {
+              console.log("Manufacturer IDs:");
+              MAs.forEach((id, index) => {
+              console.log(`ID ${index + 1}: ${id}`);
+              });
+              setmanufacturerIds(MAs);
+            }
+        }
+    } catch (error) {
+        console.error('Error in retrieving inventory:', error);
+    }
+};
+  const getAllDiscounts = async () => {
+  try {
+      if (web3 && accounts && contract) {
+          const DCs = await contract.methods.getAllDiscounts().call();
+          if (DCs) {
+            setdiscounts(DCs);
+          }
+      }
+  } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+  }
+};
+
+  const getAllRequestsPH = async () => {
+    try {
+      if (web3 && accounts && contract) {
+          const Reqs = await contract.methods.getAllRequestsWDPH().call({ from: accounts[config.id] });
+          if (Reqs) {
+            setrequestsPH(Reqs);
+          }
+      }
+    } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+  }
+  };
+
+  const getAllRequestsMA = async () => {
+    try {
+      if (web3 && accounts && contract) {
+          const Reqs = await contract.methods.getAllRequestsWDMA().call({ from: accounts[config.id] });
+          if (Reqs) {
+            setrequestsMA(Reqs);
+          }
+      }
+    } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+  }
+  };
+
+  retrieveInventory();
+  getAllMA();
+  getAllWD();
+  getAllDiscounts();
+  getAllRequestsPH();
+  getAllRequestsMA();
+}, [web3, accounts, contract]);
+
   return (
     <div>
       <h2>Wholesale | User Id: {config.id}</h2>
 
-      <div>
-        <h3>Incoming Requests</h3>
-        <ul>
-          {incomingRequests.map(request => (
-            <li key={request.id}>
-              {request.amount} units of {request.drug} - Discount Code: {request.discountCode} - Final Price: {request.finalPrice} {/* Display finalPrice */}
-              <button onClick={() => handleConfirmShipment(request.id, request.amount)}>Confirm Shipment</button>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <h3>Drugs</h3>
+      <ul>
+        {/* Render drug information here */}
+        {inventory && inventory.map((drug, index) => (
+        <li key={index}>
+          <h4>{drug.name}</h4>
+          <p>ID: {String(drug.id)}</p>
+          <p>Price: {String(drug.price)}</p>
+          <p>Quantity: {String(drug.quantity)}</p>
+          <p>Current Owner: {drug.currentOwner}</p>
+          <p>Manufacturer: {drug.manufacturer}</p>
+          <p>Wholesale: {drug.wholesale}</p>
+          <p>Pharmacy: {drug.pharmacy}</p>
+          <p>Is Sold Out: {drug.isSoldOut ? 'Yes' : 'No'}</p>
+        </li>
+        ))}
+      </ul>
 
-      <div>
-        <h3>Current Inventory</h3>
-        <ul>
-          {inventory.map(drug => (
-            <li key={drug.id}>
-              {drug.name} - Quantity: {drug.quantity}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <h3>Discounts</h3>
+      <ul>
+        {/* Render drug information here */}
+        {discounts && discounts.map((discount, index) => (
+        <li key={index}>
+          <p>Discount code: {String(discount.discountCode)}</p>
+          <p>Drug ID: {String(discount.drugID)}</p>
+          <p>Discount price: {String(discount.discountPrice)}</p>
+          <p>Insurer: {discount.insurer}</p>
+        </li>
+        ))}
+      </ul>
+
+      <h3>Drug Requests (from pharmacy) </h3>
+      <ul>
+        {/* Render drug information here */}
+        {requestsPH && requestsPH.map((request, index) => (
+        <li key={index}>
+          <h4>Request ID: {String(request.requestID)}</h4>
+          <p>Drug ID: {String(request.drugID)}</p>
+          <p>Quantity: {String(request.quant)}</p>
+          <p>Discount code: {String(request.dcCode)}</p>
+          <p>Pharmacy: {request.sender}</p>
+          <p>Is Confirmed: {request.confirmed ? 'Yes' : 'No'}</p>
+        </li>
+        ))}
+      </ul>
+
+      <h3>Drug Requests (to manufacturer) </h3>
+      <ul>
+        {/* Render drug information here */}
+        {requestsMA && requestsMA.map((request, index) => (
+        <li key={index}>
+          <h4>Request ID: {String(request.requestID)}</h4>
+          <p>Drug ID: {String(request.drugID)}</p>
+          <p>Quantity: {String(request.quant)}</p>
+          <p>Discount code: {String(request.dcCode)}</p>
+          <p>Manufacturer: {request.receiver}</p>
+          <p>Is Confirmed: {request.confirmed ? 'Yes' : 'No'}</p>
+        </li>
+        ))}
+      </ul>
+      
+      
 
       <div>
         <h3>Place Bulk Order</h3>
