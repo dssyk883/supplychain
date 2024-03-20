@@ -201,12 +201,11 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         emit SendRequestByPH(drugID, quant, totalPrice, wdaddr);
     }
 
-    function shipDrugWD(uint drugID, uint quant, uint PHaccNum, uint reqID) public onlyWD() {
+    function shipDrugWD(uint drugID, uint quant, address toPHaddr, uint reqID) public onlyWD() {
         console.log(drugID);
         console.log(quant);
-        console.log(PHaccNum);
+        console.log(toPHaddr);
         console.log(reqID);
-        address toPHaddr = super.getPHaddr(PHaccNum);
         uint findDrugWD = findDrugInWD(drugID);
         uint findreqPH = findRequestInPH(reqID);
         Drug storage whdrug = wholesaleInventory[msg.sender][findDrugWD];
@@ -226,7 +225,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
         uint newQ = wholesaleInventory[msg.sender][0].quantity;
         console.log(newQ);
-        emit ShipDrugByWD(drugID, quant, PHaccNum);
+        emit ShipDrugByWD(drugID, quant, toPHaddr);
     }
 
     function confirmDrugShipmentPH(uint reqID, uint quant, address toWDaddr) public onlyPH() {
