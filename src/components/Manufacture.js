@@ -110,8 +110,8 @@ const Manufacture = () => {
         <ul>
           {incomingRequests.map(request => (
             <li key={request.id}>
-              {request.quant} units of {request.drugID} - 
-              <button onClick={() => handleConfirmRequest(request.requestID)}>Confirm Request</button>
+              {String(request.quant)} units of {String(request.drugID)} - 
+              <button onClick={() => handleConfirmRequest(request.id)}>Confirm Request</button>
             </li>
           ))}
         </ul>
