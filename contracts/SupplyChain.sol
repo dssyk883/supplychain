@@ -202,9 +202,16 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function shipDrugWD(uint drugID, uint quant, uint PHaccNum, uint reqID) public onlyWD() {
+        console.log(drugID);
+        console.log(quant);
+        console.log(PHaccNum);
+        console.log(reqID);
         address toPHaddr = super.getPHaddr(PHaccNum);
         uint findDrugWD = findDrugInWD(drugID);
         uint findreqPH = findRequestInPH(reqID);
+
+        uint oldQ = wholesaleInventory[msg.sender][findDrugWD].quantity;
+        console.log(oldQ);
 
         require(findDrugWD != wholesaleInventory[msg.sender].length, "There's no drug with the drug id");
         require(wholesaleInventory[msg.sender][findDrugWD].quantity >= quant, "Not enough drug quantity in the inventory.");
@@ -214,9 +221,8 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         wholesaleRequestsFromPH[msg.sender][findreqWD].confirmed = true;
         pharmacyRequests[toPHaddr][findreqPH].manufacturer = wholesaleInventory[msg.sender][findDrugWD].manufacturer;
 
-        uint rQuant = wholesaleInventory[msg.sender][0].quantity;
-        console.log(findDrugWD);
-        console.log(rQuant);
+        uint newQ = wholesaleInventory[msg.sender][0].quantity;
+        console.log(newQ);
         emit ShipDrugByWD(drugID, quant, PHaccNum);
     }
 
