@@ -32,8 +32,10 @@ const Pharmacy = () => {
     e.preventDefault();
     // Handle order submission logic here
     console.log("Order Submitted:", orderForm);
+    //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
-    contract.methods.sendDrugRequestPH(orderForm.drug.id, orderForm.amount, orderForm.wholesaleId, orderForm.discountCode).send({ from: this.state.account });
+    let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
+    contract.methods.sendDrugRequestPH(orderForm.drug.id, amount, orderForm.wholesaleId, orderForm.discountCode).send({ from: this.state.account });
   };
 
   // Function to handle drug selection
@@ -209,7 +211,7 @@ const Pharmacy = () => {
           Wholesale ID:
           <select
               value={orderForm.wholesaleId}
-              onChange={e => setOrderForm({ ...orderForm, wholesaleId: e.target.value })}
+              onChange={e => setOrderForm({ ...orderForm, wholesaleId: parseInt(e.target.value, 10) })}
           >
           <option value="">Select Wholesale ID</option>
             {wholesaleIds.map(id => (
