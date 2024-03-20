@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import config from '../config/config.json'
 import { useContractInitialization } from './Contract';
 
@@ -18,7 +18,7 @@ const Manufacture = () => {
     // Logic to confirm the request, here we will remove the request from the list
 
 
-    req = incomingRequests.filter(request => request.requestID === id); 
+    let req = incomingRequests.filter(request => request.requestID === id); 
     try {
       await contract.methods.shipDrugMA(req.dID, req.quant, req.sender, req.requestID)
     } catch (error){
