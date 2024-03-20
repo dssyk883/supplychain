@@ -195,7 +195,7 @@ const Pharmacy = () => {
             {discounts &&
               discounts.map((discount, index) =>  (
                 <option key={index}>
-                  {String(discount.discountCode)}
+                  {discount.discountCode}
                 </option>
               ))}
           </select>
