@@ -136,7 +136,7 @@ describe("Test Supply Chain contract", function () {
         // await expect(contract.connect(PH_addr).addDrugInPH(0,0));
         await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 40, 1, 101, {value: ethers.parseEther("1080")}))
         .to.emit(contract, "SendRequestByPH")
-        .withArgs(0, 40, 200, WD_addr);
+        .withArgs(0, 40, 1080, WD_addr);
 
         await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
         .to.emit(contract, "DrugAddedWD")
