@@ -187,10 +187,10 @@ const Pharmacy = () => {
             onChange={e => setOrderForm({ ...orderForm, discountCode: e.target.value })}
           >
             <option value="">Select Discount Code</option>
-            {selectedDrug &&
-              selectedDrug.coveragePlans.map(plan => (
-                <option key={plan.discountCode} value={plan.discountCode}>
-                  {plan.discountCode}
+            {discounts &&
+              discounts.map((discount, index) =>  (
+                <option key={index}>
+                  {String(discount.discountCode)}
                 </option>
               ))}
           </select>
