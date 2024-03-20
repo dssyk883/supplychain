@@ -20,6 +20,7 @@ const Wholesale = () => {
     manufacturerId: 0
   });
 
+  const [selectedDrug, setSelectedDrug] = useState(null);
 
   // Function to handle adding bulk order
   const handleAddBulkOrder = async (e) => {
