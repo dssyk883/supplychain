@@ -13,21 +13,6 @@ const Wholesale = () => {
   const [requestsMA, setrequestsMA] = useState([]);
 
 
-  // Function to handle shipment confirmation
-  const handleConfirmShipment = (id, amount) => {
-    // Logic to confirm shipment, here we will remove the request from the list
-    setIncomingRequests(incomingRequests.filter(request => request.id !== id));
-    // Update inventory by subtracting the shipped quantity
-    setInventory(prevInventory => {
-      return prevInventory.map(drug => {
-        if (drug.id === id) {
-          return { ...drug, quantity: drug.quantity - amount };
-        }
-        return drug;
-      });
-    });
-  };
-
   // Function to handle adding bulk order
   const handleAddBulkOrder = (drug, amount, price) => {
     // Logic to handle adding bulk order
@@ -55,7 +40,7 @@ const Wholesale = () => {
               console.log('----------');
             });
           }
-              setInventoryData(drugs);
+          setInventoryData(drugs);
           }
       } catch (error) {
           console.error('Error in retrieving inventory:', error);
@@ -192,29 +177,6 @@ const Wholesale = () => {
       
       
 
-      <div>
-        <h3>Place Bulk Order</h3>
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          const drug = e.target.elements.drug.value;
-          const amount = parseInt(e.target.elements.amount.value);
-          const price = parseFloat(e.target.elements.price.value);
-          handleAddBulkOrder(drug, amount, price);
-        }}>
-          <label htmlFor="drug">Drug Name:</label>
-          <select id="drug" name="drug" required>
-            <option value="" disabled selected>Select a drug</option>
-            {availableDrugs.map((drug, index) => (
-              <option key={index} value={drug}>{drug}</option>
-            ))}
-          </select>
-          <label htmlFor="amount">Amount:</label>
-          <input type="number" id="amount" name="amount" required />
-          <label htmlFor="price">Price:</label>
-          <input type="number" id="price" name="price" step="0.01" required />
-          <button type="submit">Place Order</button>
-        </form>
-      </div>
     </div>
   );
 };
