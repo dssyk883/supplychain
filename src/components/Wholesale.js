@@ -24,7 +24,7 @@ const Wholesale = () => {
 
   // Function to handle adding bulk order
   const handleAddBulkOrder = async (e) => {
-    e.preventD7efault();
+    e.preventDefault();
     // Handle order submission logic here
     console.log("Order Submitted:", orderForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
@@ -33,7 +33,7 @@ const Wholesale = () => {
     let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
     let maid = web3.eth.abi.encodeParameter('uint256', orderForm.manufacturerId);
     let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
-    let msgvalue = price * amount;
+    let msgvalue = price * (amount + 1);
     await contract.methods.sendDrugRequestWD(dID, amount, maid).send({ from: accounts[config.id], value: msgvalue});
     
   };
