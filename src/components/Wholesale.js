@@ -85,7 +85,6 @@ const Wholesale = () => {
     const selectedRequestID = e.target.value;
     console.log(e.target.value);
     const selectedRequest = requestsPH.find(request => String(request.requestID) === selectedRequestID);
-    console.log(selectedRequest);
     if (selectedRequest) {
       setSelectedRequest(selectedRequest);
       setShipForm({ ...shipForm, requestId: selectedRequest.requestID });
@@ -324,7 +323,7 @@ const Wholesale = () => {
           >
             <option value="">Select Request</option>
             {requestsPH && requestsPH.map(request => (
-              <option key={request.requestID} value={request.requestID}>
+              <option key={String(request.requestID)} value={String(request.requestID)}>
                 {String(request.requestID)}
               </option>
             ))}
