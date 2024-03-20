@@ -68,7 +68,7 @@ const Pharmacy = () => {
   const showRequests = async () => {
     try {
       if (web3 && accounts && contract) {
-          const Reqs = await contract.methods.getAllRequests().call({ from: accounts[config.id] });
+          const Reqs = await contract.methods.getAllRequestsPH().call({ from: accounts[config.id] });
           Reqs.forEach((request, index) => {
             console.log(`Request ID: ${request.requestID}`);
             console.log(`Request ID: ${request.drugID}`);
@@ -144,7 +144,7 @@ const Pharmacy = () => {
   const getAllRequests = async () => {
     try {
       if (web3 && accounts && contract) {
-          const Reqs = await contract.methods.getAllRequests().call({ from: accounts[config.id] });
+          const Reqs = await contract.methods.getAllRequestsPH().call({ from: accounts[config.id] });
           if (Reqs) {
             setrequests(Reqs);
           }
