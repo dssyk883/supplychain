@@ -50,7 +50,7 @@ contract Manufacturer {
         for(uint i = 0; i < macounter; i++){
             ind = i * 5 + 3;
             allAddr[i] = getMAaddr(ind);
-            address memory mar = getMAaddr(ind);
+            address mar = getMAaddr(ind);
             console.log(mar);
         }
         return allAddr;
