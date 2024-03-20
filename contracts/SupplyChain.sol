@@ -506,7 +506,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
             if (discountCodes[i].insurer == msg.sender) {
                 thisINDiscount.push(discountCodes[i]);
             }
-            i++
+            i++;
         }
         return thisINDiscount;
     }
