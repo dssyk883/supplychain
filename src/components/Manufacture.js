@@ -42,13 +42,14 @@ const Manufacture = () => {
           //   console.log(`Request ID: ${request.drugID}`);
           //   console.log('----------');
           // });
-        } catch (error){
-          console.error('Error in Getting Pending Requests: ', error);
-        }
           if (AllReqs) {
             let Reqs = AllReqs.filter(req => req.confirmed === false);      
             setIncomingRequests(Reqs);
           }
+        } catch (error){
+          console.error('Error in Getting Pending Requests: ', error);
+        }
+          
       }
     // } catch (error) {
       // console.error('Error in retrieving inventory:', error);
@@ -87,15 +88,10 @@ const Manufacture = () => {
             const Reqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
             
             const AllReqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
-          // Reqs.forEach((request, index) => {
-          //   console.log(`Request ID: ${request.requestID}`);
-          //   console.log(`Request ID: ${request.drugID}`);
-          //   console.log('----------');
-          // });
-          if (AllReqs) {
-            let Reqs = AllReqs.filter(req => req.confirmed === false);      
-            setIncomingRequests(Reqs);
-          }
+            if (AllReqs) {
+              let Reqs = AllReqs.filter(req => req.confirmed === false);      
+              setIncomingRequests(Reqs);
+            }
         }
       } catch (error) {
         console.error('Error in retrieving requests:', error);
