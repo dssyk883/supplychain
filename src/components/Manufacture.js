@@ -18,7 +18,7 @@ const Manufacture = () => {
 
 
     let req = incomingRequests.filter(request => String(request.requestID) === id); 
-    console.log("1");
+    console.log("1", req.drugID);
 
     let dID = web3.eth.abi.encodeParameter('uint256', req.drugID);
     console.log("2");
