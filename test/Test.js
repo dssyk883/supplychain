@@ -187,7 +187,7 @@ describe("Test Supply Chain contract", function () {
         .to.emit(contract, "DrugAddedWD")
         .withArgs(0, 10, WD_addr);
 
-        await contract.connect(PH_addr).retrieveInventoryPH();
+        // await contract.connect(PH_addr).retrieveInventoryPH();
         console.log(await contract.connect(WD_addr).retrieveInventoryWDFront());
 
         const reqID =  await contract.connect(WD_addr).getRequestIDWD();
