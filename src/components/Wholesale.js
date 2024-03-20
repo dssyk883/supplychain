@@ -86,12 +86,10 @@ const Wholesale = () => {
     console.log(e.target.value);
     const selectedRequest = requestsPH.find(request => String(request.requestID) === selectedRequestID);
     if (selectedRequest) {
-      setSelectedRequest(selectedRequest);
       setShipForm({ ...shipForm, requestId: selectedRequest.requestID });
     } else {
       // Handle the case where no request is found, e.g., reset to default values
       console.log("No request found with ID:", selectedRequestID);
-      setSelectedRequest(null); // or appropriate default value
       setShipForm({ ...shipForm, requestId: '' }); // Reset or handle as appropriate
     }
   };

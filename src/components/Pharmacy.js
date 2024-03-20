@@ -89,7 +89,7 @@ const Pharmacy = () => {
   };
 
   const handleWDselect = (e) => {
-    const selectedWDnum = parasInt(e.target.value, 10);
+    const selectedWDnum = parseInt(e.target.value, 10);
     console.log(e.target.value);
     const selectedWDIndex = wholesaleIds.findIndex(wd => wd === selectedWDnum);
     if (selectedWDIndex !== -1) {
