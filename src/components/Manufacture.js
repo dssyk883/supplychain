@@ -112,11 +112,7 @@ const Manufacture = () => {
         <button onClick={showRequestsMA}> Show Incoming Requests </button>
         <ul>
           {incomingRequests.map(request => (
-<<<<<<< Updated upstream
-            <li key={request.id}>
-=======
             <li key={String(request.requestID)}>
->>>>>>> Stashed changes
               {String(request.quant)} units of {String(request.drugID)} - 
               <button onClick={() => handleConfirmRequest(request.requestID)}>Confirm Request</button>
             </li>
