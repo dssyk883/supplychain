@@ -164,7 +164,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         addDiscountInIN(404, 7, 3, address(0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC));
     }
 
-    function addDrugInPH(uint dID, uint quant, address WD, address MA) public onlyPH() {
+    function addDrugInPH(uint dID, uint quant, address WD, address MA) public {
         uint find = findDrugInPH(dID);
         if(find == pharmacyInventory[msg.sender].length) {
             pharmacyInventory[msg.sender].push(Drug(dID, drugs[dID].name, drugs[dID].price, quant, msg.sender, MA, WD, msg.sender, false));
@@ -173,7 +173,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         emit DrugAddedPH(dID, quant, msg.sender);
     }
 
-    function addDrugInWD(uint dID, uint quant, address MA) public onlyWD() {
+    function addDrugInWD(uint dID, uint quant, address MA) public {
         uint find = findDrugInWD(dID);
         if(find == wholesaleInventory[msg.sender].length) {
             wholesaleInventory[msg.sender].push(Drug(dID, drugs[dID].name, drugs[dID].price, quant, msg.sender, MA, msg.sender, address(0), false));
