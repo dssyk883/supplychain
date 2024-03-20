@@ -52,7 +52,8 @@ const Insurance = () => {
       if (web3 && accounts && contract) {
           const DCs = await contract.methods.getAllDiscounts().call();
           if (DCs) {
-            const filteredDiscounts = DCs.filter(discount => discount.insurer === accounts[config.id]);       
+            // const filteredDiscounts = DCs.find(discount => discount.insurer === accounts[config.id]);       
+            const filteredDiscounts = await contract.methods.getAllDiscounts().call();
             setdiscounts(filteredDiscounts);
           }
       }
@@ -68,7 +69,8 @@ const Insurance = () => {
         if (web3 && accounts && contract) {
             const DCs = await contract.methods.getAllDiscounts().call();
             if (DCs) {
-              const filteredDiscounts = DCs.find(discount => discount.insurer === accounts[config.id]);       
+              // const filteredDiscounts = DCs.find(discount => discount.insurer === accounts[config.id]);       
+              const filteredDiscounts = await contract.methods.getAllDiscounts().call();
               setdiscounts(filteredDiscounts);
             }
         }
@@ -95,7 +97,7 @@ const Insurance = () => {
             <input
               type="number"
               value={contractForm.drug}
-              onChange={e => setContractForm({ ...contractForm, drug: parseInt(e.target.value, 10) })}
+              onChange={e => setContractForm({ ...contractForm, drug: e.target.value})}
             />
           </label>
           <br />
@@ -104,7 +106,7 @@ const Insurance = () => {
             <input
               type="number"
               value={contractForm.discountCode}
-              onChange={e => setContractForm({ ...contractForm, discountCode: parseInt(e.target.value, 10) })}
+              onChange={e => setContractForm({ ...contractForm, discountCode: e.target.value})}
             />
           </label>
           <label>
@@ -112,7 +114,7 @@ const Insurance = () => {
             <input
               type="number"
               value={contractForm.discount}
-              onChange={e => setContractForm({ ...contractForm, discount: parseInt(e.target.value, 10) })}
+              onChange={e => setContractForm({ ...contractForm, discount: e.target.value })}
             />
           </label>
           <button type="submit">Send Contract</button>
