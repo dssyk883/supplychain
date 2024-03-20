@@ -83,6 +83,7 @@ const Wholesale = () => {
   
   const handleRequestSelect = (e) => {
     const selectedRequestID = e.target.value;
+    console.log(e.target.value);
     const selectedRequest = requestsPH.find(request => String(request.requestID) === selectedRequestID);
     console.log(selectedRequest);
     if (selectedRequest) {
@@ -318,7 +319,7 @@ const Wholesale = () => {
         <label>
           Drug Request:
           <select
-            value={shipForm.requestId}
+            value={String(shipForm.requestId)}
             onChange={handleRequestSelect}
           >
             <option value="">Select Request</option>
