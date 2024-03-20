@@ -9,6 +9,7 @@ const Pharmacy = () => {
   // const [inventory, setInventory] = useState(config.inventory);
 
   const [inventory, setInventoryData] = useState([]);
+  const [wholesaleIds, setwholesaleIds] = useState([]);
   
   // State for form inputs
   const [orderForm, setOrderForm] = useState({
@@ -23,7 +24,7 @@ const Pharmacy = () => {
   const [selectedDrug, setSelectedDrug] = useState(null);
 
   // Wholesale ID list
-  const wholesaleIds = config.wholesaleIds;
+  //const wholesaleIds = config.wholesaleIds;
 
   // Function to handle order form submission
   const handleOrderSubmit = (e) => {
@@ -82,7 +83,25 @@ const Pharmacy = () => {
       }
   };
 
+  const getAllWD = async () => {
+    try {
+        if (web3 && accounts && contract) {
+            const WDs = await contract.methods.getAllWD().call();
+            if (WDs) {
+              console.log("Wholesale Distributor IDs:");
+              WDs.forEach((id, index) => {
+              console.log(`ID ${index + 1}: ${id}`);
+              });
+              setwholesaleIds(WDs);
+            }
+        }
+    } catch (error) {
+        console.error('Error in retrieving inventory:', error);
+    }
+};
+
   retrieveInventory();
+  getAllWD();
 }, [web3, accounts, contract]);
 
 
@@ -107,13 +126,13 @@ const Pharmacy = () => {
         </li>
         ))}
       </ul>
-
+      
       <h3>Order Form</h3>
       <form onSubmit={handleOrderSubmit}>
         <label>
           Amount:
           <input
-            type="number"
+            type="uint256"
             value={orderForm.amount}
             onChange={e => setOrderForm({ ...orderForm, amount: parseInt(e.target.value) })}
           />
@@ -153,7 +172,7 @@ const Pharmacy = () => {
         <label>
           Price:
           <input
-            type="number"
+            type="uint256"
             value={orderForm.price}
             readOnly // Price is now read-only
           />
