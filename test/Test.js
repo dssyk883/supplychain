@@ -22,33 +22,41 @@ describe("Test Supply Chain contract", function () {
     it("PH: Add Drug should emit DrugAddedPH event", async function () {
         // Add Drug in PH
         // await contract.connect(PH_addr).retrieveInventoryPH();
+        console.time('a');
         await expect(contract.connect(PH_addr).addDrugInPH(0, 10, WD_addr, MA_addr))
         .to.emit(contract, "DrugAddedPH")
         .withArgs(0, 10, PH_addr);
-        console.log("After adding 10 units of Drug 0")
+        // console.log("After adding 10 units of Drug 0")
+        console.timeEnd('a');
         // await contract.connect(PH_addr).retrieveInventoryPH();
     });
 
     it("Non-PH: Add Drug should fail", async function () {
         // Add Drug in PH (not permitted)
+        console.time('a');
         await expect(contract.connect(WD_addr).addDrugInPH(0, 10, WD_addr, MA_addr))
         .to.be.revertedWith("Not a Pharmacy!");
+        console.timeEnd('a');
     });
 
     it("WD: Add Drug should emit DrugAddedWD event", async function () {
         // Add Drug in WD
         // await contract.connect(WD_addr).retrieveInventoryWD();
+        console.time('a');
         await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
         .to.emit(contract, "DrugAddedWD")
         .withArgs(0, 10, WD_addr);
-        console.log("After adding 10 units of Drug 0")
+        // console.log("After adding 10 units of Drug 0")
+        console.timeEnd('a');
         // await contract.connect(WD_addr).retrieveInventoryWD();
     });
 
     it("Non-WD: Add Drug should fail", async function () {
         // Add Drug in WD (not permitted)
+        console.time('a');
         await expect(contract.connect(MA_addr).addDrugInWD(0, 10, MA_addr))
         .to.be.revertedWith("Not a Wholesale Distributor!");
+        console.timeEnd('a');
     });
 
     // it("IN: Add Discount code should emit DrugAddedWD event", async function () {
@@ -103,10 +111,11 @@ describe("Test Supply Chain contract", function () {
     it("WD: Requested Drug is not valid", async function () {
         // Add Discount code
         // Request Drug Shipment
+        console.time('a');
         await expect(contract.connect(PH_addr).sendDrugRequestPH(1, 10, 1, 202, {value: ethers.parseEther("190")}))
         .to.emit(contract, "SendRequestByPH")
         .withArgs(1, 10, 190, WD_addr);
-
+        console.timeEnd('a');
         // await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
         // .to.emit(contract, "DrugAddedWD")
         // .withArgs(0, 10, WD_addr);
@@ -154,7 +163,7 @@ describe("Test Supply Chain contract", function () {
     // });
 
     it("Supply Chain: WD requests Drug, MA ships Drug, WD confirms shipment", async function () {
-        var milliseconds = new Date().getTime();
+        console.time('a');
         // WD requests Drug
         // await contract.connect(MA_addr).retrieveInventoryMA();
         // await contract.connect(WD_addr).retrieveInventoryWD();
@@ -162,7 +171,7 @@ describe("Test Supply Chain contract", function () {
         await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 20, 3, {value: ethers.parseEther("600")}))
         .to.emit(contract, "SendRequestByWD")
         .withArgs(0, 20, 600, MA_addr);
-        console.log(Date().getTime()-milliseconds);
+        console.timeEnd('a');
 
         // console.log("Requesting 20 units of Drug 0")
 
