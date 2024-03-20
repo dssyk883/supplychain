@@ -178,7 +178,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         console.log(msg.value);
         uint totalPrice = (drugs[drugID].price - discountCodes[findDCcode(dcCode)].discountPrice) * quant;
         address payable toWDaddr = payable(super.getWDaddr(WDaccNum));
-        require(totalPrice <= msg.value/(10**18), "Insufficient fund.");
+        require(totalPrice <= msg.value, "Insufficient fund.");
         
         uint reqID = drugID + quant + dcCode + WDaccNum + block.timestamp%1000;
         pharmacyRequests[msg.sender].push(DrugRequest(reqID, drugID, quant, totalPrice, dcCode, msg.sender, toWDaddr, address(0),false));
@@ -216,7 +216,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     function sendDrugRequestWD(uint drugID, uint quant, uint MAaccNum) public onlyWD() payable {
         uint totalPrice = drugs[drugID].price * quant;
         address payable toMAaddr = payable(super.getMAaddr(MAaccNum));
-        require(totalPrice <= msg.value/(10**18), "Insufficient fund.");
+        require(totalPrice <= msg.value, "Insufficient fund.");
         uint reqID = drugID + quant + MAaccNum + block.timestamp%1000;
         wholesaleRequestsToMA[msg.sender].push(DrugRequest(reqID, drugID, quant, totalPrice, 0, msg.sender, toMAaddr, toMAaddr, false));
         manufacturerRequests[toMAaddr].push(DrugRequest(reqID, drugID, quant, totalPrice, 0, msg.sender, toMAaddr, toMAaddr, false));
