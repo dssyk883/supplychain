@@ -20,7 +20,7 @@ const Manufacture = () => {
     let req = incomingRequests.filter(request => request.requestID === id); 
     let dID = web3.eth.abi.encodeParameter('uint256', req.drugID);
     let quantity = web3.eth.abi.encodeParameter('uint256', req.quant);
-    let rID = web3.eth.abi.encodeParameter('uint256', req.requestID);
+    let rID = web3.eth.abi.encodeParameter('uint256', id);
     try {
       await contract.methods.shipDrugMA(dID, quantity, req.sender, rID)
     } catch (error){
@@ -112,7 +112,11 @@ const Manufacture = () => {
         <button onClick={showRequestsMA}> Show Incoming Requests </button>
         <ul>
           {incomingRequests.map(request => (
+<<<<<<< Updated upstream
             <li key={request.id}>
+=======
+            <li key={String(request.requestID)}>
+>>>>>>> Stashed changes
               {String(request.quant)} units of {String(request.drugID)} - 
               <button onClick={() => handleConfirmRequest(request.requestID)}>Confirm Request</button>
             </li>
