@@ -190,7 +190,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     //----------------------------------------------
 
     function sendDrugRequestPH(uint drugID, uint quant, address wdaddr, uint dcCode)  public payable 
-        onlyPH()   {
+      {
         uint drugIDinDiscount = discountCodes[findDCcode(dcCode)].drugID;
         require(drugIDinDiscount == drugID, "This discount cannot be applied to this drug.");
         console.log(msg.value);
@@ -232,7 +232,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         emit ShipDrugByWD(drugID, quant, toPHaddr);
     }
 
-    function confirmDrugShipmentPH(uint reqID, uint quant, address toWDaddr) public onlyPH() {
+    function confirmDrugShipmentPH(uint reqID, uint quant, address toWDaddr) public {
         uint findreqPH = findRequestInPH(reqID);
         pharmacyRequests[msg.sender][findreqPH].confirmed = true;
         uint drugID = pharmacyRequests[msg.sender][findreqPH].drugID;
@@ -286,7 +286,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     //     address payable toMA
     // }
 
-    function findDrugInPH(uint dID) public view onlyPH() returns (uint) {
+    function findDrugInPH(uint dID) public view returns (uint) {
         uint len = pharmacyInventory[msg.sender].length;
         uint ind = len;
         for(uint i = 0; i < len; i++) {
@@ -367,7 +367,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         // if index == len, it's not found
     }
 
-    function retrieveInventoryPHFront() public view onlyPH() returns (Drug[] memory) {
+    function retrieveInventoryPHFront() public view returns (Drug[] memory) {
         return pharmacyInventory[msg.sender];
     }
 
