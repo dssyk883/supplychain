@@ -44,14 +44,13 @@ contract Insurer {
         return insurers.returnAddress(accNumber);
     }
 
-    function showAllIN() public view returns (uint[] memory){
-        uint[] memory indices = new uint[](incounter);
+    function showAllIN() public view returns (address[] memory){
+        address[] memory allAddr = new address[](incounter);
         uint ind = 0;
         for(uint i = 0; i < incounter; i++){
             ind = i * 5 + 2;
-            indices[i] = ind;
-            console.log("Insurer acc# ", i, ": ", insurers.returnAddress(ind));
+            allAddr[i] = getINaddr(ind);
         }
-        return indices;
+        return allAddr;
     }
 }
