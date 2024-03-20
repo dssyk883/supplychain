@@ -60,7 +60,7 @@ contract Wholesale {
         uint ind = 0;
         for(uint i = 0; i < wdcounter; i++){
             ind = i * 5 + 1;
-            allAddr.push(getWDaddr(ind));
+            allAddr[i] = getWDaddr(ind);
         }
         return allAddr;
     }
