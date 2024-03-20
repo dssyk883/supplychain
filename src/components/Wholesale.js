@@ -55,11 +55,11 @@ const Wholesale = () => {
     console.log("Order Submitted:", shipForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //function shipDrugWD(uint drugID, uint quant, uint PHaccNum, uint reqID) public onlyWD() 
-    let dID = web3.eth.abi.encodeParameter('uint256', shipForm.drug);
-    let amount = web3.eth.abi.encodeParameter('uint256', shipForm.amount);
-    let phid = web3.eth.abi.encodeParameter('uint256', shipForm.pharmacyId);
-    let reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
-    await contract.methods.shipDrugWD(dID, amount, phid, reqID).call({ from: accounts[config.id]});
+    const dID = web3.eth.abi.encodeParameter('uint256', shipForm.drug);
+    const uamount = web3.eth.abi.encodeParameter('uint256', shipForm.amount);
+    const phid = web3.eth.abi.encodeParameter('uint256', shipForm.pharmacyId);
+    const reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
+    await contract.methods.shipDrugWD(dID, uamount, phid, reqID).call({ from: accounts[config.id]});
   };
 
     // Function to handle drug selection
