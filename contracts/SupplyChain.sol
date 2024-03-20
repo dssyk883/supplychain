@@ -216,7 +216,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
         uint rQuant = wholesaleInventory[msg.sender][findDrugWD].quantity;
         wholesaleInventory[msg.sender][findDrugWD].quantity = rQuant;
-        console.log(findDrugWD)
+        console.log(findDrugWD);
         console.log(rQuant);
         emit ShipDrugByWD(drugID, quant, PHaccNum);
     }
