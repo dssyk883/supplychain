@@ -27,7 +27,7 @@ const Insurance = () => {
     let dID = web3.eth.abi.encodeParameter('uint256', contractForm.drug);
     let dcCode = web3.eth.abi.encodeParameter('uint256', contractForm.discountCode);
     let discountAmount = web3.eth.abi.encodeParameter('uint256', contractForm.discount);
-    await contract.methods.sendDrugRequestPH(dcCode, discountAmount, dID, config.id).send({ from: accounts[config.id]});
+    await contract.methods.addDiscountinIN(dcCode, discountAmount, dID, config.id).send({ from: accounts[config.id]});
 
     // Logic to send contract, here you can implement your desired action
     console.log("Contract Sent:", contractForm);
@@ -36,12 +36,12 @@ const Insurance = () => {
   };
 
   // Function to handle sending discount codes to pharmacies
-  const handleSendDiscountCodes = () => {
-    // Logic to send discount codes to pharmacies, here you can implement your desired action
-    console.log("Discount Codes Sent:", receivedDiscountCodes);
-    // Clear the received discount codes after sending
-    setReceivedDiscountCodes([]);
-  };
+  // const handleSendDiscountCodes = () => {
+  //   // Logic to send discount codes to pharmacies, here you can implement your desired action
+  //   console.log("Discount Codes Sent:", receivedDiscountCodes);
+  //   // Clear the received discount codes after sending
+  //   setReceivedDiscountCodes([]);
+  // };
 
   useEffect(() => {
 
