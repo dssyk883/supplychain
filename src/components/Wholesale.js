@@ -31,7 +31,7 @@ const Wholesale = () => {
 
   const [selectedDrug, setSelectedDrug] = useState(null);
   const [selectedDrugShip, setSelectedDrugShip] = useState(null);
-  const [selectedRequest, setSelectedRequest] = useState(null);
+
 
   // Function to handle adding bulk order
   const handleAddBulkOrder = async (e) => {
@@ -133,33 +133,6 @@ const Wholesale = () => {
     }
 };
 
-const refreshInventory = async () => {
-  try {
-      if (web3 && accounts && contract) {
-          const newdrugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
-          if (newdrugs) {
-            setInventoryData(newdrugs);
-            // Log each drug's details
-              newdrugs.forEach((drug, index) => {
-              console.log(`Drug ${index + 1}:`);
-              console.log(`ID: ${drug.id}`);
-              console.log(`Name: ${drug.name}`);
-              console.log(`Price: ${drug.price}`);
-              console.log(`Quantity: ${drug.quantity}`);
-              console.log(`Current Owner: ${drug.currentOwner}`);
-              console.log(`Manufacturer: ${drug.manufacturer}`);
-              console.log(`Wholesale: ${drug.wholesale}`);
-              console.log(`Pharmacy: ${drug.pharmacy}`);
-              console.log(`Is Sold Out: ${drug.isSoldOut}`);
-              console.log('----------');
-            });
-      }          
-      }
-  } catch (error) {
-      console.error('Error in retrieving inventory:', error);
-  }
-};
-
   useEffect(() => {
     const retrieveInventory = async () => {
       try {
@@ -239,7 +212,6 @@ const refreshInventory = async () => {
   return (
     <div>
       <h2>Wholesale | User Id: {config.id}</h2>
-      <button onClick={refreshInventory}> Refresh Inventory </button>      
       <h3>Drugs</h3>
       <ul>
         {/* Render drug information here */}

@@ -23,6 +23,12 @@ const Pharmacy = () => {
     wholesaleId: 0
   });
 
+  const [confirmForm, setConfirmForm] = useState({
+    amount: 0,
+    requestId: 0,
+    wholesaleId: 0
+  });
+
   // State to track selected drug and its coverage plans
   const [selectedDrug, setSelectedDrug] = useState(null);
 
@@ -31,6 +37,21 @@ const Pharmacy = () => {
 
   // Function to handle order form submission
   const handleOrderSubmit = async (e) => {
+    e.preventDefault();
+    // Handle order submission logic here
+    console.log("Order Submitted:", orderForm);
+    //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
+    //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
+    let dID = web3.eth.abi.encodeParameter('uint256', orderForm.drug);
+    let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
+    let wdid = web3.eth.abi.encodeParameter('uint256', orderForm.wholesaleId);
+    let dc = web3.eth.abi.encodeParameter('uint256', orderForm.discountCode);
+    let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
+    let msgvalue = price * amount;
+    await contract.methods.sendDrugRequestPH(dID, amount, wdid, dc).send({ from: accounts[config.id], value: msgvalue});
+  };
+
+  const handleConfirmShipment = async (e) => {
     e.preventDefault();
     // Handle order submission logic here
     console.log("Order Submitted:", orderForm);
@@ -54,14 +75,29 @@ const Pharmacy = () => {
     setOrderForm({ ...orderForm, drug: selectedDrugData.id, drugName: selectedDrugData.name, price: selectedDrugData.price }); // Reset discount code and price when drug changes
   };
 
-  // Function to calculate price based on amount, drug price, and discount rate
-  const calculatePrice = () => {
-    if (selectedDrug && orderForm.amount && orderForm.discountCode) {
-      const selectedPlan = selectedDrug.coveragePlans.find(plan => plan.discountCode === orderForm.discountCode);
-      if (selectedPlan) {
-        const price = orderForm.amount * (selectedDrug.price - selectedPlan.discountRate);
-        setOrderForm({ ...orderForm, price });
-      }
+  const handleRequestSelect = (e) => {
+    const selectedRequestID = e.target.value;
+    console.log(e.target.value);
+    const selectedRequest = requests.find(request => String(request.requestID) === selectedRequestID);
+    if (selectedRequest) {
+      setConfirmForm({ ...confirmForm, requestId: selectedRequest.requestID });
+    } else {
+      // Handle the case where no request is found, e.g., reset to default values
+      console.log("No request found with ID:", selectedRequestID);
+      setConfirmForm({ ...confirmForm, requestId: '' }); // Reset or handle as appropriate
+    }
+  };
+
+  const handleWDselect = (e) => {
+    const selectedWDnum = parasInt(e.target.value, 10);
+    console.log(e.target.value);
+    const selectedWDIndex = wholesaleIds.findIndex(wd => wd === selectedWDnum);
+    if (selectedWDIndex !== -1) {
+      setConfirmForm({ ...confirmForm, wholesaleId: wholesaleIds[selectedWDIndex] });
+    } else {
+      // Handle the case where no request is found, e.g., reset to default values
+      console.log("No request found with ID:", selectedWDnum);
+      setConfirmForm({ ...confirmForm, wholesaleId: '' }); // Reset or handle as appropriate
     }
   };
 
@@ -210,6 +246,50 @@ const Pharmacy = () => {
         </li>
         ))}
       </ul>
+
+      <h3>Confirm Drug Shipment Form</h3>
+      <form onSubmit={handleConfirmShipment}>
+        <label>
+          Amount:
+          <input
+            type="number"
+            value={confirmForm.amount}
+            onChange={e => setOrderForm({ ...confirmForm, amount: parseInt(e.target.value) })}
+          />
+        </label>
+        <br />
+        <label>
+          Drug Request:
+          <select
+            value={String(confirmForm.requestId)}
+            onChange={handleRequestSelect}
+          >
+            <option value="">Select Request</option>
+            {requests && requests.map(request => (
+              <option key={String(request.requestID)} value={String(request.requestID)}>
+                {String(request.requestID)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <label>
+          Wholesale ID:
+          <select
+            value={String(confirmForm.wholesaleId)}
+            onChange={handleWDselect}
+          >
+            <option value="">Select Wholesale ID</option>
+            {wholesaleIds && wholesaleIds.map(wd => (
+              <option key={String(wd)} value={String(wd)}>
+                {String(wd)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <button type="submit">Order</button>
+      </form>
 
       <h3>Order Form</h3>
       <form onSubmit={handleOrderSubmit}>
