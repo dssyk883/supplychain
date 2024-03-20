@@ -26,7 +26,7 @@ const Manufacture = () => {
       console.error('Error in Shipping Drugs:', error);
     }
     refreshInventory();
-    setIncomingRequests(incomingRequests.filter(request => String(request.requestID) !== id));
+    // setIncomingRequests(incomingRequests.filter(request => String(request.requestID) !== id));
     showRequestsMA();
     
   };
@@ -35,14 +35,18 @@ const Manufacture = () => {
     // try {
       if (web3 && accounts && contract) {
         console.log("Getting..")
+        try{
           const AllReqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
           // Reqs.forEach((request, index) => {
           //   console.log(`Request ID: ${request.requestID}`);
           //   console.log(`Request ID: ${request.drugID}`);
           //   console.log('----------');
           // });
+        } catch (error){
+          console.error('Error in Getting Pending Requests: ', error);
+        }
           if (AllReqs) {
-            let Reqs = AllReqs.filter(req => req.confirmed === true);      
+            let Reqs = AllReqs.filter(req => req.confirmed === false);      
             setIncomingRequests(Reqs);
           }
       }
@@ -89,7 +93,7 @@ const Manufacture = () => {
           //   console.log('----------');
           // });
           if (AllReqs) {
-            let Reqs = AllReqs.filter(req => req.confirmed === true);      
+            let Reqs = AllReqs.filter(req => req.confirmed === false);      
             setIncomingRequests(Reqs);
           }
         }
