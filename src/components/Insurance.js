@@ -23,7 +23,7 @@ const Insurance = () => {
     // Handle order submission logic here
     console.log("Order Submitted:", contractForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
-    //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
+    //function addDiscountInIN(uint dcCode, uint discountprice, uint drugID, address ins) 
     let dID = web3.eth.abi.encodeParameter('uint256', contractForm.drug);
     let dcCode = web3.eth.abi.encodeParameter('uint256', contractForm.discountCode);
     let discountAmount = web3.eth.abi.encodeParameter('uint256', contractForm.discount);
@@ -90,7 +90,7 @@ const Insurance = () => {
           <label>
             Drug:
             <input
-              type="text"
+              type="number"
               value={contractForm.drug}
               onChange={e => setContractForm({ ...contractForm, drug: e.target.value })}
             />
