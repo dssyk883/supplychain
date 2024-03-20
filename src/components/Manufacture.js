@@ -10,7 +10,7 @@ const Manufacture = () => {
   // Fake incoming requests
   const [incomingRequests, setIncomingRequests] = useState([  ]);
   const [inventory, setInventoryData] = useState([]);
-  const [wholesaleIds, setwholesaleIds] = useState([]);
+  
 
 
   // Function to handle confirmation of incoming requests
@@ -61,13 +61,14 @@ const Manufacture = () => {
       try {
         if (web3 && accounts && contract) {
             const Reqs = await contract.methods.getAllRequestsMA().send({ from: accounts[config.id] });
-            Reqs.forEach((request, index) => {
-              console.log(`Request ID: ${request.requestID}`);
-              console.log(`Request ID: ${request.drugID}`);
-              console.log('----------');
-            });
+            
             console.log(Reqs);
             if (Reqs) {
+              Reqs.forEach((request, index) => {
+                console.log(`Request ID: ${request.requestID}`);
+                console.log(`Request ID: ${request.drugID}`);
+                console.log('----------');
+              });
               setIncomingRequests(Reqs);
             }
         }
@@ -76,25 +77,9 @@ const Manufacture = () => {
     }
   };
 
-  const getAllWD = async () => {
-    try {
-        if (web3 && accounts && contract) {
-            const WDs = await contract.methods.getAllWD().call();
-            if (WDs) {
-              console.log("Wholesale IDs:");
-              WDs.forEach((id, index) => {
-              console.log(`ID ${index + 1}: ${id}`);
-              });
-              setwholesaleIds(WDs);
-            }
-        }
-    } catch (error) {
-        console.error('Error in retrieving inventory:', error);
-    }
-};
+  
   retrieveInventory()
   getAllRequests();
-  getAllWD();
 }, [web3, accounts, contract]);
 
 
