@@ -44,9 +44,9 @@ describe("Test Supply Chain contract", function () {
         // Add Drug in PH
         // await contract.connect(PH_addr).retrieveInventoryPH();
         console.time('a');
-        await expect(contract.connect(PH_addr).addDrugInPH(0, 10, WD_addr, MA_addr))
+        await expect(contract.connect(PH_addr).addDrugInPH(20, 10, WD_addr, MA_addr))
         .to.emit(contract, "DrugAddedPH")
-        .withArgs(0, 10, PH_addr);
+        .withArgs(20, 10, PH_addr);
         // console.log("After adding 10 units of Drug 0")
         console.timeEnd('a');
         // await contract.connect(PH_addr).retrieveInventoryPH();
@@ -55,7 +55,7 @@ describe("Test Supply Chain contract", function () {
     it("Non-PH: Add Drug should fail", async function () {
         // Add Drug in PH (not permitted)
         console.time('a');
-        await expect(contract.connect(WD_addr).addDrugInPH(0, 10, WD_addr, MA_addr))
+        await expect(contract.connect(WD_addr).addDrugInPH(20, 10, WD_addr, MA_addr))
         .to.be.revertedWith("Not a Pharmacy!");
         console.timeEnd('a');
     });
@@ -64,7 +64,7 @@ describe("Test Supply Chain contract", function () {
         // Add Drug in WD
         // await contract.connect(WD_addr).retrieveInventoryWD();
         console.time('a');
-        await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))
+        await expect(contract.connect(WD_addr).addDrugInWD(20, 10, MA_addr))
         .to.emit(contract, "DrugAddedWD")
         .withArgs(0, 10, WD_addr);
         // console.log("After adding 10 units of Drug 0")
@@ -75,7 +75,7 @@ describe("Test Supply Chain contract", function () {
     it("Non-WD: Add Drug should fail", async function () {
         // Add Drug in WD (not permitted)
         console.time('a');
-        await expect(contract.connect(MA_addr).addDrugInWD(0, 10, MA_addr))
+        await expect(contract.connect(MA_addr).addDrugInWD(20, 10, MA_addr))
         .to.be.revertedWith("Not a Wholesale Distributor!");
         console.timeEnd('a');
     });
