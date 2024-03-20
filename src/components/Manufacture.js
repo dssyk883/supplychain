@@ -8,7 +8,7 @@ const Manufacture = () => {
   const { web3, accounts, contract } = useContractInitialization();
 
   // Fake incoming requests
-  const [incomingRequests, setIncomingRequests] = useState([  ]);
+  const [incomingRequests, setIncomingRequests] = useState([]);
   const [inventory, setInventoryData] = useState([]);
   
 
