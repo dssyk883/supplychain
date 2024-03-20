@@ -341,11 +341,17 @@ const Pharmacy = () => {
         <br />
         <label>
           Wholesale ID:
-          <input
-            type="number"
+          <select
             value={orderForm.wholesaleId}
-            onChange={e => setOrderForm({ ...orderForm, wholesaleId: parseInt(e.target.value, 10) })}
-          />
+            onChange={e => setOrderForm({ ...orderForm, wholesaleId: e.target.value })}
+          >
+            <option value="">Select Wholesale ID</option>
+            {wholesaleIds && wholesaleIds.map(wd => (
+              <option key={wd} value={wd}>
+                {wd}
+              </option>
+            ))}
+          </select>
         </label>
         <br />
         <button type="submit">Order</button>
