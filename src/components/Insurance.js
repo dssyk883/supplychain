@@ -92,16 +92,16 @@ const Insurance = () => {
             <input
               type="number"
               value={contractForm.drug}
-              onChange={e => setContractForm({ ...contractForm, drug: e.target.value })}
+              onChange={e => setContractForm({ ...contractForm, drug: parseInt(e.target.value) })}
             />
           </label>
           <br />
           <label>
-            Discount (Number):
+            Discount Price (Number):
             <input
               type="number"
               value={contractForm.discountCode}
-              onChange={e => setContractForm({ ...contractForm, discountCode: e.target.value })}
+              onChange={e => setContractForm({ ...contractForm, discountCode: parseInt(e.target.value) })}
             />
           </label>
           <label>
@@ -109,7 +109,7 @@ const Insurance = () => {
             <input
               type="number"
               value={contractForm.discount}
-              onChange={e => setContractForm({ ...contractForm, discount: e.target.value })}
+              onChange={e => setContractForm({ ...contractForm, discount: parseInt(e.target.value) })}
             />
           </label>
           <button type="submit">Send Contract</button>
