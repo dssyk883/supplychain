@@ -89,9 +89,9 @@ const Pharmacy = () => {
   };
 
   const handleWDselect = (e) => {
-    const selectedWDnum = parseInt(e.target.value, 10);
+    const selectedWDnum = e.target.value;
     console.log(e.target.value);
-    const selectedWDIndex = wholesaleIds.findIndex(wd => wd === selectedWDnum);
+    const selectedWDIndex = wholesaleIds.findIndex(wd => String(wd) === selectedWDnum);
     if (selectedWDIndex !== -1) {
       setConfirmForm({ ...confirmForm, wholesaleId: wholesaleIds[selectedWDIndex] });
     } else {
@@ -254,7 +254,7 @@ const Pharmacy = () => {
           <input
             type="number"
             value={confirmForm.amount}
-            onChange={e => setOrderForm({ ...confirmForm, amount: parseInt(e.target.value) })}
+            onChange={e => setConfirmForm({ ...confirmForm, amount: parseInt(e.target.value) })}
           />
         </label>
         <br />
