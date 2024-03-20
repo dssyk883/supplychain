@@ -218,7 +218,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         require(wholesaleInventory[msg.sender][findDrugWD].quantity >= quant, "Not enough drug quantity in the inventory.");
         Drug memory d = drugs[drugID];
         // wholesaleInventory[msg.sender][findDrugWD].quantity -= quant;
-        wholesaleInventory[msg.sender][findDrugWD] = new Drug(drugID, d.name, d.price, oldQ-quant, msg.sender, oldD.manufacturer, msg.sender, address(0), false );
+        wholesaleInventory[msg.sender][findDrugWD] = Drug(drugID, d.name, d.price, oldQ-quant, msg.sender, oldD.manufacturer, msg.sender, address(0), false );
         if(wholesaleInventory[msg.sender][findDrugWD].quantity == 0) wholesaleInventory[msg.sender][drugID].isSoldOut = true;
         uint findreqWD = findRequestInWDPH(reqID);
         wholesaleRequestsFromPH[msg.sender][findreqWD].confirmed = true;
