@@ -7,21 +7,32 @@ const Insurance = () => {
   const [discounts, setdiscounts] = useState([]);
   // State for contract form inputs
   const [contractForm, setContractForm] = useState({
-    drug: '',
-    discount: '',
-    paidAmount: ''
+    drug: 0,
+    discountCode: 0,
+    discount: 0
   });
 
   // Fake list of received discount codes with expiration dates
   const [receivedDiscountCodes, setReceivedDiscountCodes] = useState([]);
 
   // Function to handle sending a contract to manufacture
-  const handleSendContract = (e) => {
+  const handleSendContract = async (e) => {
+
+
     e.preventDefault();
+    // Handle order submission logic here
+    console.log("Order Submitted:", orderForm);
+    //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
+    //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
+    let dID = web3.eth.abi.encodeParameter('uint256', contractForm.drug);
+    let dcCode = web3.eth.abi.encodeParameter('uint256', contractForm.discountCode);
+    let discountAmount = web3.eth.abi.encodeParameter('uint256', contractForm.discount);
+    await contract.methods.sendDrugRequestPH(dcCode, discountAmount, dID, config.id).send({ from: accounts[config.id]});
+
     // Logic to send contract, here you can implement your desired action
     console.log("Contract Sent:", contractForm);
     // Reset the form fields after sending the contract
-    setContractForm({ drug: '', discount: '', paidAmount: '' });
+    setContractForm({ drug: '', discountCode: '', discount: '' });
   };
 
   // Function to handle sending discount codes to pharmacies
@@ -59,7 +70,7 @@ const Insurance = () => {
       <h2>Insurance | User Id: {config.id}</h2>
 
       <div>
-        <h3>Send Contract to Manufacture</h3>
+        <h3>Send Contract to Set up Discount Code</h3>
         <form onSubmit={handleSendContract}>
           <label>
             Drug:
@@ -74,20 +85,18 @@ const Insurance = () => {
             Discount (Number):
             <input
               type="number"
+              value={contractForm.discountCode}
+              onChange={e => setContractForm({ ...contractForm, discountCode: e.target.value })}
+            />
+          </label>
+          <label>
+            Discount Amount:
+            <input
+              type="number"
               value={contractForm.discount}
               onChange={e => setContractForm({ ...contractForm, discount: e.target.value })}
             />
           </label>
-          <br />
-          <label>
-            Paid Amount:
-            <input
-              type="number"
-              value={contractForm.paidAmount}
-              onChange={e => setContractForm({ ...contractForm, paidAmount: e.target.value })}
-            />
-          </label>
-          <br />
           <button type="submit">Send Contract</button>
         </form>
       </div>
@@ -105,7 +114,6 @@ const Insurance = () => {
           ))}
         </ul>
         
-        <button onClick={handleSendDiscountCodes}>Send Discount Codes to Pharmacies</button>
       </div>
     </div>
   );
