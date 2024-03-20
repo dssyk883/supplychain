@@ -42,10 +42,9 @@ const Wholesale = () => {
     //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
     let dID = web3.eth.abi.encodeParameter('uint256', orderForm.drug);
     let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
-    let maid = web3.eth.abi.encodeParameter('uint256', orderForm.manufacturerId);
     let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
     let msgvalue = price * (amount + 1);
-    await contract.methods.sendDrugRequestWD(dID, amount, maid).send({ from: accounts[config.id], value: msgvalue});
+    await contract.methods.sendDrugRequestWD(dID, amount, orderForm.manufacturerId).send({ from: accounts[config.id], value: msgvalue});
     
   };
 
@@ -374,11 +373,17 @@ const Wholesale = () => {
         <br />
         <label>
           Manufcaturer ID:
-          <input
-            type="number"
+          <select
             value={orderForm.manufacturerId}
-            onChange={e => setOrderForm({ ...orderForm, manufacturerId: parseInt(e.target.value, 10) })}
-          />
+            onChange={e => setOrderForm({ ...orderForm, manufacturerId: e.target.value })}
+          >
+            <option value="">Select Manufacturer ID</option>
+            {manufacturerIds && manufacturerIds.map(ma => (
+              <option key={ma} value={ma}>
+                {ma}
+              </option>
+            ))}
+          </select>
         </label>
         <br />
         <button type="submit">Order</button>

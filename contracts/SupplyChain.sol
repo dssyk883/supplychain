@@ -77,7 +77,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     event DiscountCodeAddedIN(uint discountCode, uint drugID, address ins);
 
     event SendRequestByPH(uint drugID, uint q, uint totalPrice, address toWD);
-    event ShipDrugByWD(uint drugID, uint quant, uint PHaccNum);
+    event ShipDrugByWD(uint drugID, uint quant, address phaddr);
     event SendRequestByWD(uint drugID, uint quant, uint totalPrice, address toMAaddr);
     event ShipDrugByMA(uint drugID, uint quant, address wd);
     event ReqConfirmedByPH(uint reqID, address phar, address wd);
@@ -154,10 +154,10 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function addInitialDiscounts() public {
-        addDiscountInIN(101, 3, 0, 2);
-        addDiscountInIN(202, 1, 1, 2);
-        addDiscountInIN(303, 6, 2, 2);
-        addDiscountInIN(404, 7, 3, 2);
+        addDiscountInIN(101, 3, 0, address(0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC));
+        addDiscountInIN(202, 1, 1, address(0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC));
+        addDiscountInIN(303, 6, 2, address(0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC));
+        addDiscountInIN(404, 7, 3, address(0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC));
     }
 
     function addDrugInPH(uint dID, uint quant, address WD, address MA) public onlyPH() {
@@ -179,27 +179,26 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     //onlyIN
-    function addDiscountInIN(uint dcCode, uint discountprice, uint drugID, uint INaccNum) public  {
-        address ins = super.getINaddr(INaccNum);
+    function addDiscountInIN(uint dcCode, uint discountprice, uint drugID, address ins) public  {
         discountCodes.push(Discount(dcCode, ins, drugID, discountprice, block.timestamp));
         emit DiscountCodeAddedIN(dcCode, drugID, msg.sender);
     }
     //----------------------------------------------
 
-    function sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)  public payable 
+    function sendDrugRequestPH(uint drugID, uint quant, address wdaddr, uint dcCode)  public payable 
         onlyPH()   {
         uint drugIDinDiscount = discountCodes[findDCcode(dcCode)].drugID;
         require(drugIDinDiscount == drugID, "This discount cannot be applied to this drug.");
         console.log(msg.value);
         uint totalPrice = (drugs[drugID].price - discountCodes[findDCcode(dcCode)].discountPrice) * quant;
-        address payable toWDaddr = payable(super.getWDaddr(WDaccNum));
+        address payable toWDaddr = payable(wdaddr);
         require(totalPrice <= msg.value, "Insufficient fund.");
         
         uint reqID = drugID + quant + dcCode + WDaccNum + block.timestamp%1000;
         pharmacyRequests[msg.sender].push(DrugRequest(reqID, drugID, quant, totalPrice, dcCode, msg.sender, toWDaddr, address(0),false));
         wholesaleRequestsFromPH[toWDaddr].push(DrugRequest(reqID, drugID, quant, totalPrice, dcCode, msg.sender, toWDaddr, address(0), false));
         toWDaddr.transfer(totalPrice);
-        emit SendRequestByPH(drugID, quant, totalPrice, toWDaddr);
+        emit SendRequestByPH(drugID, quant, totalPrice, wdaddr);
     }
 
     function shipDrugWD(uint drugID, uint quant, uint PHaccNum, uint reqID) public onlyWD() {
@@ -230,21 +229,20 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         emit ShipDrugByWD(drugID, quant, PHaccNum);
     }
 
-    function confirmDrugShipmentPH(uint reqID, uint quant, uint WDaccNum) public onlyPH() {
+    function confirmDrugShipmentPH(uint reqID, uint quant, address toWDaddr) public onlyPH() {
         uint findreqPH = findRequestInPH(reqID);
         pharmacyRequests[msg.sender][findreqPH].confirmed = true;
         uint drugID = pharmacyRequests[msg.sender][findreqPH].drugID;
-        address toWDaddr = super.getWDaddr(WDaccNum);
         address MA = pharmacyRequests[msg.sender][findreqPH].manufacturer;
         addDrugInPH(drugID, quant, toWDaddr, MA);
         emit ReqConfirmedByPH(reqID, msg.sender, toWDaddr);
     }
 
-    function sendDrugRequestWD(uint drugID, uint quant, uint MAaccNum) public onlyWD() payable {
+    function sendDrugRequestWD(uint drugID, uint quant, address MAaddr) public onlyWD() payable {
         uint totalPrice = drugs[drugID].price * quant;
-        address payable toMAaddr = payable(super.getMAaddr(MAaccNum));
+        address payable toMAaddr = payable(MAaddr);
         require(totalPrice <= msg.value, "Insufficient fund.");
-        uint reqID = drugID + quant + MAaccNum + block.timestamp%1000;
+        uint reqID = drugID + quant + block.timestamp%1000;
         wholesaleRequestsToMA[msg.sender].push(DrugRequest(reqID, drugID, quant, totalPrice, 0, msg.sender, toMAaddr, toMAaddr, false));
         manufacturerRequests[toMAaddr].push(DrugRequest(reqID, drugID, quant, totalPrice, 0, msg.sender, toMAaddr, toMAaddr, false));
         toMAaddr.transfer(totalPrice);
@@ -265,11 +263,10 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         emit ShipDrugByMA(drugID, quant, toWDaddr);
     }
 
-    function confirmDrugShipmentWD(uint reqID, uint quant, uint MAaccNum) public onlyWD() {
+    function confirmDrugShipmentWD(uint reqID, uint quant, address toMAaddr) public onlyWD() {
         uint findreqMA = findRequestInWDMA(reqID);
         wholesaleRequestsToMA[msg.sender][findreqMA].confirmed = true;
         uint drugID = wholesaleRequestsToMA[msg.sender][findreqMA].drugID;
-        address toMAaddr = super.getMAaddr(MAaccNum);
         addDrugInWD(drugID, quant, toMAaddr);
         emit ReqConfirmedByWD(reqID, msg.sender, toMAaddr);
     }
@@ -385,15 +382,15 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         return super.showAllWD();
     }
 
-    function getAllPH() public view returns (uint[] memory) {
+    function getAllPH() public view returns (address[] memory) {
         return super.showAllPH();
     }
 
-    function getAllMA() public view returns (uint[] memory) {
+    function getAllMA() public view returns (address[] memory) {
         return super.showAllMA();
     }
 
-    function getAllIN() public view returns (uint[] memory) {
+    function getAllIN() public view returns (address[] memory) {
         return super.showAllIN();
     }
 

@@ -45,15 +45,14 @@ contract Pharmacy {
         return _pharmacies.returnAddress(accNumber);
     }
 
-    function showAllPH() public view returns (uint[] memory) {
-        uint[] memory indices = new uint[](phcounter);
+    function showAllPH() public view returns (address[] memory) {
+        address[] memory allAddr = new address[](phcounter);
         uint ind = 0;
         for(uint i = 0; i < phcounter; i++){
-            ind = i * 5;
-            indices[i] = ind;
-            console.log("Pharmacy acc# ", i, ": ", _pharmacies.returnAddress(ind));
+            ind = i * 5 + 1;
+            allAddr[i] = getPHaddr(ind);
         }
-        return indices;
+        return allAddr;
     }
 
 }

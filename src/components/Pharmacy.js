@@ -44,11 +44,10 @@ const Pharmacy = () => {
     //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
     let dID = web3.eth.abi.encodeParameter('uint256', orderForm.drug);
     let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
-    let wdid = web3.eth.abi.encodeParameter('uint256', orderForm.wholesaleId);
     let dc = web3.eth.abi.encodeParameter('uint256', orderForm.discountCode);
     let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
     let msgvalue = price * amount;
-    await contract.methods.sendDrugRequestPH(dID, amount, wdid, dc).send({ from: accounts[config.id], value: msgvalue});
+    await contract.methods.sendDrugRequestPH(dID, amount, orderForm.wholesaleId, dc).send({ from: accounts[config.id], value: msgvalue});
   };
 
   const handleConfirmShipment = async (e) => {
@@ -58,9 +57,8 @@ const Pharmacy = () => {
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //function confirmDrugShipmentPH(uint reqID, uint quant, uint WDaccNum) public onlyPH() {
     let amount = web3.eth.abi.encodeParameter('uint256', confirmForm.amount);
-    let wdid = web3.eth.abi.encodeParameter('uint256', confirmForm.wholesaleId);
     let reqID = web3.eth.abi.encodeParameter('uint256', confirmForm.requestId);
-    await contract.methods.confirmDrugShipmentPH(reqID, amount, wdid).send({ from: accounts[config.id]});
+    await contract.methods.confirmDrugShipmentPH(reqID, amount, confirmForm.wholesaleId).send({ from: accounts[config.id]});
     const newInv = await contract.methods.retrieveInventoryPHFront().call({from: accounts[config.id]});
     setInventoryData(newInv);
   };
@@ -88,19 +86,6 @@ const Pharmacy = () => {
   };
 
   const handleWDselect = (e) => {
-    const selectedWDnum = e.target.value;
-    console.log(e.target.value);
-    const selectedWDIndex = wholesaleIds.findIndex(wd => String(wd) === selectedWDnum);
-    if (selectedWDIndex !== -1) {
-      setConfirmForm({ ...confirmForm, wholesaleId: wholesaleIds[selectedWDIndex] });
-    } else {
-      // Handle the case where no request is found, e.g., reset to default values
-      console.log("No request found with ID:", selectedWDnum);
-      setConfirmForm({ ...confirmForm, wholesaleId: '' }); // Reset or handle as appropriate
-    }
-  };
-
-  const handleWDselectOrder = (e) => {
     const selectedWDnum = e.target.value;
     console.log(e.target.value);
     const selectedWDIndex = wholesaleIds.findIndex(wd => String(wd) === selectedWDnum);
@@ -285,20 +270,6 @@ const Pharmacy = () => {
           </select>
         </label>
         <br />
-        {/* <label>
-          Wholesale ID:
-          <select
-            value={String(confirmForm.wholesaleId)}
-            onChange={handleWDselect}
-          >
-            <option value="">Select Wholesale ID</option>
-            {wholesaleIds && wholesaleIds.map(wd => (
-              <option key={String(wd)} value={String(wd)}>
-                {String(wd)}
-              </option>
-            ))}
-          </select>
-        </label> */}
         <label>
           Wholesale ID:
           <select
