@@ -44,23 +44,14 @@ contract Manufacturer {
         return manufacturers.returnAddress(accNumber);
     }
 
-    // function showAllMA() public view returns (uint[] memory) {
-    //     uint[] memory indices = new uint[](macounter);
-    //     uint ind = 0;
-    //     for(uint i = 0; i < macounter; i++){
-    //         ind = i * 5 + 3;
-    //         indices[i] = ind;
-    //         console.log("Manufacturer acc# ", i, ": ", manufacturers.returnAddress(ind));
-    //     }
-    //     return indices;
-    // }
-
     function showAllMA() public view returns (address[] memory) {
         address[] memory allAddr = new address[](macounter);
         uint ind = 0;
         for(uint i = 0; i < macounter; i++){
             ind = i * 5 + 3;
             allAddr[i] = getMAaddr(ind);
+            address memory mar = getMAaddr(ind);
+            console.log(mar);
         }
         return allAddr;
     }
