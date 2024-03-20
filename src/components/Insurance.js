@@ -27,7 +27,7 @@ const Insurance = () => {
     let dID = web3.eth.abi.encodeParameter('uint256', contractForm.drug);
     let dcCode = web3.eth.abi.encodeParameter('uint256', contractForm.discountCode);
     let discountAmount = web3.eth.abi.encodeParameter('uint256', contractForm.discount);
-    await contract.methods.addDiscountInIN(dcCode, discountAmount, dID, config.id).send({ from: accounts[config.id]});
+    await contract.methods.addDiscountInIN(dcCode, discountAmount, dID, accounts[config.id]).send({ from: accounts[config.id]});
 
     // Logic to send contract, here you can implement your desired action
     console.log("Contract Sent:", contractForm);

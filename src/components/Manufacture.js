@@ -48,6 +48,7 @@ const Manufacture = () => {
       try {
           if (web3 && accounts && contract) {
               const drugs = await contract.methods.retrieveInventoryMAFront().call({ from: accounts[config.id] });
+              console.log(drugs);
               if (drugs) {
                 setInventoryData(drugs);
           }          
