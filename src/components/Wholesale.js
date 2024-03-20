@@ -8,6 +8,7 @@ const Wholesale = () => {
   
   const [inventory, setInventoryData] = useState([]);
   const [manufacturerIds, setmanufacturerIds] = useState([]);
+  const [pharmacyIds, setpharmacyIds] = useState([]);
   const [discounts, setdiscounts] = useState([]);
   const [requestsPH, setrequestsPH] = useState([]);
   const [requestsMA, setrequestsMA] = useState([]);
@@ -56,9 +57,8 @@ const Wholesale = () => {
     //function shipDrugWD(uint drugID, uint quant, uint PHaccNum, uint reqID) public onlyWD() 
     const dID = web3.eth.abi.encodeParameter('uint256', shipForm.drug);
     const uamount = web3.eth.abi.encodeParameter('uint256', shipForm.amount);
-    const phid = web3.eth.abi.encodeParameter('uint256', shipForm.pharmacyId);
     const reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
-    await contract.methods.shipDrugWD(dID, uamount, phid, reqID).send({ from: accounts[config.id]});
+    await contract.methods.shipDrugWD(dID, uamount, shipForm.pharmacyId, reqID).send({ from: accounts[config.id]});
     const newInv = await contract.methods.retrieveInventoryWDFront().call({from: accounts[config.id]});
     setInventoryData(newInv);
   };
@@ -144,6 +144,22 @@ const Wholesale = () => {
       }
   };
 
+  const getAllPH = async () => {
+    try {
+        if (web3 && accounts && contract) {
+            const PHs = await contract.methods.getAllPH().call();
+            if (PHs) {
+              console.log("Pharmacy IDs:");
+              PHs.forEach((id, index) => {
+              console.log(`ID ${index + 1}: ${id}`);
+              });
+              setpharmacyIds(PHs);
+            }
+        }
+    } catch (error) {
+        console.error('Error in retrieving inventory:', error);
+    }
+};
   const getAllMA = async () => {
     try {
         if (web3 && accounts && contract) {
@@ -200,6 +216,7 @@ const Wholesale = () => {
   };
 
   retrieveInventory();
+  getAllPH();
   getAllMA();
   getAllDiscounts();
   getAllRequestsPH();
@@ -324,11 +341,17 @@ const Wholesale = () => {
         <br />
         <label>
           Pharmacy ID:
-          <input
-            type="number"
+          <select
             value={shipForm.pharmacyId}
-            onChange={e => setShipForm({ ...shipForm, pharmacyId: parseInt(e.target.value, 10) })}
-          />
+            onChange={e => setShipForm({ ...shipForm, pharmacyId: e.target.value })}
+          >
+            <option value="">Select Pharmacy ID</option>
+            {pharmacyIds && pharmacyIds.map(ph => (
+              <option key={ph} value={ph}>
+                {ph}
+              </option>
+            ))}
+          </select>
         </label>
         <br />
         <button type="submit">Order</button>
