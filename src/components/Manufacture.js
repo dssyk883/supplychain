@@ -15,7 +15,7 @@ const Manufacture = () => {
   // Function to handle confirmation of incoming requests
   const handleConfirmRequest = async (id) => {
     // Logic to confirm the request, here we will remove the request from the list
-
+    console.log(id);
 
     let req = incomingRequests.filter(request => String(request.requestID) === id); 
     console.log("1", req.drugID);
