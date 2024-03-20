@@ -35,7 +35,7 @@ const Pharmacy = () => {
     console.log("Order Submitted:", orderForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
-    let dID = web3.eth.abi.encodeParameter('uint256', orderForm.drug.id);
+    let dID = web3.eth.abi.encodeParameter('uint256', orderForm.drug);
     let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
     let wdid = web3.eth.abi.encodeParameter('uint256', orderForm.wholesaleId);
     let dc = web3.eth.abi.encodeParameter('uint256', orderForm.discountCode);
