@@ -17,8 +17,6 @@ const Insurance = () => {
 
   // Function to handle sending a contract to manufacture
   const handleSendContract = async (e) => {
-
-
     e.preventDefault();
     // Handle order submission logic here
     console.log("Order Submitted:", contractForm);
@@ -63,14 +61,14 @@ const Insurance = () => {
   };
 
   useEffect(() => {
-
     const getAllDiscounts = async () => {
     try {
         if (web3 && accounts && contract) {
+            console.log("initialization worked");
             const DCs = await contract.methods.getAllDiscounts().call();
             if (DCs) {
+              console.log("Got discount arrays");
               // const filteredDiscounts = DCs.find(discount => discount.insurer === accounts[config.id]);       
-              const filteredDiscounts = await contract.methods.getAllDiscounts().call();
               setdiscounts(filteredDiscounts);
             }
         }
