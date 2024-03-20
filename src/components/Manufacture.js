@@ -60,7 +60,7 @@ const Manufacture = () => {
     const getAllRequests = async () => {
       try {
         if (web3 && accounts && contract) {
-            const Reqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
+            const Reqs = await contract.methods.getAllRequestsMA().send({ from: accounts[config.id] });
             Reqs.forEach((request, index) => {
               console.log(`Request ID: ${request.requestID}`);
               console.log(`Request ID: ${request.drugID}`);
