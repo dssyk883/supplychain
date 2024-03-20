@@ -35,10 +35,12 @@ const Pharmacy = () => {
     console.log("Order Submitted:", orderForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
+    let dID = web3.eth.abi.encodeParameter('uint256', orderForm.drug.id);
     let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
     let wdid = web3.eth.abi.encodeParameter('uint256', orderForm.wholesaleId);
     let dc = web3.eth.abi.encodeParameter('uint256', orderForm.discountCode);
-    await contract.methods.sendDrugRequestPH(orderForm.drug.id, amount, wdid, dc).send({ from: accounts[config.id] });
+    let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
+    await contract.methods.sendDrugRequestPH(dID, amount, wdid, dc).send({ from: accounts[config.id] });
   };
 
   // Function to handle drug selection
