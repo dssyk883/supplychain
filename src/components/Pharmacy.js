@@ -129,9 +129,9 @@ const Pharmacy = () => {
         {inventory && inventory.map((drug, index) => (
         <li key={index}>
           <h4>{drug.name}</h4>
-          <p>ID: {drug.id}</p>
-          <p>Price: {drug.price}</p>
-          <p>Quantity: {drug.quantity}</p>
+          <p>ID: {String(drug.id)}</p>
+          <p>Price: {String(drug.price)}</p>
+          <p>Quantity: {String(drug.quantity)}</p>
           <p>Current Owner: {drug.currentOwner}</p>
           <p>Manufacturer: {drug.manufacturer}</p>
           <p>Wholesale: {drug.wholesale}</p>
