@@ -74,7 +74,7 @@ const Wholesale = () => {
 
   const handleRequestSelect = (e) => {
     const selectedRequestID = e.target.value;
-    const selectedRequest = requestsPH.find(request => request.requestID === selectedRequestID);
+    const selectedRequest = requestsPH.find(request => String(request.requestID) === selectedRequestID);
     console.log(selectedRequest);
     setSelectedRequest(selectedRequest);
     setShipForm({ ...shipForm, requestId: selectedRequest.requestID});
@@ -102,12 +102,13 @@ const Wholesale = () => {
     try {
       if (web3 && accounts && contract) {
           const Reqs = await contract.methods.getAllRequestsWDPH().call({ from: accounts[config.id] });
-          Reqs.forEach((request, index) => {
-            console.log(`Request ID: ${request.requestID}`);
-            console.log(`Request ID: ${request.drugID}`);
-            console.log('----------');
-          });
           if (Reqs) {
+            Reqs.forEach((request, index) => {
+              console.log(`Request ID: ${request.requestID}`);
+              console.log(`Request ID: ${request.drugID}`);
+              console.log('----------');
+            });
+          
             setrequestsPH(Reqs);
           }
       }
