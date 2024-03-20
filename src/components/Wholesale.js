@@ -61,7 +61,7 @@ const Wholesale = () => {
     let reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
     let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
     let msgvalue = price * (amount + 1);
-    await contract.methods.sendDrugRequestWD(dID, amount, phid, reqID).send({ from: accounts[config.id], value: msgvalue});
+    await contract.methods.shipDrugWD(dID, amount, phid, reqID).call({ from: accounts[config.id]});
   };
 
     // Function to handle drug selection
