@@ -44,7 +44,7 @@ contract Insurer {
         return insurers.returnAddress(accNumber);
     }
 
-    function showAllIN() public view {
+    function showAllIN() public view returns (uint[] memory){
         uint[] memory indices = new uint[](incounter);
         uint ind = 0;
         for(uint i = 0; i < incounter; i++){

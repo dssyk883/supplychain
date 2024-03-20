@@ -44,7 +44,7 @@ contract Manufacturer {
         return manufacturers.returnAddress(accNumber);
     }
 
-    function showAllMA() public view {
+    function showAllMA() public view returns (uint[] memory) {
         uint[] memory indices = new uint[](macounter);
         uint ind = 0;
         for(uint i = 0; i < macounter; i++){
