@@ -31,8 +31,9 @@ const Manufacture = () => {
   };
 
   const showRequestsMA = async () => {
-    try {
+    // try {
       if (web3 && accounts && contract) {
+        console.log("Getting..")
           const Reqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
           Reqs.forEach((request, index) => {
             console.log(`Request ID: ${request.requestID}`);
@@ -43,9 +44,9 @@ const Manufacture = () => {
             setIncomingRequests(Reqs);
           }
       }
-    } catch (error) {
-      console.error('Error in retrieving inventory:', error);
-    }
+    // } catch (error) {
+      // console.error('Error in retrieving inventory:', error);
+    // }
 };
   const refreshInventory = async () => {
     try {
