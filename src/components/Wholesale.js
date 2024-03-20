@@ -302,7 +302,7 @@ const Wholesale = () => {
           Drug Request:
           <select
             value={shipForm.requestId}
-            onChange={e => setShipForm({ ...shipForm, requestId: parseInt(e.target.value) })}
+            onChange={handleRequestSelect}
           >
             <option value="">Select Request</option>
             {requestsPH && requestsPH.map(request => (
