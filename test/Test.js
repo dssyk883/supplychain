@@ -218,4 +218,4 @@ describe("Test Supply Chain contract", function () {
 //         // await contract.connect(MA_addr).retrieveInventoryMA();
 //         // await contract.connect(WD_addr).retrieveInventoryWD();
 //     })
-// });
+});
