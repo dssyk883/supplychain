@@ -10,6 +10,7 @@ const Pharmacy = () => {
 
   const [inventory, setInventoryData] = useState([]);
   const [wholesaleIds, setwholesaleIds] = useState([]);
+  const [discounts, setdiscounts] = useState([]);
   
   // State for form inputs
   const [orderForm, setOrderForm] = useState({
@@ -99,16 +100,12 @@ const Pharmacy = () => {
         console.error('Error in retrieving inventory:', error);
     }
 };
-const getAllDiscounts = async () => {
+  const getAllDiscounts = async () => {
   try {
       if (web3 && accounts && contract) {
-          const WDs = await contract.methods.getAllWD().call();
-          if (WDs) {
-            console.log("Wholesale Distributor IDs:");
-            WDs.forEach((id, index) => {
-            console.log(`ID ${index + 1}: ${id}`);
-            });
-            setwholesaleIds(WDs);
+          const DCs = await contract.methods.getAllDiscounts().call();
+          if (DCs) {
+            setdiscounts(DCs);
           }
       }
   } catch (error) {
@@ -118,6 +115,7 @@ const getAllDiscounts = async () => {
 
   retrieveInventory();
   getAllWD();
+  getAllDiscounts();
 }, [web3, accounts, contract]);
 
 
@@ -125,7 +123,7 @@ const getAllDiscounts = async () => {
     <div>
       <h2>Pharmacy | User ID: {config.id}</h2>
 
-      <h3>Plans</h3>
+      <h3>Drugs</h3>
       <ul>
         {/* Render drug information here */}
         {inventory && inventory.map((drug, index) => (
@@ -143,6 +141,19 @@ const getAllDiscounts = async () => {
         ))}
       </ul>
       
+      <h3>Discounts</h3>
+      <ul>
+        {/* Render drug information here */}
+        {discounts && discounts.map((discount, index) => (
+        <li key={index}>
+          <p>Discount code: {String(discount.discountCode)}</p>
+          <p>Drug ID: {String(discount.drugID)}</p>
+          <p>Discount price: {String(discount.discountPrice)}</p>
+          <p>Insurer: {discount.insurer}</p>
+        </li>
+        ))}
+      </ul>
+
       <h3>Order Form</h3>
       <form onSubmit={handleOrderSubmit}>
         <label>
