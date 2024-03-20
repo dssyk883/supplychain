@@ -24,11 +24,11 @@ const Insurance = () => {
     console.log("Order Submitted:", contractForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //function addDiscountInIN(uint dcCode, uint discountprice, uint drugID, address ins) 
-    console.log(contractForm.drug);
+    let dcCode = web3.eth.abi.encodeParameter('uint256', contractForm.discountCode);
+    console.log(dcCode);
     let dID = web3.eth.abi.encodeParameter('uint256', contractForm.drug);
     console.log("encoded dID");
     console.log(dID);
-    let dcCode = web3.eth.abi.encodeParameter('uint256', contractForm.discountCode);
     let discountAmount = web3.eth.abi.encodeParameter('uint256', contractForm.discount);
     await contract.methods.addDiscountInIN(dcCode, discountAmount, dID, accounts[config.id]).send({ from: accounts[config.id]});
 
@@ -68,7 +68,7 @@ const Insurance = () => {
         if (web3 && accounts && contract) {
             const DCs = await contract.methods.getAllDiscounts().call();
             if (DCs) {
-              const filteredDiscounts = DCs.filter(discount => discount.insurer === accounts[config.id]);       
+              const filteredDiscounts = DCs.find(discount => discount.insurer === accounts[config.id]);       
               setdiscounts(filteredDiscounts);
             }
         }
@@ -95,7 +95,7 @@ const Insurance = () => {
             <input
               type="number"
               value={contractForm.drug}
-              onChange={e => setContractForm({ ...contractForm, drug: parseInt(e.target.value) })}
+              onChange={e => setContractForm({ ...contractForm, drug: parseInt(e.target.value, 10) })}
             />
           </label>
           <br />
@@ -104,7 +104,7 @@ const Insurance = () => {
             <input
               type="number"
               value={contractForm.discountCode}
-              onChange={e => setContractForm({ ...contractForm, discountCode: parseInt(e.target.value) })}
+              onChange={e => setContractForm({ ...contractForm, discountCode: parseInt(e.target.value, 10) })}
             />
           </label>
           <label>
@@ -112,7 +112,7 @@ const Insurance = () => {
             <input
               type="number"
               value={contractForm.discount}
-              onChange={e => setContractForm({ ...contractForm, discount: parseInt(e.target.value) })}
+              onChange={e => setContractForm({ ...contractForm, discount: parseInt(e.target.value, 10) })}
             />
           </label>
           <button type="submit">Send Contract</button>
