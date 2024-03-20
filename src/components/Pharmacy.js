@@ -28,14 +28,15 @@ const Pharmacy = () => {
   //const wholesaleIds = config.wholesaleIds;
 
   // Function to handle order form submission
-  const handleOrderSubmit = (e) => {
+  const handleOrderSubmit = async (e) => {
     e.preventDefault();
     // Handle order submission logic here
     console.log("Order Submitted:", orderForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
     let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
-    contract.methods.sendDrugRequestPH(orderForm.drug.id, amount, orderForm.wholesaleId, orderForm.discountCode).send({ from: this.state.account });
+    let wdid = web3.eth.abi.encodeParameter('uint256', orderForm.wholesaleId);
+    await contract.methods.sendDrugRequestPH(orderForm.drug.id, amount, wdid, orderForm.discountCode).send({ from: accounts[config.id] });
   };
 
   // Function to handle drug selection
@@ -212,7 +213,7 @@ const Pharmacy = () => {
           <input
             type="number"
             value={orderForm.wholesaleId}
-            onChange={e => setOrderForm({ ...orderForm, wholesaleId: parseInt(e.target.value) })}
+            onChange={e => setOrderForm({ ...orderForm, wholesaleId: parseInt(e.target.value, 10) })}
           />
         </label>
         <br />
