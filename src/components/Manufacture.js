@@ -16,16 +16,10 @@ const Manufacture = () => {
   const handleConfirmRequest = async (id) => {
     // Logic to confirm the request, here we will remove the request from the list
 
-    let req = incomingRequests.filter(request => String(request.requestID) === id); 
-    console.log("1", req.drugID);
-
-    let dID = web3.eth.abi.encodeParameter('uint256', req.drugID);
-    console.log("2");
-    let quantity = web3.eth.abi.encodeParameter('uint256', req.quant);
-    console.log("3");
-    let rID = web3.eth.abi.encodeParameter('uint256', req.requestID);
+    let req = incomingRequests.find(request => String(request.requestID) === id); 
     try {
-      await contract.methods.shipDrugMA(req.drugID, req.quant, req.sender, req.requestID)
+      //function shipDrugMA(uint drugID, uint quant, address toWDaddr, uint reqID) public onlyMA() {
+      await contract.methods.shipDrugMA(req.drugID, req.quant, req.sender, req.requestID).send({ from: accounts[config.id] });
     } catch (error){
       console.error('Error in Shipping Drugs:', error)
     }
