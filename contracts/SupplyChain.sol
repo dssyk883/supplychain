@@ -114,7 +114,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
     
     //Adding drug information about drug id, name, and price
-    function addDrug(string storage name, uint price) public {
+    function addDrug(string memory name, uint price) public {
         uint dID = drugCount;
         drugs[drugCount++] = Drug(dID, name, price, 0, address(0), address(0), address(0), address(0), false);
         emit DrugAdded(dID, name, 0, price);
@@ -366,50 +366,50 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         // if index == len, it's not found
     }
 
-    function retrieveInventoryPHFront() public view onlyPH() returns (Drug[] storage) {
+    function retrieveInventoryPHFront() public view onlyPH() returns (Drug[] memory) {
         return pharmacyInventory[msg.sender];
     }
 
-    function retrieveInventoryWDFront() public view onlyWD() returns (Drug[] storage) {
+    function retrieveInventoryWDFront() public view onlyWD() returns (Drug[] memory) {
         uint q = wholesaleInventory[msg.sender][0].quantity;
         console.log("retrieve inventory wd front");
         console.log(q);
         return wholesaleInventory[msg.sender];
     }
 
-    function retrieveInventoryMAFront() public view onlyWD() returns (Drug[] storage) {
+    function retrieveInventoryMAFront() public view onlyWD() returns (Drug[] memory) {
         return wholesaleInventory[msg.sender];
     }
 
-    function getAllWD() public view returns (uint[] storage) {
+    function getAllWD() public view returns (uint[] memory) {
         return super.showAllWD();
     }
 
-    function getAllPH() public view returns (uint[] storage) {
+    function getAllPH() public view returns (uint[] memory) {
         return super.showAllPH();
     }
 
-    function getAllMA() public view returns (uint[] storage) {
+    function getAllMA() public view returns (uint[] memory) {
         return super.showAllMA();
     }
 
-    function getAllIN() public view returns (uint[] storage) {
+    function getAllIN() public view returns (uint[] memory) {
         return super.showAllIN();
     }
 
-    function getAllDiscounts() public view returns (Discount[] storage) {
+    function getAllDiscounts() public view returns (Discount[] memory) {
         return discountCodes;
     }
 
-    function getAllRequestsPH() public view returns (DrugRequest[] storage) {
+    function getAllRequestsPH() public view returns (DrugRequest[] memory) {
         return pharmacyRequests[msg.sender];
     }
 
-    function getAllRequestsWDPH() public view returns (DrugRequest[] storage) {
+    function getAllRequestsWDPH() public view returns (DrugRequest[] memory) {
         return wholesaleRequestsFromPH[msg.sender];
     }
 
-    function getAllRequestsWDMA() public view returns (DrugRequest[] storage) {
+    function getAllRequestsWDMA() public view returns (DrugRequest[] memory) {
         return wholesaleRequestsToMA[msg.sender];
     }
 
@@ -422,22 +422,22 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function getRequestIDWD() external view returns (uint) {
-        DrugRequest[] storage thisRequest = wholesaleRequestsFromPH[msg.sender];
+        DrugRequest[] memory thisRequest = wholesaleRequestsFromPH[msg.sender];
         return thisRequest[0].requestID;
     }
 
     function getRequestIDPH() external view returns (uint) {
-        DrugRequest[] storage thisRequest = pharmacyRequests[msg.sender];
+        DrugRequest[] memory thisRequest = pharmacyRequests[msg.sender];
         return thisRequest[0].requestID;
     }
 
     function getRequestIDMA() external view returns (uint) {
-        DrugRequest[] storage thisRequest = manufacturerRequests[msg.sender];
+        DrugRequest[] memory thisRequest = manufacturerRequests[msg.sender];
         return thisRequest[0].requestID;
     }
 
     function getRequestIDWDMA() external view returns (uint) {
-        DrugRequest[] storage thisRequest = wholesaleRequestsToMA[msg.sender];
+        DrugRequest[] memory thisRequest = wholesaleRequestsToMA[msg.sender];
         return thisRequest[0].requestID;
     }
 
