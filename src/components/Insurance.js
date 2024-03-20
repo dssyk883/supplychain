@@ -24,7 +24,10 @@ const Insurance = () => {
     console.log("Order Submitted:", contractForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //function addDiscountInIN(uint dcCode, uint discountprice, uint drugID, address ins) 
+    console.log(contractForm.drug);
     let dID = web3.eth.abi.encodeParameter('uint256', contractForm.drug);
+    console.log("encoded dID");
+    console.log(dID);
     let dcCode = web3.eth.abi.encodeParameter('uint256', contractForm.discountCode);
     let discountAmount = web3.eth.abi.encodeParameter('uint256', contractForm.discount);
     await contract.methods.addDiscountInIN(dcCode, discountAmount, dID, accounts[config.id]).send({ from: accounts[config.id]});
