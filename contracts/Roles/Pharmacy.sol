@@ -49,7 +49,7 @@ contract Pharmacy {
         address[] memory allAddr = new address[](phcounter);
         uint ind = 0;
         for(uint i = 0; i < phcounter; i++){
-            ind = i * 5 + 1;
+            ind = i * 5;
             allAddr[i] = getPHaddr(ind);
         }
         return allAddr;
