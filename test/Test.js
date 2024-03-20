@@ -226,7 +226,7 @@ describe("Test Supply Chain contract", function () {
         console.log("Requesting 50 units of Drug 0")
 
         const reqID =  await contract.connect(MA_addr).getRequestIDMA();
-        await expect(contract.connect(MA_addr).shipDrugMA(0, 50, 1, reqID))
+        await expect(contract.connect(MA_addr).shipDrugMA(0, 250, 1, reqID))
         .to.be.revertedWith("Not enough drug quantity in the inventory.");
         await contract.connect(MA_addr).retrieveInventoryMA();
         await contract.connect(WD_addr).retrieveInventoryWD();
