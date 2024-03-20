@@ -17,8 +17,8 @@ const Pharmacy = () => {
     amount: 0,
     drug: 0,
     price: 0,
-    discountCode: '',
-    wholesaleId: ''
+    discountCode: 0,
+    wholesaleId: 0
   });
 
   // State to track selected drug and its coverage plans
