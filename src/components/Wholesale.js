@@ -59,8 +59,6 @@ const Wholesale = () => {
     let amount = web3.eth.abi.encodeParameter('uint256', shipForm.amount);
     let phid = web3.eth.abi.encodeParameter('uint256', shipForm.pharmacyId);
     let reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
-    let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
-    let msgvalue = price * (amount + 1);
     await contract.methods.shipDrugWD(dID, amount, phid, reqID).call({ from: accounts[config.id]});
   };
 
@@ -139,6 +137,20 @@ const retrieveInventory = async () => {
           const drugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
           if (drugs) {
             setInventoryData(drugs);
+            // Log each drug's details
+              drugs.forEach((drug, index) => {
+              console.log(`Drug ${index + 1}:`);
+              console.log(`ID: ${drug.id}`);
+              console.log(`Name: ${drug.name}`);
+              console.log(`Price: ${drug.price}`);
+              console.log(`Quantity: ${drug.quantity}`);
+              console.log(`Current Owner: ${drug.currentOwner}`);
+              console.log(`Manufacturer: ${drug.manufacturer}`);
+              console.log(`Wholesale: ${drug.wholesale}`);
+              console.log(`Pharmacy: ${drug.pharmacy}`);
+              console.log(`Is Sold Out: ${drug.isSoldOut}`);
+              console.log('----------');
+            });
       }          
       }
   } catch (error) {
@@ -153,20 +165,6 @@ const retrieveInventory = async () => {
               const drugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
               if (drugs) {
                 setInventoryData(drugs);
-            // // Log each drug's details
-            //   drugs.forEach((drug, index) => {
-            //   console.log(`Drug ${index + 1}:`);
-            //   console.log(`ID: ${drug.id}`);
-            //   console.log(`Name: ${drug.name}`);
-            //   console.log(`Price: ${drug.price}`);
-            //   console.log(`Quantity: ${drug.quantity}`);
-            //   console.log(`Current Owner: ${drug.currentOwner}`);
-            //   console.log(`Manufacturer: ${drug.manufacturer}`);
-            //   console.log(`Wholesale: ${drug.wholesale}`);
-            //   console.log(`Pharmacy: ${drug.pharmacy}`);
-            //   console.log(`Is Sold Out: ${drug.isSoldOut}`);
-            //   console.log('----------');
-            // });
           }          
           }
       } catch (error) {
