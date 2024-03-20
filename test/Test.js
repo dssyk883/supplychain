@@ -9,6 +9,27 @@ describe("Test Supply Chain contract", function () {
         [PH_addr, WD_addr, IN_addr, MA_addr] = await ethers.getSigners();
         const TestContract = await ethers.getContractFactory("SupplyChain");
         contract = await TestContract.deploy();
+        await contract.addDrug('A', 5);
+        await contract.addDrug('B', 10);
+        await contract.addDrug('C', 15);
+        await contract.addDrug('D', 20);
+        await contract.addDrug('E', 25);
+        await contract.addDrug('F', 30);
+        await contract.addDrug('G', 35);
+        await contract.addDrug('H', 40);
+        await contract.addDrug('I', 45);
+        await contract.addDrug('J', 50);
+        await contract.addDrug('K', 55);
+        await contract.addDrug('L', 60);
+        await contract.addDrug('M', 65);
+        await contract.addDrug('N', 70);
+        await contract.addDrug('O', 75);
+        await contract.addDrug('P', 80);
+        await contract.addDrug('Q', 85);
+        await contract.addDrug('R', 90);
+        await contract.addDrug('S', 95);
+        await contract.addDrug('T', 100);
+
 
     });
 
