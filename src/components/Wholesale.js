@@ -131,14 +131,14 @@ const Wholesale = () => {
     }
 };
 
-const retrieveInventory = async () => {
+const refreshInventory = async () => {
   try {
       if (web3 && accounts && contract) {
-          const drugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
-          if (drugs) {
-            setInventoryData(drugs);
+          const newdrugs = await contract.methods.retrieveInventoryWDFront().call({ from: accounts[config.id] });
+          if (newdrugs) {
+            setInventoryData(newdrugs);
             // Log each drug's details
-              drugs.forEach((drug, index) => {
+              newdrugs.forEach((drug, index) => {
               console.log(`Drug ${index + 1}:`);
               console.log(`ID: ${drug.id}`);
               console.log(`Name: ${drug.name}`);
@@ -237,7 +237,7 @@ const retrieveInventory = async () => {
   return (
     <div>
       <h2>Wholesale | User Id: {config.id}</h2>
-      <button onClick={retrieveInventory}> Refresh Inventory </button>      
+      <button onClick={refreshInventory}> Refresh Inventory </button>      
       <h3>Drugs</h3>
       <ul>
         {/* Render drug information here */}
