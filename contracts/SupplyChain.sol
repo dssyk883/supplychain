@@ -215,7 +215,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         wholesaleRequestsFromPH[msg.sender][findreqWD].confirmed = true;
         pharmacyRequests[toPHaddr][findreqPH].manufacturer = wholesaleInventory[msg.sender][findDrugWD].manufacturer;
 
-        console.log("Drug A Amount: ", wholesaleInventory[msg.sender][0].quantity);
+        console.log("Drug A Amount: ", wholesaleInventory[msg.sender][0]);
         console.log("Drug Request: ", wholesaleRequestsFromPH[msg.sender][findreqWD]);
         emit ShipDrugByWD(drugID, quant, PHaccNum);
     }
