@@ -17,7 +17,7 @@ const Manufacture = () => {
     // Logic to confirm the request, here we will remove the request from the list
 
 
-    let req = incomingRequests.filter(request => request.requestID === id); 
+    let req = incomingRequests.filter(request => String(request.requestID) === id); 
     let dID = web3.eth.abi.encodeParameter('uint256', req.drugID);
     let quantity = web3.eth.abi.encodeParameter('uint256', req.quant);
     let rID = web3.eth.abi.encodeParameter('uint256', req.requestID);
@@ -27,7 +27,7 @@ const Manufacture = () => {
       console.error('Error in Shipping Drugs:', error)
     }
     refreshInventory();
-    setIncomingRequests(incomingRequests.filter(request => request.requestID !== id));
+    setIncomingRequests(incomingRequests.filter(request => String(request.requestID) !== id));
     
     
   };
@@ -112,9 +112,9 @@ const Manufacture = () => {
         <button onClick={showRequestsMA}> Show Incoming Requests </button>
         <ul>
           {incomingRequests.map(request => (
-            <li key={request.requestID}>
+            <li key={String(request.requestID)}>
               {String(request.quant)} units of {String(request.drugID)} - 
-              <button onClick={() => handleConfirmRequest(request.requestID)}>Confirm Request</button>
+              <button onClick={() => handleConfirmRequest(String(request.requestID))}>Confirm Request</button>
             </li>
           ))}
         </ul>
