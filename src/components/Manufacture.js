@@ -35,13 +35,14 @@ const Manufacture = () => {
     // try {
       if (web3 && accounts && contract) {
         console.log("Getting..")
-          const Reqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
-          Reqs.forEach((request, index) => {
-            console.log(`Request ID: ${request.requestID}`);
-            console.log(`Request ID: ${request.drugID}`);
-            console.log('----------');
-          });
-          if (Reqs) {
+          const AllReqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
+          // Reqs.forEach((request, index) => {
+          //   console.log(`Request ID: ${request.requestID}`);
+          //   console.log(`Request ID: ${request.drugID}`);
+          //   console.log('----------');
+          // });
+          if (AllReqs) {
+            let Reqs = AllReqs.filter(req => req.confirmed === true);      
             setIncomingRequests(Reqs);
           }
       }
@@ -81,15 +82,16 @@ const Manufacture = () => {
         if (web3 && accounts && contract) {
             const Reqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
             
-            console.log(Reqs);
-            if (Reqs) {
-              Reqs.forEach((request, index) => {
-                console.log(`Request ID: ${request.requestID}`);
-                console.log(`Request ID: ${request.drugID}`);
-                console.log('----------');
-              });
-              setIncomingRequests(Reqs);
-            }
+            const AllReqs = await contract.methods.getAllRequestsMA().call({ from: accounts[config.id] });
+          // Reqs.forEach((request, index) => {
+          //   console.log(`Request ID: ${request.requestID}`);
+          //   console.log(`Request ID: ${request.drugID}`);
+          //   console.log('----------');
+          // });
+          if (AllReqs) {
+            let Reqs = AllReqs.filter(req => req.confirmed === true);      
+            setIncomingRequests(Reqs);
+          }
         }
       } catch (error) {
         console.error('Error in retrieving requests:', error);
