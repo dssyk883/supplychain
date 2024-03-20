@@ -19,9 +19,11 @@ const Manufacture = () => {
     let req = incomingRequests.find(request => String(request.requestID) === id); 
     try {
       //function shipDrugMA(uint drugID, uint quant, address toWDaddr, uint reqID) public onlyMA() {
+      console.time('shipDrug');
       await contract.methods.shipDrugMA(req.drugID, req.quant, req.sender, req.requestID).send({ from: accounts[config.id] });
+      console.timeEnd('shipDrug');
     } catch (error){
-      console.error('Error in Shipping Drugs:', error)
+      console.error('Error in Shipping Drugs:', error);
     }
     refreshInventory();
     // setIncomingRequests(incomingRequests.filter(request => String(request.requestID) !== id));
