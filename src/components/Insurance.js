@@ -33,6 +33,7 @@ const Insurance = () => {
     console.log("Contract Sent:", contractForm);
     // Reset the form fields after sending the contract
     setContractForm({ drug: '', discountCode: '', discount: '' });
+    showDiscounts();
   };
 
   // Function to handle sending discount codes to pharmacies
@@ -42,6 +43,20 @@ const Insurance = () => {
   //   // Clear the received discount codes after sending
   //   setReceivedDiscountCodes([]);
   // };
+
+  const showDiscounts = async () => {
+    try {
+      if (web3 && accounts && contract) {
+          const Reqs = await contract.methods.getAllDiscounts().call();
+          if (DCs) {
+            const filteredDiscounts = DCs.filter(discount => discount.insurer === accounts[config.id]);       
+            setdiscounts(filteredDiscounts);
+          }
+      }
+    } catch (error) {
+      console.error('Error in retrieving discount codes:', error);
+    }
+  };
 
   useEffect(() => {
 
