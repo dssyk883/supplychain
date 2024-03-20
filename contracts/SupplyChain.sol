@@ -98,6 +98,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         addInitialDrugsWD();
         addInitialDrugsMA();
         addInitialDiscounts();
+        console.log("Contructor called");
     }
 
     function addPHaccounts() public {
