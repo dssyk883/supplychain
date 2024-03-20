@@ -175,7 +175,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         onlyPH()   {
         uint drugIDinDiscount = discountCodes[findDCcode(dcCode)].drugID;
         require(drugIDinDiscount == drugID, "This discount cannot be applied to this drug.");
-        uint totalPrice = (drugs[drugID].price - discountCodes[dcCode].discountPrice) * quant;
+        uint totalPrice = (drugs[drugID].price - discountCodes[findDCcode(dcCode)].discountPrice) * quant;
         address payable toWDaddr = payable(super.getWDaddr(WDaccNum));
         require(totalPrice <= msg.value/(10**18), "Insufficient fund.");
 

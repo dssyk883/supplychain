@@ -103,7 +103,7 @@ describe("Test Supply Chain contract", function () {
     it("WD: Requested Drug is not valid", async function () {
         // Add Discount code
         // Request Drug Shipment
-        await expect(contract.connect(PH_addr).sendDrugRequestPH(1, 10, 1, 101, {value: ethers.parseEther("270")}))
+        await expect(contract.connect(PH_addr).sendDrugRequestPH(1, 10, 1, 202, {value: ethers.parseEther("190")}))
         .to.emit(contract, "SendRequestByPH")
         .withArgs(1, 10, 50, WD_addr);
 
