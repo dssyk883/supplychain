@@ -30,6 +30,12 @@ const Wholesale = () => {
     requestId: 0,
   });
 
+  const [confirmForm, setConfirmForm] = useState({
+    amount: 0,
+    requestId: 0,
+    manufacturerId: 0
+  });
+
   const [selectedDrug, setSelectedDrug] = useState(null);
   const [selectedDrugShip, setSelectedDrugShip] = useState(null);
 
@@ -63,6 +69,19 @@ const Wholesale = () => {
     setInventoryData(newInv);
   };
 
+  const handleConfirmShipment = async (e) => {
+    e.preventDefault();
+    // Handle order submission logic here
+    console.log("Order Submitted:", confirmForm);
+    //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
+    //function confirmDrugShipmentWD(uint reqID, uint quant, address toMAaddr) public onlyWD() {
+    let amount = web3.eth.abi.encodeParameter('uint256', confirmForm.amount);
+    let reqID = web3.eth.abi.encodeParameter('uint256', confirmForm.requestId);
+    await contract.methods.confirmDrugShipmentWD(reqID, amount, confirmForm.manufacturerId).send({ from: accounts[config.id]});
+    const newInv = await contract.methods.retrieveInventoryWDFront().call({from: accounts[config.id]});
+    setInventoryData(newInv);
+  };
+
     // Function to handle drug selection
   const handleDrugSelect = (e) => {
     const selectedDrugName = e.target.value;
@@ -90,6 +109,19 @@ const Wholesale = () => {
       // Handle the case where no request is found, e.g., reset to default values
       console.log("No request found with ID:", selectedRequestID);
       setShipForm({ ...shipForm, requestId: '' }); // Reset or handle as appropriate
+    }
+  };
+
+  const handleRequestMASelect = (e) => {
+    const selectedRequestID = e.target.value;
+    console.log(e.target.value);
+    const selectedRequest = requestsMA.find(request => String(request.requestID) === selectedRequestID);
+    if (selectedRequest) {
+      setConfirmForm({ ...confirmForm, requestId: selectedRequest.requestID });
+    } else {
+      // Handle the case where no request is found, e.g., reset to default values
+      console.log("No request found with ID:", selectedRequestID);
+      setConfirmForm({ ...confirmForm, requestId: '' }); // Reset or handle as appropriate
     }
   };
 
@@ -411,6 +443,51 @@ const Wholesale = () => {
         <br />
         <button type="submit">Order</button>
       </form>
+
+        <h3>Confirm Drug Shipment Form from Manufacturer</h3>
+      <form onSubmit={handleConfirmShipment}>
+        <label>
+          Amount:
+          <input
+            type="number"
+            value={confirmForm.amount}
+            onChange={e => setConfirmForm({ ...confirmForm, amount: parseInt(e.target.value) })}
+          />
+        </label>
+        <br />
+        <label>
+          Drug Request:
+          <select
+            value={String(confirmForm.requestId)}
+            onChange={handleRequestMASelect}
+          >
+            <option value="">Select Request</option>
+            {requestsMA && requestsMA.map(request => (
+              <option key={String(request.requestID)} value={String(request.requestID)}>
+                {String(request.requestID)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <label>
+          Manufacturer ID:
+          <select
+            value={confirmForm.manufacturerId}
+            onChange={e => setConfirmForm({ ...confirmForm, manufacturerId: e.target.value })}
+          >
+            <option value="">Select Wholesale ID</option>
+            {manufacturerIds && manufacturerIds.map(ma => (
+              <option key={ma} value={ma}>
+                {ma}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <button type="submit">Order</button>
+      </form>
+        
       
 
     </div>

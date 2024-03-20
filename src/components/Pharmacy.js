@@ -53,7 +53,7 @@ const Pharmacy = () => {
   const handleConfirmShipment = async (e) => {
     e.preventDefault();
     // Handle order submission logic here
-    console.log("Order Submitted:", orderForm);
+    console.log("Order Submitted:", confirmForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //function confirmDrugShipmentPH(uint reqID, uint quant, uint WDaccNum) public onlyPH() {
     let amount = web3.eth.abi.encodeParameter('uint256', confirmForm.amount);
@@ -85,18 +85,6 @@ const Pharmacy = () => {
     }
   };
 
-  const handleWDselect = (e) => {
-    const selectedWDnum = e.target.value;
-    console.log(e.target.value);
-    const selectedWDIndex = wholesaleIds.findIndex(wd => String(wd) === selectedWDnum);
-    if (selectedWDIndex !== -1) {
-      setConfirmForm({ ...confirmForm, wholesaleId: wholesaleIds[selectedWDIndex] });
-    } else {
-      // Handle the case where no request is found, e.g., reset to default values
-      console.log("No request found with ID:", selectedWDnum);
-      setConfirmForm({ ...confirmForm, wholesaleId: '' }); // Reset or handle as appropriate
-    }
-  };
 
   const showRequests = async () => {
     try {
