@@ -30,6 +30,7 @@ const Wholesale = () => {
   });
 
   const [selectedDrug, setSelectedDrug] = useState(null);
+  const [selectedDrugShip, setSelectedDrugShip] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
 
   // Function to handle adding bulk order
@@ -72,6 +73,14 @@ const Wholesale = () => {
     setOrderForm({ ...orderForm, drug: selectedDrugData.id, drugName: selectedDrugData.name, price: selectedDrugData.price }); // Reset discount code and price when drug changes
   };
 
+  const handleShipDrugSelect = (e) => {
+    const selectedDrugName = e.target.value;
+    const selectedDrugData = inventory.find(drug => drug.name === selectedDrugName);
+    console.log(selectedDrugData);
+    setSelectedDrugShip(selectedDrugData);
+    setShipForm({ ...shipForm, drug: selectedDrugData.id, drugName: selectedDrugData.name, price: selectedDrugData.price }); // Reset discount code and price when drug changes
+  };
+  
   const handleRequestSelect = (e) => {
     const selectedRequestID = e.target.value;
     const selectedRequest = requestsPH.find(request => String(request.requestID) === selectedRequestID);
@@ -296,7 +305,7 @@ const Wholesale = () => {
           Drug:
           <select
             value={shipForm.drugName}
-            onChange={handleDrugSelect}
+            onChange={handleShipDrugSelect}
           >
             <option value="">Select Drug</option>
             {inventory && inventory.map(drug => (
