@@ -31,8 +31,8 @@ const Pharmacy = () => {
     e.preventDefault();
     // Handle order submission logic here
     console.log("Order Submitted:", orderForm);
-    //TODO: change this
-    this.state.contract.methods.sendDrugRequestPH(e.target.setText.value).send({ from: this.state.account });
+    //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
+    this.state.contract.methods.sendDrugRequestPH(orderForm.drug.id, orderForm.amount, orderForm.wholesaleId, 101).send({ from: this.state.account });
   };
 
   // Function to handle drug selection
@@ -98,6 +98,22 @@ const Pharmacy = () => {
     } catch (error) {
         console.error('Error in retrieving inventory:', error);
     }
+};
+const getAllDiscounts = async () => {
+  try {
+      if (web3 && accounts && contract) {
+          const WDs = await contract.methods.getAllWD().call();
+          if (WDs) {
+            console.log("Wholesale Distributor IDs:");
+            WDs.forEach((id, index) => {
+            console.log(`ID ${index + 1}: ${id}`);
+            });
+            setwholesaleIds(WDs);
+          }
+      }
+  } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+  }
 };
 
   retrieveInventory();
@@ -187,7 +203,7 @@ const Pharmacy = () => {
             <option value="">Select Wholesale ID</option>
             {wholesaleIds.map(id => (
               <option key={id} value={id}>
-                {id}
+                {String(id)}
               </option>
             ))}
           </select>

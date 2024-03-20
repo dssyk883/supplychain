@@ -21,7 +21,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     mapping (address => DrugRequest[]) manufacturerRequests;
 
     // Discount code to discount contract 
-    mapping (uint => Discount) discountCodes;
+    Discount[] public discountCodes;
 
     // entity => (Drug array) so that we can retrieve each inventory 
     mapping(address => Drug[]) pharmacyInventory;
@@ -96,7 +96,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         addDrugInPH(1, 5, address(0x70997970C51812dc3A010C7d01b50e0d17dc79C8), address(0x90F79bf6EB2c4f870365E785982E1f101E93b906));
         
         addInitialDrugsMA();
-        // addInitialDiscounts();
+        addInitialDiscounts();
     }
 
     function addPHaccounts() public {
@@ -163,16 +163,17 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         emit DrugAddedWD(dID, quant, msg.sender);
     }
 
-    function addDiscountInIN(uint dcCode, uint discountprice, uint drugID, uint INaccNum) public onlyIN() {
+    //onlyIN
+    function addDiscountInIN(uint dcCode, uint discountprice, uint drugID, uint INaccNum) public  {
         address ins = super.getINaddr(INaccNum);
-        discountCodes[dcCode] = Discount(dcCode, ins, drugID, discountprice, block.timestamp);
+        discountCodes.push(Discount(dcCode, ins, drugID, discountprice, block.timestamp));
         emit DiscountCodeAddedIN(dcCode, drugID, msg.sender);
     }
     //----------------------------------------------
 
     function sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)  public payable 
         onlyPH()   {
-        uint drugIDinDiscount = discountCodes[dcCode].drugID;
+        uint drugIDinDiscount = discountCodes[findDCcode(dcCode)].drugID;
         require(drugIDinDiscount == drugID, "This discount cannot be applied to this drug.");
         uint totalPrice = (drugs[drugID].price - discountCodes[dcCode].discountPrice) * quant;
         address payable toWDaddr = payable(super.getWDaddr(WDaccNum));
@@ -423,6 +424,14 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
             console.log("-------------------------------");
             i++;
         }
+    }
+
+    function findDCcode(uint dc) public view returns (uint) {
+        uint ind = discountCodes.length;
+        for(uint i = 0; i < discountCodes.length; i++){
+            if(discountCodes[i].discountCode == dc) ind = i;
+        }
+        return ind;
     }
 
     function getRequestIDWD() external view returns (uint) {
