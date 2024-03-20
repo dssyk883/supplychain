@@ -175,10 +175,11 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         onlyPH()   {
         uint drugIDinDiscount = discountCodes[findDCcode(dcCode)].drugID;
         require(drugIDinDiscount == drugID, "This discount cannot be applied to this drug.");
+        console.log(msg.value);
         uint totalPrice = (drugs[drugID].price - discountCodes[findDCcode(dcCode)].discountPrice) * quant;
         address payable toWDaddr = payable(super.getWDaddr(WDaccNum));
         require(totalPrice <= msg.value/(10**18), "Insufficient fund.");
-
+        
         uint reqID = drugID + quant + dcCode + WDaccNum + block.timestamp%1000;
         pharmacyRequests[msg.sender].push(DrugRequest(reqID, drugID, quant, totalPrice, dcCode, msg.sender, toWDaddr, address(0),false));
         wholesaleRequestsFromPH[toWDaddr].push(DrugRequest(reqID, drugID, quant, totalPrice, dcCode, msg.sender, toWDaddr, address(0), false));
