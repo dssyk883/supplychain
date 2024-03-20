@@ -24,11 +24,24 @@ const Manufacture = () => {
     } catch (error){
       console.error('Error in Shipping Drugs:', error)
     }
-    const newInv = await contract.methods.retrieveInventoryWDFront().call({from: accounts[config.id]});
+    refreshInventory(newInv);
     setIncomingRequests(incomingRequests.filter(request => request.id !== id));
-    setInventoryData(newInv);
+    
     
   };
+
+  const refreshInventory = async () => {
+    try {
+        if (web3 && accounts && contract) {
+            const drugs = await contract.methods.retrieveInventoryMAFront().call({ from: accounts[config.id] });
+            if (drugs) {
+              setInventoryData(drugs);
+        }          
+        }
+    } catch (error) {
+        console.error('Error in retrieving inventory:', error);
+    }
+};
 
   useEffect(() => {
     const retrieveInventory = async () => {
