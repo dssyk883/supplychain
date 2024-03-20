@@ -65,6 +65,19 @@ const Pharmacy = () => {
     }
   };
 
+  const showRequests = async () => {
+    try {
+      if (web3 && accounts && contract) {
+          const Reqs = await contract.methods.getAllRequests().call({ from: accounts[config.id] });
+          if (Reqs) {
+            setrequests(Reqs);
+          }
+      }
+    } catch (error) {
+      console.error('Error in retrieving inventory:', error);
+  }
+  };
+
 
   useEffect(() => {
     const retrieveInventory = async () => {
@@ -177,7 +190,7 @@ const Pharmacy = () => {
         </li>
         ))}
       </ul>
-
+      <button onClick={showRequests}> Show Request </button>
       <h3>Drug Requests (to wholesale) </h3>
       <ul>
         {/* Render drug information here */}
