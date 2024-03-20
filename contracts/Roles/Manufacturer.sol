@@ -59,7 +59,7 @@ contract Manufacturer {
         address[] memory allAddr = new address[](macounter);
         uint ind = 0;
         for(uint i = 0; i < macounter; i++){
-            ind = i * 5 + 1;
+            ind = i * 5 + 3;
             allAddr[i] = getMAaddr(ind);
         }
         return allAddr;
