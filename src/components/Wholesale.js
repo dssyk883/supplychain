@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import config from '../config/config.json';
 import { useContractInitialization } from './Contract';
 import { ethers } from 'ethers';
@@ -104,7 +104,6 @@ const Wholesale = () => {
 
   retrieveInventory();
   getAllMA();
-  getAllWD();
   getAllDiscounts();
   getAllRequestsPH();
   getAllRequestsMA();
