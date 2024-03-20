@@ -21,7 +21,7 @@ const Insurance = () => {
 
     e.preventDefault();
     // Handle order submission logic here
-    console.log("Order Submitted:", orderForm);
+    console.log("Order Submitted:", contractForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
     //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
     let dID = web3.eth.abi.encodeParameter('uint256', contractForm.drug);
