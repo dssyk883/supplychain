@@ -37,6 +37,15 @@ const Wholesale = () => {
     
   };
 
+    // Function to handle drug selection
+  const handleDrugSelect = (e) => {
+    const selectedDrugName = e.target.value;
+    const selectedDrugData = inventory.find(drug => drug.name === selectedDrugName);
+    console.log(selectedDrugData);
+    setSelectedDrug(selectedDrugData);
+    setOrderForm({ ...orderForm, drug: selectedDrugData.id, drugName: selectedDrugData.name, price: selectedDrugData.price }); // Reset discount code and price when drug changes
+  };
+
   useEffect(() => {
     const retrieveInventory = async () => {
       try {
