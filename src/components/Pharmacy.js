@@ -61,6 +61,8 @@ const Pharmacy = () => {
     let wdid = web3.eth.abi.encodeParameter('uint256', confirmForm.wholesaleId);
     let reqID = web3.eth.abi.encodeParameter('uint256', confirmForm.requestId);
     await contract.methods.confirmDrugShipmentPH(reqID, amount, wdid).send({ from: accounts[config.id]});
+    const newInv = await contract.methods.retrieveInventoryPHFront().call({from: accounts[config.id]});
+    setInventoryData(newInv);
   };
 
   // Function to handle drug selection
