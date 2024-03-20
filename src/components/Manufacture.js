@@ -18,8 +18,12 @@ const Manufacture = () => {
 
 
     let req = incomingRequests.filter(request => String(request.requestID) === id); 
+    console.log("1");
+
     let dID = web3.eth.abi.encodeParameter('uint256', req.drugID);
+    console.log("2");
     let quantity = web3.eth.abi.encodeParameter('uint256', req.quant);
+    console.log("3");
     let rID = web3.eth.abi.encodeParameter('uint256', req.requestID);
     try {
       await contract.methods.shipDrugMA(dID, quantity, req.sender, rID)
