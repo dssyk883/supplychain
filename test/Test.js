@@ -10,51 +10,51 @@ describe("Test Supply Chain contract", function () {
         const TestContract = await ethers.getContractFactory("SupplyChain");
         contract = await TestContract.deploy();
         await contract.addDrug('A', 5);
-        await contract.addDrug('B', 10);
-        await contract.addDrug('C', 15);
-        await contract.addDrug('D', 20);
-        await contract.addDrug('E', 25);
-        await contract.addDrug('F', 30);
-        await contract.addDrug('G', 35);
-        await contract.addDrug('H', 40);
-        await contract.addDrug('I', 45);
-        await contract.addDrug('J', 50);
-        await contract.addDrug('K', 55);
-        await contract.addDrug('L', 60);
-        await contract.addDrug('M', 65);
-        await contract.addDrug('N', 70);
-        await contract.addDrug('O', 75);
-        await contract.addDrug('P', 80);
-        await contract.addDrug('Q', 85);
-        await contract.addDrug('R', 90);
-        await contract.addDrug('S', 95);
-        await contract.addDrug('T', 100);
-        await contract.addDrug('U', 105);
-        await contract.addDrug('V', 110);
-        await contract.addDrug('W', 115);
-        await contract.addDrug('X', 120);
-        await contract.addDrug('Y', 125);
-        await contract.addDrug('Z', 130);
-        await contract.addDrug('AA', 135);
-        await contract.addDrug('AB', 140);
-        await contract.addDrug('AC', 145);
-        await contract.addDrug('AD', 150);
-        await contract.addDrug('AE', 155);
-        await contract.addDrug('AF', 160);
-        await contract.addDrug('AG', 165);
-        await contract.addDrug('AH', 170);
-        await contract.addDrug('AI', 175);
-        await contract.addDrug('AJ', 180);
-        await contract.addDrug('AK', 185);
-        await contract.addDrug('AL', 190);
-        await contract.addDrug('AM', 195);
-        await contract.addDrug('AN', 200);
-        await contract.addDrug('AO', 205);
-        await contract.addDrug('AP', 210);
-        await contract.addDrug('AQ', 215);
-        await contract.addDrug('AR', 220);
-        await contract.addDrug('AS', 225);
-        await contract.addDrug('AT', 230);
+        // await contract.addDrug('B', 10);
+        // await contract.addDrug('C', 15);
+        // await contract.addDrug('D', 20);
+        // await contract.addDrug('E', 25);
+        // await contract.addDrug('F', 30);
+        // await contract.addDrug('G', 35);
+        // await contract.addDrug('H', 40);
+        // await contract.addDrug('I', 45);
+        // await contract.addDrug('J', 50);
+        // await contract.addDrug('K', 55);
+        // await contract.addDrug('L', 60);
+        // await contract.addDrug('M', 65);
+        // await contract.addDrug('N', 70);
+        // await contract.addDrug('O', 75);
+        // await contract.addDrug('P', 80);
+        // await contract.addDrug('Q', 85);
+        // await contract.addDrug('R', 90);
+        // await contract.addDrug('S', 95);
+        // await contract.addDrug('T', 100);
+        // await contract.addDrug('U', 105);
+        // await contract.addDrug('V', 110);
+        // await contract.addDrug('W', 115);
+        // await contract.addDrug('X', 120);
+        // await contract.addDrug('Y', 125);
+        // await contract.addDrug('Z', 130);
+        // await contract.addDrug('AA', 135);
+        // await contract.addDrug('AB', 140);
+        // await contract.addDrug('AC', 145);
+        // await contract.addDrug('AD', 150);
+        // await contract.addDrug('AE', 155);
+        // await contract.addDrug('AF', 160);
+        // await contract.addDrug('AG', 165);
+        // await contract.addDrug('AH', 170);
+        // await contract.addDrug('AI', 175);
+        // await contract.addDrug('AJ', 180);
+        // await contract.addDrug('AK', 185);
+        // await contract.addDrug('AL', 190);
+        // await contract.addDrug('AM', 195);
+        // await contract.addDrug('AN', 200);
+        // await contract.addDrug('AO', 205);
+        // await contract.addDrug('AP', 210);
+        // await contract.addDrug('AQ', 215);
+        // await contract.addDrug('AR', 220);
+        // await contract.addDrug('AS', 225);
+        // await contract.addDrug('AT', 230);
 // await contract.addDrug('AU', 235);
 // await contract.addDrug('AV', 240);
 // await contract.addDrug('AW', 245);
@@ -171,39 +171,39 @@ describe("Test Supply Chain contract", function () {
     //     .withArgs(1, 0, IN_addr);
     // });
 
-    // it("Supply chain: PH request shipment, WD ships drug, PH confirms shipment", async function () {
-    //     // Add Discount code
-    //     // await expect(contract.connect(IN_addr).addDiscountInIN(1, 25, 0, 2))
-    //     // .to.emit(contract, "DiscountCodeAddedIN")
-    //     // .withArgs(1, 0, IN_addr);
+    it("Supply chain: PH request shipment, WD ships drug, PH confirms shipment", async function () {
+        // Add Discount code
+        // await expect(contract.connect(IN_addr).addDiscountInIN(1, 25, 0, 2))
+        // .to.emit(contract, "DiscountCodeAddedIN")
+        // .withArgs(1, 0, IN_addr);
 
-    //     // PH Requests Drug Shipment
-    //     await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 10, 1, 101, {value: ethers.parseEther("270")}))
-    //     .to.emit(contract, "SendRequestByPH")
-    //     .withArgs(0, 10, 270, WD_addr);
+        // PH Requests Drug Shipment
+        await expect(contract.connect(PH_addr).sendDrugRequestPH(0, 10, 1, 101, {value: ethers.parseEther("270")}))
+        .to.emit(contract, "SendRequestByPH")
+        .withArgs(0, 10, 270, WD_addr);
 
-    //     // Ship Drug from WD
-    //     await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))  
-    //     .to.emit(contract, "DrugAddedWD")
-    //     .withArgs(0, 10, WD_addr);
+        // Ship Drug from WD
+        await expect(contract.connect(WD_addr).addDrugInWD(0, 10, MA_addr))  
+        .to.emit(contract, "DrugAddedWD")
+        .withArgs(0, 10, WD_addr);
 
-    //     await contract.connect(PH_addr).retrieveInventoryPH();
-    //     await contract.connect(WD_addr).retrieveInventoryWD();
+        await contract.connect(PH_addr).retrieveInventoryPH();
+        console.log(await contract.connect(WD_addr).retrieveInventoryWDFront());
 
-    //     const reqID =  await contract.connect(WD_addr).getRequestIDWD();
-    //     await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, reqID))
-    //     .to.emit(contract, "ShipDrugByWD")
-    //     .withArgs(0, 10, 0);
+        const reqID =  await contract.connect(WD_addr).getRequestIDWD();
+        await expect(contract.connect(WD_addr).shipDrugWD(0, 10, 0, reqID))
+        .to.emit(contract, "ShipDrugByWD")
+        .withArgs(0, 10, 0);
 
-    //     const reqIDPH =  await contract.connect(PH_addr).getRequestIDPH();
-    //     // PH confirms Drug Shipment
-    //     await expect(contract.connect(PH_addr).confirmDrugShipmentPH(reqIDPH, 10, 1))
-    //     .to.emit(contract, "ReqConfirmedByPH")
-    //     .withArgs(reqIDPH, PH_addr, WD_addr);
+        const reqIDPH =  await contract.connect(PH_addr).getRequestIDPH();
+        // PH confirms Drug Shipment
+        await expect(contract.connect(PH_addr).confirmDrugShipmentPH(reqIDPH, 10, 1))
+        .to.emit(contract, "ReqConfirmedByPH")
+        .withArgs(reqIDPH, PH_addr, WD_addr);
 
-    //     await contract.connect(PH_addr).retrieveInventoryPH();
-    //     await contract.connect(WD_addr).retrieveInventoryWD();
-    // });
+        // await contract.connect(PH_addr).retrieveInventoryPH();
+        console.log(await contract.connect(WD_addr).retrieveInventoryWDFront());
+    });
 
     // it("PH: Insufficient funds from Pharmacy to request shipment", async function () {
     //     // Add Discount code
