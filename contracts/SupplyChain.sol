@@ -79,7 +79,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     event SendRequestByPH(uint drugID, uint q, uint totalPrice, address toWD);
     event ShipDrugByWD(uint drugID, uint quant, uint PHaccNum);
     event SendRequestByWD(uint drugID, uint quant, uint totalPrice, address toMAaddr);
-    event ShipDrugByMA(uint drugID, uint quant, uint WDaccNum);
+    event ShipDrugByMA(uint drugID, uint quant, address wd);
     event ReqConfirmedByPH(uint reqID, address phar, address wd);
     event ReqConfirmedByWD(uint reqID, address wd, address ma);
 
@@ -251,8 +251,8 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         emit SendRequestByWD(drugID, quant, totalPrice, toMAaddr);
     }
 
-    function shipDrugMA(uint drugID, uint quant, uint WDaccNum, uint reqID) public onlyMA() {
-        address toWDaddr = super.getWDaddr(WDaccNum);
+    function shipDrugMA(uint drugID, uint quant, address toWDaddr, uint reqID) public onlyMA() {
+        //address toWDaddr = super.getWDaddr(WDaccNum);
         uint findDrugMA = findDrugInMA(drugID);
 
         require(findDrugMA != manufacturerInventory[msg.sender].length, "There's no drug with the drug id");
@@ -262,7 +262,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         if(manufacturerInventory[msg.sender][findDrugMA].quantity == 0) wholesaleInventory[msg.sender][drugID].isSoldOut = true;
         uint findreqMA = findRequestInMA(reqID);
         manufacturerRequests[msg.sender][findreqMA].confirmed = true;
-        emit ShipDrugByMA(drugID, quant, WDaccNum);
+        emit ShipDrugByMA(drugID, quant, toWDaddr);
     }
 
     function confirmDrugShipmentWD(uint reqID, uint quant, uint MAaccNum) public onlyWD() {
@@ -377,8 +377,8 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         return wholesaleInventory[msg.sender];
     }
 
-    function retrieveInventoryMAFront() public view onlyWD() returns (Drug[] memory) {
-        return wholesaleInventory[msg.sender];
+    function retrieveInventoryMAFront() public view onlyMA() returns (Drug[] memory) {
+        return manufacturerInventory[msg.sender];
     }
 
     function getAllWD() public view returns (address[] memory) {
@@ -411,6 +411,10 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
     function getAllRequestsWDMA() public view returns (DrugRequest[] memory) {
         return wholesaleRequestsToMA[msg.sender];
+    }
+
+    function getAllRequestsMA() public view returns (DrugRequest[] memory) {
+        return manufacturerRequests[msg.sender];
     }
 
     function findDCcode(uint dc) public view returns (uint) {
