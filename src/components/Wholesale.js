@@ -80,6 +80,8 @@ const Wholesale = () => {
     await contract.methods.confirmDrugShipmentWD(reqID, amount, confirmForm.manufacturerId).send({ from: accounts[config.id]});
     const newInv = await contract.methods.retrieveInventoryWDFront().call({from: accounts[config.id]});
     setInventoryData(newInv);
+    const newReq = await contract.methods.getAllRequestsWDMA().call({from: accounts[config.id]});
+    setrequestsMA(newReq);
   };
 
     // Function to handle drug selection
@@ -478,7 +480,7 @@ const Wholesale = () => {
           >
             <option value="">Select Manufacturer ID</option>
             {manufacturerIds && manufacturerIds.map(ma => (
-              <option key={ma} value={ma}>
+              <option key={ma} value={ma}>  
                 {ma}
               </option>
             ))}
