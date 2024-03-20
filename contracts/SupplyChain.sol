@@ -114,7 +114,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
     
     //Adding drug information about drug id, name, and price
-    function addDrug(string memory name, uint price) public {
+    function addDrug(string storage name, uint price) public {
         uint dID = drugCount;
         drugs[drugCount++] = Drug(dID, name, price, 0, address(0), address(0), address(0), address(0), false);
         emit DrugAdded(dID, name, 0, price);
@@ -210,15 +210,16 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         address toPHaddr = super.getPHaddr(PHaccNum);
         uint findDrugWD = findDrugInWD(drugID);
         uint findreqPH = findRequestInPH(reqID);
-        Drug memory oldD = wholesaleInventory[msg.sender][findDrugWD];
+        Drug storage whdrug = wholesaleInventory[msg.sender][findDrugWD];
         uint oldQ = wholesaleInventory[msg.sender][findDrugWD].quantity;
         console.log(oldQ);
 
         require(findDrugWD != wholesaleInventory[msg.sender].length, "There's no drug with the drug id");
         require(wholesaleInventory[msg.sender][findDrugWD].quantity >= quant, "Not enough drug quantity in the inventory.");
-        Drug memory d = drugs[drugID];
+        Drug storage d = drugs[drugID];
         // wholesaleInventory[msg.sender][findDrugWD].quantity -= quant;
-        wholesaleInventory[msg.sender][findDrugWD] = Drug(drugID, d.name, d.price, oldQ-quant, msg.sender, oldD.manufacturer, msg.sender, address(0), false );
+        whdrug.quantity -= quant;
+        wholesaleInventory[msg.sender][findDrugWD] = whdrug;
         if(wholesaleInventory[msg.sender][findDrugWD].quantity == 0) wholesaleInventory[msg.sender][drugID].isSoldOut = true;
         uint findreqWD = findRequestInWDPH(reqID);
         wholesaleRequestsFromPH[msg.sender][findreqWD].confirmed = true;
@@ -275,10 +276,10 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
 
     // function rebateRequestWD(uint reqID, uint MAaccNum) public onlyWD() payable {
     //     uint findreqWDMA = findRequestInWDMA(reqID);
-    //     DrugRequest memory dr = wholesaleRequestsToMA[msg.sender][findreqMA];
+    //     DrugRequest storage dr = wholesaleRequestsToMA[msg.sender][findreqMA];
     //     uint quant = dr.quant;
     //     uint dcCode = dr.dcCode;
-    //     Discount memory dc = discountCodes[findDCcode(dcCode)];
+    //     Discount storage dc = discountCodes[findDCcode(dcCode)];
     //     uint rebated = dc.discountPrice * quant;
     //     require(rebated <= msg.value, "Insufficient fund!");
     //     address payable toMA
@@ -365,50 +366,50 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         // if index == len, it's not found
     }
 
-    function retrieveInventoryPHFront() public view onlyPH() returns (Drug[] memory) {
+    function retrieveInventoryPHFront() public view onlyPH() returns (Drug[] storage) {
         return pharmacyInventory[msg.sender];
     }
 
-    function retrieveInventoryWDFront() public view onlyWD() returns (Drug[] memory) {
+    function retrieveInventoryWDFront() public view onlyWD() returns (Drug[] storage) {
         uint q = wholesaleInventory[msg.sender][0].quantity;
         console.log("retrieve inventory wd front");
         console.log(q);
         return wholesaleInventory[msg.sender];
     }
 
-    function retrieveInventoryMAFront() public view onlyWD() returns (Drug[] memory) {
+    function retrieveInventoryMAFront() public view onlyWD() returns (Drug[] storage) {
         return wholesaleInventory[msg.sender];
     }
 
-    function getAllWD() public view returns (uint[] memory) {
+    function getAllWD() public view returns (uint[] storage) {
         return super.showAllWD();
     }
 
-    function getAllPH() public view returns (uint[] memory) {
+    function getAllPH() public view returns (uint[] storage) {
         return super.showAllPH();
     }
 
-    function getAllMA() public view returns (uint[] memory) {
+    function getAllMA() public view returns (uint[] storage) {
         return super.showAllMA();
     }
 
-    function getAllIN() public view returns (uint[] memory) {
+    function getAllIN() public view returns (uint[] storage) {
         return super.showAllIN();
     }
 
-    function getAllDiscounts() public view returns (Discount[] memory) {
+    function getAllDiscounts() public view returns (Discount[] storage) {
         return discountCodes;
     }
 
-    function getAllRequestsPH() public view returns (DrugRequest[] memory) {
+    function getAllRequestsPH() public view returns (DrugRequest[] storage) {
         return pharmacyRequests[msg.sender];
     }
 
-    function getAllRequestsWDPH() public view returns (DrugRequest[] memory) {
+    function getAllRequestsWDPH() public view returns (DrugRequest[] storage) {
         return wholesaleRequestsFromPH[msg.sender];
     }
 
-    function getAllRequestsWDMA() public view returns (DrugRequest[] memory) {
+    function getAllRequestsWDMA() public view returns (DrugRequest[] storage) {
         return wholesaleRequestsToMA[msg.sender];
     }
 
@@ -421,22 +422,22 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
     }
 
     function getRequestIDWD() external view returns (uint) {
-        DrugRequest[] memory thisRequest = wholesaleRequestsFromPH[msg.sender];
+        DrugRequest[] storage thisRequest = wholesaleRequestsFromPH[msg.sender];
         return thisRequest[0].requestID;
     }
 
     function getRequestIDPH() external view returns (uint) {
-        DrugRequest[] memory thisRequest = pharmacyRequests[msg.sender];
+        DrugRequest[] storage thisRequest = pharmacyRequests[msg.sender];
         return thisRequest[0].requestID;
     }
 
     function getRequestIDMA() external view returns (uint) {
-        DrugRequest[] memory thisRequest = manufacturerRequests[msg.sender];
+        DrugRequest[] storage thisRequest = manufacturerRequests[msg.sender];
         return thisRequest[0].requestID;
     }
 
     function getRequestIDWDMA() external view returns (uint) {
-        DrugRequest[] memory thisRequest = wholesaleRequestsToMA[msg.sender];
+        DrugRequest[] storage thisRequest = wholesaleRequestsToMA[msg.sender];
         return thisRequest[0].requestID;
     }
 
