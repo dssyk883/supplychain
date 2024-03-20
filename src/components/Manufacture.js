@@ -26,7 +26,7 @@ const Manufacture = () => {
       console.error('Error in Shipping Drugs:', error);
     }
     refreshInventory();
-    // setIncomingRequests(incomingRequests.filter(request => String(request.requestID) !== id));
+    setIncomingRequests(incomingRequests.filter(request => String(request.requestID) !== id));
     showRequestsMA();
     
   };
