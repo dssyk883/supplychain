@@ -159,7 +159,7 @@ const Pharmacy = () => {
         <label>
           Amount:
           <input
-            type="uint256"
+            type="number"
             value={orderForm.amount}
             onChange={e => setOrderForm({ ...orderForm, amount: parseInt(e.target.value) })}
           />
@@ -208,16 +208,16 @@ const Pharmacy = () => {
         <label>
           Wholesale ID:
           <select
-            value={orderForm.wholesaleId}
-            onChange={e => setOrderForm({ ...orderForm, wholesaleId: e.target.value })}
+              value={orderForm.wholesaleId}
+              onChange={e => setOrderForm({ ...orderForm, wholesaleId: e.target.value })}
           >
-            <option value="">Select Wholesale ID</option>
+          <option value="">Select Wholesale ID</option>
             {wholesaleIds.map(id => (
-              <option key={id} value={id}>
-                {String(id)}
-              </option>
-            ))}
-          </select>
+            <option key={id} value={id}>
+            {String(id)}
+          </option>
+          ))}
+        </select>
         </label>
         <br />
         <button type="submit">Order</button>
