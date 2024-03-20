@@ -37,9 +37,10 @@ const Insurance = () => {
     const getAllDiscounts = async () => {
     try {
         if (web3 && accounts && contract) {
-            const DCs = await contract.methods.getAllDiscountsIN().call({ from: accounts[config.id] });
+            const DCs = await contract.methods.getAllDiscounts().call();
             if (DCs) {
-              setdiscounts(DCs);
+              const filteredDiscounts = DCs.filter(discount => discount.insurer === accounts[config.id]);       
+              setdiscounts(filteredDiscounts);
             }
         }
     } catch (error) {
