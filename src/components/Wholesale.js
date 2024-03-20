@@ -476,7 +476,7 @@ const Wholesale = () => {
             value={confirmForm.manufacturerId}
             onChange={e => setConfirmForm({ ...confirmForm, manufacturerId: e.target.value })}
           >
-            <option value="">Select Wholesale ID</option>
+            <option value="">Select Manufacturer ID</option>
             {manufacturerIds && manufacturerIds.map(ma => (
               <option key={ma} value={ma}>
                 {ma}
