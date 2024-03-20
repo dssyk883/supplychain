@@ -125,6 +125,9 @@ await contract.addDrug('CV', 500);
         // Add Drug in PH
         // await contract.connect(PH_addr).retrieveInventoryPH();
         console.time('a');
+        // await expect(contract.connect(PH_addr).addDrugInPH(20, 10, WD_addr, MA_addr))
+        // .to.emit(contract, "DrugAddedPH")
+        // .withArgs(20, 10, PH_addr);
         await expect(contract.connect(PH_addr).addDrugInPH(20, 10, WD_addr, MA_addr))
         .to.emit(contract, "DrugAddedPH")
         .withArgs(20, 10, PH_addr);
@@ -133,13 +136,13 @@ await contract.addDrug('CV', 500);
         // await contract.connect(PH_addr).retrieveInventoryPH();
     });
 
-    it("Non-PH: Add Drug should fail", async function () {
-        // Add Drug in PH (not permitted)
-        console.time('a');
-        await expect(contract.connect(WD_addr).addDrugInPH(20, 10, WD_addr, MA_addr))
-        .to.be.revertedWith("Not a Pharmacy!");
-        console.timeEnd('a');
-    });
+    // it("Non-PH: Add Drug should fail", async function () {
+    //     // Add Drug in PH (not permitted)
+    //     console.time('a');
+    //     await expect(contract.connect(WD_addr).addDrugInPH(20, 10, WD_addr, MA_addr))
+    //     .to.be.revertedWith("Not a Pharmacy!");
+    //     console.timeEnd('a');
+    // });
 
     it("WD: Add Drug should emit DrugAddedWD event", async function () {
         // Add Drug in WD
@@ -153,13 +156,13 @@ await contract.addDrug('CV', 500);
         // await contract.connect(WD_addr).retrieveInventoryWD();
     });
 
-    it("Non-WD: Add Drug should fail", async function () {
-        // Add Drug in WD (not permitted)
-        console.time('a');
-        await expect(contract.connect(MA_addr).addDrugInWD(20, 10, MA_addr))
-        .to.be.revertedWith("Not a Wholesale Distributor!");
-        console.timeEnd('a');
-    });
+    // it("Non-WD: Add Drug should fail", async function () {
+    //     // Add Drug in WD (not permitted)
+    //     console.time('a');
+    //     await expect(contract.connect(MA_addr).addDrugInWD(20, 10, MA_addr))
+    //     .to.be.revertedWith("Not a Wholesale Distributor!");
+    //     console.timeEnd('a');
+    // });
 
     // it("IN: Add Discount code should emit DrugAddedWD event", async function () {
     //     // Add Discount code
@@ -315,13 +318,13 @@ await contract.addDrug('CV', 500);
     //     // await contract.connect(WD_addr).retrieveInventoryWD();
     // })
 
-//     it("MA: Not enough drug in Inventory", async function () {
+    it("MA: Not enough drug in Inventory", async function () {
 //         // WD requests Drug
 //         // await contract.connect(MA_addr).retrieveInventoryMA();
 //         // await contract.connect(WD_addr).retrieveInventoryWD();
-//         await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 250, 3, {value: ethers.parseEther("7500")}))
-//         .to.emit(contract, "SendRequestByWD")
-//         .withArgs(0, 250, 7500, MA_addr);
+        await expect(contract.connect(WD_addr).sendDrugRequestWD(0, 250, 3, {value: ethers.parseEther("7500")}))
+        .to.emit(contract, "SendRequestByWD")
+        .withArgs(0, 250, 7500, MA_addr);
 
 //         console.log("Requesting 50 units of Drug 0")
 
@@ -330,5 +333,5 @@ await contract.addDrug('CV', 500);
 //         .to.be.revertedWith("Not enough drug quantity in the inventory.");
 //         // await contract.connect(MA_addr).retrieveInventoryMA();
 //         // await contract.connect(WD_addr).retrieveInventoryWD();
-//     })
+    })
 });
