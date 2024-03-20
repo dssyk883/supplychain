@@ -248,6 +248,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         uint reqID = drugID + quant + block.timestamp%1000;
         wholesaleRequestsToMA[msg.sender].push(DrugRequest(reqID, drugID, quant, totalPrice, 0, msg.sender, toMAaddr, toMAaddr, false));
         manufacturerRequests[toMAaddr].push(DrugRequest(reqID, drugID, quant, totalPrice, 0, msg.sender, toMAaddr, toMAaddr, false));
+        console.log("Added to MA Request", reqID);
         toMAaddr.transfer(totalPrice);
         emit SendRequestByWD(drugID, quant, totalPrice, toMAaddr);
     }
