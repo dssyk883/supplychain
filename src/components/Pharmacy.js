@@ -41,7 +41,7 @@ const Pharmacy = () => {
     const selectedDrugName = e.target.value;
     const selectedDrugData = inventory.find(drug => drug.name === selectedDrugName);
     setSelectedDrug(selectedDrugData);
-    setOrderForm({ ...orderForm, drug: selectedDrugName, price: selectedDrugData }); // Reset discount code and price when drug changes
+    setOrderForm({ ...orderForm, drug: selectedDrugName, price: String(selectedDrugData.price) }); // Reset discount code and price when drug changes
   };
 
   // Function to calculate price based on amount, drug price, and discount rate
