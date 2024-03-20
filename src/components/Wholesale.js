@@ -12,11 +12,38 @@ const Wholesale = () => {
   const [requestsPH, setrequestsPH] = useState([]);
   const [requestsMA, setrequestsMA] = useState([]);
 
+  const [orderForm, setOrderForm] = useState({
+    amount: 0,
+    drugName: '',
+    drug: 0,
+    price: 0,
+    manufacturerId: 0
+  });
+
 
   // Function to handle adding bulk order
-  const handleAddBulkOrder = (drug, amount, price) => {
-    // Logic to handle adding bulk order
-    console.log("Bulk Order Added:", { drug, amount, price });
+  const handleAddBulkOrder = async (e) => {
+    e.preventD7efault();
+    // Handle order submission logic here
+    console.log("Order Submitted:", orderForm);
+    //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
+    //sendDrugRequestPH(uint drugID, uint quant, uint WDaccNum, uint dcCode)
+    let dID = web3.eth.abi.encodeParameter('uint256', orderForm.drug);
+    let amount = web3.eth.abi.encodeParameter('uint256', orderForm.amount);
+    let maid = web3.eth.abi.encodeParameter('uint256', orderForm.manufacturerId);
+    let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
+    let msgvalue = price * amount;
+    await contract.methods.sendDrugRequestWD(dID, amount, maid).send({ from: accounts[config.id], value: msgvalue});
+    
+  };
+
+    // Function to handle drug selection
+  const handleDrugSelect = (e) => {
+    const selectedDrugName = e.target.value;
+    const selectedDrugData = inventory.find(drug => drug.name === selectedDrugName);
+    console.log(selectedDrugData);
+    setSelectedDrug(selectedDrugData);
+    setOrderForm({ ...orderForm, drug: selectedDrugData.id, drugName: selectedDrugData.name, price: selectedDrugData.price }); // Reset discount code and price when drug changes
   };
 
   useEffect(() => {
@@ -174,6 +201,53 @@ const Wholesale = () => {
         ))}
       </ul>
       
+      <h3>Bulk Order Form</h3>
+      <form onSubmit={handleAddBulkOrder}>
+        <label>
+          Amount:
+          <input
+            type="number"
+            value={orderForm.amount}
+            onChange={e => setOrderForm({ ...orderForm, amount: parseInt(e.target.value) })}
+          />
+        </label>
+        <br />
+        <label>
+          Drug:
+          <select
+            value={orderForm.drugName}
+            onChange={handleDrugSelect}
+          >
+            <option value="">Select Drug</option>
+            {inventory && inventory.map(drug => (
+              <option key={drug.id} value={drug.name}>
+                {drug.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <br />
+        <label>
+          Price:
+          <input
+            type="string"
+            value={String(orderForm.price)}
+            readOnly // Price is now read-only
+          />
+        </label>
+        <br />
+        <label>
+          Manufcaturer ID:
+          <input
+            type="number"
+            value={orderForm.manufacturerId}
+            onChange={e => setOrderForm({ ...orderForm, manufacturerId: parseInt(e.target.value, 10) })}
+          />
+        </label>
+        <br />
+        <button type="submit">Order</button>
+      </form>
       
 
     </div>

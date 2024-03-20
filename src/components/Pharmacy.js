@@ -31,7 +31,7 @@ const Pharmacy = () => {
 
   // Function to handle order form submission
   const handleOrderSubmit = async (e) => {
-    e.preventDefault();
+    e.preventD7efault();
     // Handle order submission logic here
     console.log("Order Submitted:", orderForm);
     //let uint256Id = web3.eth.abi.encodeParameter('uint256',id)
