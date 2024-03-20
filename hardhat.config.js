@@ -6,7 +6,6 @@ module.exports = {
 paths: {
     artifacts: "./src/artifacts",
   },
-<<<<<<< HEAD
 allowUnlimitedContractSize: true,
 networks: {
                 localhost: {
@@ -30,30 +29,12 @@ namedAccounts: {
 		default: 0,
 		amount: "10000000000000000000000"
 		},
-=======
-networks: {
-                localhost: {
-                        url: "http://ec2-54-219-16-72.us-west-1.compute.amazonaws.com:8545",
-                        chainID: 1337
-                },
-                hardhat: {
-                        chainID: 1337
-                }
 },
-namedAccounts: { 
-    deployer: {
-        default: 0,
-        amount: "10000000000000000000000"
-        },
->>>>>>> 002b6ca (hardhat)
-},
-
 solidity: {
         version: "0.8.24",
         settings: {
                 optimizer: {
                         enabled: true,
-<<<<<<< HEAD
                         runs: 100000,
 			 details: { yul: false },
         }
@@ -61,12 +42,3 @@ solidity: {
 },
 
 };
-
-=======
-                        runs: 1000,
-        }
-},
-},
-allowUnlimitedContractSize: true,
-};
->>>>>>> 002b6ca (hardhat)
