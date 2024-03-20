@@ -44,14 +44,24 @@ contract Wholesale {
         return wholesales.returnAddress(accNumber);
     }
 
-    function showAllWD() public view returns (uint[] memory) {
-        uint[] memory indices = new uint[](wdcounter);
+    // function showAllWD() public view returns (uint[] memory) {
+    //     uint[] memory indices = new uint[](wdcounter);
+    //     uint ind = 0;
+    //     for(uint i = 0; i < wdcounter; i++){
+    //         ind = i * 5 + 1;
+    //         indices[i] = ind;
+    //         console.log("Wholesale acc# ", i, ": ", wholesales.returnAddress(ind));
+    //     }
+    //     return indices;
+    // }
+
+    function showAllWD() public view returns (address[] memory) {
+        address[] memory allAddr = new address[](wdcounter);
         uint ind = 0;
         for(uint i = 0; i < wdcounter; i++){
             ind = i * 5 + 1;
-            indices[i] = ind;
-            console.log("Wholesale acc# ", i, ": ", wholesales.returnAddress(ind));
+            allAddr.push(getWDaddr(ind));
         }
-        return indices;
+        return allAddr;
     }
 }

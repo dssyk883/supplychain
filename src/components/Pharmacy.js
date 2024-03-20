@@ -100,6 +100,19 @@ const Pharmacy = () => {
     }
   };
 
+  const handleWDselectOrder = (e) => {
+    const selectedWDnum = e.target.value;
+    console.log(e.target.value);
+    const selectedWDIndex = wholesaleIds.findIndex(wd => String(wd) === selectedWDnum);
+    if (selectedWDIndex !== -1) {
+      setConfirmForm({ ...confirmForm, wholesaleId: wholesaleIds[selectedWDIndex] });
+    } else {
+      // Handle the case where no request is found, e.g., reset to default values
+      console.log("No request found with ID:", selectedWDnum);
+      setConfirmForm({ ...confirmForm, wholesaleId: '' }); // Reset or handle as appropriate
+    }
+  };
+
   const showRequests = async () => {
     try {
       if (web3 && accounts && contract) {
@@ -272,7 +285,7 @@ const Pharmacy = () => {
           </select>
         </label>
         <br />
-        <label>
+        {/* <label>
           Wholesale ID:
           <select
             value={String(confirmForm.wholesaleId)}
@@ -282,6 +295,20 @@ const Pharmacy = () => {
             {wholesaleIds && wholesaleIds.map(wd => (
               <option key={String(wd)} value={String(wd)}>
                 {String(wd)}
+              </option>
+            ))}
+          </select>
+        </label> */}
+        <label>
+          Wholesale ID:
+          <select
+            value={confirmForm.wholesaleId}
+            onChange={e => setConfirmForm({ ...confirmForm, wholesaleId: e.target.value })}
+          >
+            <option value="">Select Wholesale ID</option>
+            {wholesaleIds && wholesaleIds.map(wd => (
+              <option key={wd} value={wd}>
+                {wd}
               </option>
             ))}
           </select>

@@ -381,7 +381,7 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         return wholesaleInventory[msg.sender];
     }
 
-    function getAllWD() public view returns (uint[] memory) {
+    function getAllWD() public view returns (address[] memory) {
         return super.showAllWD();
     }
 
