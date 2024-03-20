@@ -500,6 +500,16 @@ contract SupplyChain is Pharmacy, Manufacturer, Wholesale, Insurer {
         return thisRequest[0].requestID;
     }
     
+    function getAllDiscountsIN() public view returns (Discount[] memory) {
+        Discount[] memory thisINDiscount;
+        while(i < discountCodes.length) {
+            if (discountCodes[i].insurer == msg.sender) {
+                thisINDiscount.push(discountCodes[i]);
+            }
+            i++
+        }
+        return thisINDiscount;
+    }
 
     function showAllEntities() public view {
         super.showAllPH();

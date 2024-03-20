@@ -4,7 +4,7 @@ import { useContractInitialization } from './Contract';
 
 const Insurance = () => {
   const { web3, accounts, contractInstance } = useContractInitialization();
-
+  const [discounts, setdiscounts] = useState([]);
   // State for contract form inputs
   const [contractForm, setContractForm] = useState({
     drug: '',
@@ -35,6 +35,27 @@ const Insurance = () => {
     // Clear the received discount codes after sending
     setReceivedDiscountCodes([]);
   };
+
+  useEffect(() => {
+
+    const getAllDiscounts = async () => {
+    try {
+        if (web3 && accounts && contract) {
+            const DCs = await contract.methods.getAllDiscountsIN().call({ from: accounts[config.id] });
+            if (DCs) {
+              setdiscounts(DCs);
+            }
+        }
+    } catch (error) {
+        console.error('Error in retrieving inventory:', error);
+    }
+  };
+
+  // retrieveInventory();
+  // getAllWD();
+  getAllDiscounts();
+}, [web3, accounts, contract]);
+
 
   return (
     <div>
@@ -75,14 +96,18 @@ const Insurance = () => {
       </div>
 
       <div>
-        <h3>Received Discount Codes</h3>
+      <h3>Discounts</h3>
         <ul>
-          {receivedDiscountCodes.map((code, index) => (
-            <li key={index}>
-              Drug: {code.drug} - Discount: {code.discount}% - Expiration: {code.expiration}
-            </li>
+          {/* Render drug information here */}
+          {discounts && discounts.map((discount, index) => (
+          <li key={index}>
+            <p>Discount code: {String(discount.discountCode)}</p>
+            <p>Drug ID: {String(discount.drugID)}</p>
+            <p>Discount price: {String(discount.discountPrice)}</p>
+          </li>
           ))}
         </ul>
+        
         <button onClick={handleSendDiscountCodes}>Send Discount Codes to Pharmacies</button>
       </div>
     </div>
