@@ -30,6 +30,7 @@ const Wholesale = () => {
   });
 
   const [selectedDrug, setSelectedDrug] = useState(null);
+  const [selectedDrugShip, setSelectedDrugShip] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
 
   // Function to handle adding bulk order
@@ -60,7 +61,7 @@ const Wholesale = () => {
     let reqID = web3.eth.abi.encodeParameter('uint256', shipForm.requestId);
     let price = web3.eth.abi.encodeParameter('uint256', orderForm.price);
     let msgvalue = price * (amount + 1);
-    await contract.methods.sendDrugRequestWD(dID, amount, phid, reqID).send({ from: accounts[config.id], value: msgvalue});
+    await contract.methods.shipDrugWD(dID, amount, phid, reqID).call({ from: accounts[config.id]});
   };
 
     // Function to handle drug selection
@@ -72,12 +73,27 @@ const Wholesale = () => {
     setOrderForm({ ...orderForm, drug: selectedDrugData.id, drugName: selectedDrugData.name, price: selectedDrugData.price }); // Reset discount code and price when drug changes
   };
 
+  const handleShipDrugSelect = (e) => {
+    const selectedDrugName = e.target.value;
+    const selectedDrugData = inventory.find(drug => drug.name === selectedDrugName);
+    console.log(selectedDrugData);
+    setSelectedDrugShip(selectedDrugData);
+    setShipForm({ ...shipForm, drug: selectedDrugData.id, drugName: selectedDrugData.name, price: selectedDrugData.price }); // Reset discount code and price when drug changes
+  };
+  
   const handleRequestSelect = (e) => {
     const selectedRequestID = e.target.value;
-    const selectedRequest = requestsPH.find(request => request.requestID === selectedRequestID);
-    console.log(selectedRequest);
-    setSelectedRequest(selectedRequest);
-    setShipForm({ ...shipForm, requestId: selectedRequest.requestID});
+    console.log(e.target.value);
+    const selectedRequest = requestsPH.find(request => String(request.requestID) === selectedRequestID);
+    if (selectedRequest) {
+      setSelectedRequest(selectedRequest);
+      setShipForm({ ...shipForm, requestId: selectedRequest.requestID });
+    } else {
+      // Handle the case where no request is found, e.g., reset to default values
+      console.log("No request found with ID:", selectedRequestID);
+      setSelectedRequest(null); // or appropriate default value
+      setShipForm({ ...shipForm, requestId: '' }); // Reset or handle as appropriate
+    }
   };
 
   const showRequestsMA = async () => {
@@ -102,12 +118,13 @@ const Wholesale = () => {
     try {
       if (web3 && accounts && contract) {
           const Reqs = await contract.methods.getAllRequestsWDPH().call({ from: accounts[config.id] });
-          Reqs.forEach((request, index) => {
-            console.log(`Request ID: ${request.requestID}`);
-            console.log(`Request ID: ${request.drugID}`);
-            console.log('----------');
-          });
           if (Reqs) {
+            Reqs.forEach((request, index) => {
+              console.log(`Request ID: ${request.requestID}`);
+              console.log(`Request ID: ${request.drugID}`);
+              console.log('----------');
+            });
+          
             setrequestsPH(Reqs);
           }
       }
@@ -288,7 +305,7 @@ const Wholesale = () => {
           Drug:
           <select
             value={shipForm.drugName}
-            onChange={handleDrugSelect}
+            onChange={handleShipDrugSelect}
           >
             <option value="">Select Drug</option>
             {inventory && inventory.map(drug => (
@@ -301,12 +318,12 @@ const Wholesale = () => {
         <label>
           Drug Request:
           <select
-            value={shipForm.requestId}
+            value={String(shipForm.requestId)}
             onChange={handleRequestSelect}
           >
             <option value="">Select Request</option>
             {requestsPH && requestsPH.map(request => (
-              <option key={request.requestID} value={request.requestID}>
+              <option key={String(request.requestID)} value={String(request.requestID)}>
                 {String(request.requestID)}
               </option>
             ))}
