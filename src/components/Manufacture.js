@@ -18,8 +18,11 @@ const Manufacture = () => {
 
 
     let req = incomingRequests.filter(request => request.requestID === id); 
+    let dID = web3.eth.abi.encodeParameter('uint256', req.drugID);
+    let quantity = web3.eth.abi.encodeParameter('uint256', req.quant);
+    let rID = web3.eth.abi.encodeParameter('uint256', req.requestID);
     try {
-      await contract.methods.shipDrugMA(req.dID, req.quant, req.sender, req.requestID)
+      await contract.methods.shipDrugMA(dID, quantity, req.sender, rID)
     } catch (error){
       console.error('Error in Shipping Drugs:', error)
     }
