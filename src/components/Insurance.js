@@ -32,7 +32,7 @@ const Insurance = () => {
     // Logic to send contract, here you can implement your desired action
     console.log("Contract Sent:", contractForm);
     // Reset the form fields after sending the contract
-    setContractForm({ drug: '', discountCode: '', discount: '' });
+    setContractForm({ drug: '0', discountCode: '0', discount: '0' });
     showDiscounts();
   };
 
