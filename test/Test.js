@@ -66,7 +66,7 @@ describe("Test Supply Chain contract", function () {
         console.time('a');
         await expect(contract.connect(WD_addr).addDrugInWD(20, 10, MA_addr))
         .to.emit(contract, "DrugAddedWD")
-        .withArgs(0, 10, WD_addr);
+        .withArgs(20, 10, WD_addr);
         // console.log("After adding 10 units of Drug 0")
         console.timeEnd('a');
         // await contract.connect(WD_addr).retrieveInventoryWD();
