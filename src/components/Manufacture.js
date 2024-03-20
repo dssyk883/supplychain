@@ -17,7 +17,7 @@ const Manufacture = () => {
     // Logic to confirm the request, here we will remove the request from the list
     console.log(id);
 
-    let req = incomingRequests.filter(request => String(request.requestID) === id); 
+    let req = incomingRequests.find(request => String(request.requestID) === id); 
     console.log(req);
 
     let dID = web3.eth.abi.encodeParameter('uint256', req.drugID);
